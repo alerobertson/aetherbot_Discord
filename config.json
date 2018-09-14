@@ -1,12 +1,20 @@
 {
 	"token": "BotTokenGoesHere",
 	"prefix": "++",
-	"commandString": "```++help: List all commands \n++master: Shows my author \n++mrank: List the Morning scores\n++savemrank: Manually save scores to server```",
+	"commands": [
+		"++help: List all commands \n",
+		"++master: Shows my author \n",
+		"++mrank: List the Morning scores\n",
+		"++save: Manually save scores to server\n",
+		"++timezone#: Set your timezone relative to the server time\n",
+		"++mytimezone: Show what I think your time is right now\n"
+	],
 	"tardyResponses": [
 		"Do better next time, okay?",
 		"I'm counting on you next time!",
 		"Oops. try again tomorrow!",
 		"No good. Perhaps tomorrow you will improve."
+		
 	],
 	"saveResponses": [
 		"Look at all this data!",
