@@ -1,0 +1,48 @@
+{
+	"token": "BotTokenGoesHere",
+	"prefix": "++",
+	"commandString": "```++help: List all commands \n++master: Shows my author \n++mrank: List the Morning scores\n++savemrank: Manually save scores to server```",
+	"tardyResponses": [
+		"Do better next time, okay?",
+		"I'm counting on you next time!",
+		"Oops. try again tomorrow!",
+		"No good. Perhaps tomorrow you will improve."
+	],
+	"saveResponses": [
+		"Look at all this data!",
+		"Gonna look this over later!",
+		"Will do!",
+		"You got it!",
+		"All done!"
+	],
+	"mornings": [
+		"morning",
+		"goodmorning",
+		"goodmorn",
+		"goodmornin",
+		"guudmorn",
+		"guudmorning",
+		"guudmornin",
+		"gudmorning",
+		"gudmornin",
+		"gudmorn",
+		"morn",
+		"mornin",
+		"mornyan",
+		"ohio",
+		"ohayo",
+		"ohayou",
+		"mournin",
+		"mourning",
+		"murnin",
+		"おはよう",
+		"おはようございます",
+		"mourn",
+		"gmorning",
+		"gmornin",
+		"gmorn",
+		"gninrom",
+		"nrom",
+		"ninrom"
+	]
+}
