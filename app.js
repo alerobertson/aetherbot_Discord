@@ -56,8 +56,8 @@ function commandCheck(msg) {
 	if(msg.content.indexOf(config.prefix) !== 0) return
 	
 	//Remove prefix and case down
-	const args = msg.content.slice(config.prefix.length).trim().split(/ +/g)
-	const command = args.shift().toLowerCase()
+	const args = msg.content.slice(config.prefix.length).trim()
+	const command = args.toLowerCase()
 	
 	switch(command) {
 		case "master":
@@ -96,6 +96,12 @@ function commandCheck(msg) {
 			
 			msg.reply(saveResponse)
 			break
+			
+		case "savemrank":
+		
+			msg.reply("This command has been replaced by " + config.prefix + "save")
+			break
+			
 		case "mytimezone":
 			var userTimeNames = getUniquePlayerNames(userTime)
 	
@@ -106,9 +112,11 @@ function commandCheck(msg) {
 			else {
 				msg.reply("Your current time on record is " + getModifiedDateString(0))
 			}
+			break
 	}
 	if(command.substring(0, 8) == "timezone") {
 		subCommand = command.slice(8)
+		subCommand = subCommand.trim()
 		if(!isNaN(subCommand)) {
 			var timeZone = parseInt(subCommand)
 			timeZoneAdd(msg.author.username, timeZone)
@@ -202,9 +210,9 @@ function goodCheck(msg) {
 function mornBaseAdd(user, result) {
 	mornMemory.push([user, result])
 }
+
 function timeZoneAdd(user, result) {
 	var userTimeNames = getUniquePlayerNames(userTime)
-	console.log("userTimeNames.includes(user): " + userTimeNames.includes(user))
 	if(userTimeNames.includes(user)) {
 		var index = userTimeNames.indexOf(user)
 		userTime[index][1] = result
@@ -213,6 +221,7 @@ function timeZoneAdd(user, result) {
 		userTime.push([user, result])
 	}
 }
+
 function mornBaseSave() {
 	fs.writeFile('database.txt', '');
 	for(i = 0; i < mornMemory.length; i++) {
