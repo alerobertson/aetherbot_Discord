@@ -151,10 +151,10 @@ function mornCheck(msg) {
 		
 		//Consider userTime[] local database
 		var timeDisplacement = calculateTimeDisplacement(msg.author.username)
+		var newHour = (hour+timeDisplacement+24) % 24
 		
-		
-		if(hour >= 12 + timeDisplacement) {
-			msg.reply("morning ended " + ((hour - 12) * 60 + minutes) + " minutes ago.")
+		if(newHour >= 12) {
+			msg.reply("morning ended " + ((newHour - 12) * 60 + minutes) + " minutes ago.")
 			var tardy = config.tardyResponses
 			var tardyResponse = tardy[Math.floor(Math.random()*tardy.length)]
 			msg.channel.send(tardyResponse)
@@ -172,7 +172,8 @@ function calculateTimeDisplacement(user) {
 	
 	if(userTimeNames.includes(user)) {
 		var index = userTimeNames.indexOf(user)
-		return userTime[index][1]
+		var modifier = userTime[index][1]
+		return modifier
 	}
 	else {
 		return 0
@@ -187,8 +188,9 @@ function getModifiedDateString(modifier) {
 	if(currentDate.getMinutes() < 10) {
 		currentMinutes = "0" + currentMinutes
 	}
+	currentHour = (currentHour + modifier + 24) % 24
 	
-	return (currentHour + modifier) + ":" + currentMinutes
+	return (currentHour) + ":" + currentMinutes
 }
 
 function goodCheck(msg) {
