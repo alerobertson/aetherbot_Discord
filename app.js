@@ -11,6 +11,7 @@ client.on("ready", () => {
 	console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`)
 	client.user.setActivity(`++help`)
 	memoryLoader()
+	setInterval(everyThreeHours, 1.08e+7)
 });
 
 client.on("guildCreate", guild => {
@@ -92,14 +93,17 @@ function commandCheck(msg) {
 		
 			mornBaseSave()
 			var save = config.saveResponses
-			var saveResponse =save[Math.floor(Math.random()*save.length)]
+			var saveResponse = save[Math.floor(Math.random()*save.length)]
 			
 			msg.reply(saveResponse)
 			break
-			
-		case "savemrank":
+		case "load":
+			if(msg.author.username != "tacosensei_") {
+				return
+			}
 		
-			msg.reply("This command has been replaced by " + config.prefix + "save")
+			memoryLoader()
+			msg.reply("Refreshing my memory")
 			break
 			
 		case "mytimezone":
@@ -113,6 +117,13 @@ function commandCheck(msg) {
 				msg.reply("Your current time on record is " + getModifiedDateString(0))
 			}
 			break
+	}
+	if(args.substring(0, 4) == "give" && msg.author.tag == "tacosensei_#3763") {
+		var user = args.slice(4).slice(0, -2)
+		var amount = args.slice(-2)
+		mornBaseAdd(user, parseInt(amount))
+	
+		msg.reply("Yes sir!")
 	}
 	if(command.substring(0, 8) == "timezone") {
 		subCommand = command.slice(8)
@@ -128,6 +139,10 @@ function commandCheck(msg) {
 				"timezone+7`` or ``" + config.prefix +"timezone-5``")
 		}
 	}
+}
+
+function everyThreeHours() {
+	mornBaseSave()
 }
 
 function mornCheck(msg) {
@@ -225,14 +240,18 @@ function timeZoneAdd(user, result) {
 }
 
 function mornBaseSave() {
-	fs.writeFile('database.txt', '');
+	fs.writeFileSync('database.txt', '');
 	for(i = 0; i < mornMemory.length; i++) {
-		fs.appendFile('database.txt', mornMemory[i][0] + "," + mornMemory[i][1] + "\n");
+		fs.appendFile('database.txt', mornMemory[i][0] + "," + mornMemory[i][1] + "\n", (err) => {
+			if(err) throw err
+		})
 	}
 	
-	fs.writeFile('timezones.txt', '');
+	fs.writeFileSync('timezones.txt', '');
 	for(i = 0; i < userTime.length; i++) {
-		fs.appendFile('timezones.txt', userTime[i][0] + "," + userTime[i][1] + "\n");
+		fs.appendFile('timezones.txt', userTime[i][0] + "," + userTime[i][1] + "\n", (err) => {
+			if(err) throw err
+		})
 	}
 }
 
@@ -275,7 +294,9 @@ function getPlayerScore(name) {
 }
 
 function memoryLoader() {
-
+	mornMemory = []
+	userTime = []
+	
 	var lineReader = require('readline').createInterface({
 		input: require('fs').createReadStream('database.txt')
 	})
@@ -292,5 +313,4 @@ function memoryLoader() {
 		userTime.push([incoming[0], parseInt(incoming[1])]) //Collect text data and put it into memory
 	})
 }
-
 client.login(config.token);    
