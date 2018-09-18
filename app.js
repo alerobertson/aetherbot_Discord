@@ -7,7 +7,8 @@ module.exports = {
 	wordCheck: wordCheck
 }
 
-client.login(config.token) 
+// skip logging in to discord api when running tests
+if(!process.env.TEST) client.login(config.token) 
 
 client.on("ready", () => {
 	console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`)
