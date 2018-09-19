@@ -14,7 +14,7 @@ client.on("ready", () => {
 	console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`)
 	client.user.setActivity(`++help`)
 	ds.load_from_disk()
-	setInterval(ds.write_to_disk(), 1.08e+7) // every 3 hours
+	setInterval(ds.write_to_disk, 1.08e+7) // every 3 hours
 });
 
 client.on("guildCreate", guild => {
