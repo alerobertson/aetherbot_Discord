@@ -1,17 +1,20 @@
 const Discord = require("discord.js")
 const client = new Discord.Client()
 const config = require("./config.json")
-const fs = require('fs')
+const ds = require("./datastore.js")
+ 
+module.exports = {
+	wordCheck: wordCheck
+}
 
-//The active database for scoring users as they say Good Morning
-var mornMemory = []
-var userTime = []
+// skip logging in to discord api when running tests
+if(!process.env.TEST) client.login(config.token) 
 
 client.on("ready", () => {
 	console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`)
 	client.user.setActivity(`++help`)
-	memoryLoader()
-	setInterval(everyThreeHours, 1.08e+7)
+	ds.load_from_disk()
+	setInterval(ds.write_to_disk, 1.08e+7) // every 3 hours
 });
 
 client.on("guildCreate", guild => {
@@ -26,7 +29,6 @@ client.on("guildDelete", guild => {
 
 //Every time a message is sent in a place AetherBot can read
 client.on('message', msg => {
-	
 	//Don't read messages from a bot, including AetherBot
 	if(msg.author.bot) return 
 	
@@ -38,8 +40,6 @@ client.on('message', msg => {
 
 	wordCheck(msg)
 });
-
-
 
 function wordCheck(msg) {
 	//Check for goodbot/badbot
@@ -62,7 +62,6 @@ function commandCheck(msg) {
 	
 	switch(command) {
 		case "master":
-		
 			msg.channel.send("My master is tacosensei_")
 			break
 			
@@ -91,7 +90,7 @@ function commandCheck(msg) {
 
 		case "save":
 		
-			mornBaseSave()
+			ds.write_to_disk()
 			var save = config.saveResponses
 			var saveResponse = save[Math.floor(Math.random()*save.length)]
 			
@@ -102,16 +101,16 @@ function commandCheck(msg) {
 				return
 			}
 		
-			memoryLoader()
+			ds.load_from_disk()
 			msg.reply("Refreshing my memory")
 			break
 			
 		case "mytimezone":
-			var userTimeNames = getUniquePlayerNames(userTime)
+			var userTimeNames = getUniquePlayerNames(ds.timezones)
 	
 			if(userTimeNames.includes(msg.author.username)) {
 				var index = userTimeNames.indexOf(msg.author.username)
-				msg.reply("Your current time on record is " + getModifiedDateString(userTime[index][1]))
+				msg.reply("Your current time on record is " + getModifiedDateString(ds.timezones[index][1]))
 			}
 			else {
 				msg.reply("Your current time on record is " + getModifiedDateString(0))
@@ -121,7 +120,7 @@ function commandCheck(msg) {
 	if(args.substring(0, 4) == "give" && msg.author.tag == "tacosensei_#3763") {
 		var user = args.slice(4).slice(0, -2)
 		var amount = args.slice(-2)
-		mornBaseAdd(user, parseInt(amount))
+		ds.add_entry(user, parseInt(amount))
 	
 		msg.reply("Yes sir!")
 	}
@@ -130,7 +129,7 @@ function commandCheck(msg) {
 		subCommand = subCommand.trim()
 		if(!isNaN(subCommand)) {
 			var timeZone = parseInt(subCommand)
-			timeZoneAdd(msg.author.username, timeZone)
+			ds.add_timezone_entry(msg.author.username, timeZone)
 			
 			msg.reply("Setting your time to " + getModifiedDateString(timeZone)) 
 		}
@@ -139,10 +138,6 @@ function commandCheck(msg) {
 				"timezone+7`` or ``" + config.prefix +"timezone-5``")
 		}
 	}
-}
-
-function everyThreeHours() {
-	mornBaseSave()
 }
 
 function mornCheck(msg) {
@@ -173,21 +168,21 @@ function mornCheck(msg) {
 			var tardy = config.tardyResponses
 			var tardyResponse = tardy[Math.floor(Math.random()*tardy.length)]
 			msg.channel.send(tardyResponse)
-			mornBaseAdd(msg.author.username, -1)
+			ds.add_entry(msg.author.username, -1)
 		}
 		else {
-			mornBaseAdd(msg.author.username, 1)
+			ds.add_entry(msg.author.username, 1)
 		}
 		return;
 	}
 }
 
 function calculateTimeDisplacement(user) {
-	var userTimeNames = getUniquePlayerNames(userTime)
+	var userTimeNames = getUniquePlayerNames(ds.timezones)
 	
 	if(userTimeNames.includes(user)) {
 		var index = userTimeNames.indexOf(user)
-		var modifier = userTime[index][1]
+		var modifier = ds.timezones[index][1]
 		return modifier
 	}
 	else {
@@ -224,38 +219,6 @@ function goodCheck(msg) {
 	}
 }
 
-function mornBaseAdd(user, result) {
-	mornMemory.push([user, result])
-}
-
-function timeZoneAdd(user, result) {
-	var userTimeNames = getUniquePlayerNames(userTime)
-	if(userTimeNames.includes(user)) {
-		var index = userTimeNames.indexOf(user)
-		userTime[index][1] = result
-	}
-	else {
-		userTime.push([user, result])
-	}
-}
-
-function mornBaseSave() {
-	fs.writeFileSync('database.txt', '');
-	for(i = 0; i < mornMemory.length; i++) {
-		fs.appendFile('database.txt', mornMemory[i][0] + "," + mornMemory[i][1] + "\n", (err) => {
-			if(err) throw err
-		})
-	}
-	
-	fs.writeFileSync('timezones.txt', '');
-	for(i = 0; i < userTime.length; i++) {
-		fs.appendFile('timezones.txt', userTime[i][0] + "," + userTime[i][1] + "\n", (err) => {
-			if(err) throw err
-		})
-	}
-}
-
-
 //This function doubles as a way to turn the 2-Dimensional arrays into 1-Dimensional
 //Primarily it is used to get all usernames on record
 function getUniquePlayerNames(data) {
@@ -279,9 +242,8 @@ function calculatePlayerScores(data, players) {
 }
 
 function calculateTotalScores() {
-	
-	let playerNames = getUniquePlayerNames(mornMemory) //Get all unique names
-	let result = calculatePlayerScores(mornMemory, playerNames) //Get all objects 
+	let playerNames = getUniquePlayerNames(ds.morning_log) //Get all unique names
+	let result = calculatePlayerScores(ds.morning_log, playerNames) //Get all objects 
 	result.sort(function(a, b) {
 		return b.total_score - a.total_score;
 	})
@@ -290,27 +252,5 @@ function calculateTotalScores() {
 
 function getPlayerScore(name) {
 	nameArray = [name]
-	return calculatePlayerScores(mornMemory, nameArray).total_score
-}
-
-function memoryLoader() {
-	mornMemory = []
-	userTime = []
-	
-	var lineReader = require('readline').createInterface({
-		input: require('fs').createReadStream('database.txt')
-	})
-	lineReader.on('line', function (line) {
-		var incoming = line.split(",")
-		mornMemory.push([incoming[0], parseInt(incoming[1])]) //Collect text data and put it into memory
-	})
-	
-	var lineReader = require('readline').createInterface({
-		input: require('fs').createReadStream('timezones.txt')
-	})
-	lineReader.on('line', function (line) {
-		var incoming = line.split(",")
-		userTime.push([incoming[0], parseInt(incoming[1])]) //Collect text data and put it into memory
-	})
-}
-client.login(config.token);    
+	return calculatePlayerScores(ds.morning_log, nameArray).total_score
+} 
