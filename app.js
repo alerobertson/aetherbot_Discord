@@ -129,7 +129,15 @@ function commandCheck(msg) {
 		subCommand = subCommand.trim()
 		if(!isNaN(subCommand)) {
 			var timeZone = parseInt(subCommand)
-			ds.add_timezone_entry(msg.author.username, timeZone)
+
+			let userTimeNames = getUniquePlayerNames(ds.timezones)
+			if (userTimeNames.includes(msg.author.username)) {
+				let index = userTimeNames.indexOf(msg.author.username)
+				ds.update_timezone_entry(timeZone, index)
+			}
+			else {
+				ds.add_timezone_entry(msg.author.username, timeZone)
+			}
 			
 			msg.reply("Setting your time to " + getModifiedDateString(timeZone)) 
 		}

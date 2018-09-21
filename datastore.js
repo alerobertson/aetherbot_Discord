@@ -11,14 +11,10 @@ module.exports = {
 		morning_log.push([user, result])
 	},
 	add_timezone_entry: (user, result) => {
-		let userTimeNames = getUniquePlayerNames(ds.timezones)
-		if(userTimeNames.includes(user)) {
-			let index = userTimeNames.indexOf(user)
-			ds.timezones[index][1] = result
-		}
-		else {
-			ds.timezones.push([user, result])
-		}
+		custom_timezones.push([user, result])
+	},
+	update_timezone_entry: (result, index) => {
+		custom_timezones[index][1] = result
 	},
 	write_to_disk: () => {
 		fs.writeFileSync('database.txt', '');
