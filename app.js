@@ -106,7 +106,7 @@ function commandCheck(msg) {
 			break
 			
 		case "mytimezone":
-			var userTimeNames = getUniquePlayerNames(ds.timezones)
+			var userTimeNames = ds.getUniquePlayerNames(ds.timezones)
 	
 			if(userTimeNames.includes(msg.author.username)) {
 				var index = userTimeNames.indexOf(msg.author.username)
@@ -127,18 +127,10 @@ function commandCheck(msg) {
 	if(command.substring(0, 8) == "timezone") {
 		subCommand = command.slice(8)
 		subCommand = subCommand.trim()
-		if(!isNaN(subCommand)) {
+		if(!isNaN(subCommand) && subCommand.length > 0) {
 			var timeZone = parseInt(subCommand)
+			ds.add_timezone_entry(msg.author.username, timeZone)
 
-			let userTimeNames = getUniquePlayerNames(ds.timezones)
-			if (userTimeNames.includes(msg.author.username)) {
-				let index = userTimeNames.indexOf(msg.author.username)
-				ds.update_timezone_entry(timeZone, index)
-			}
-			else {
-				ds.add_timezone_entry(msg.author.username, timeZone)
-			}
-			
 			msg.reply("Setting your time to " + getModifiedDateString(timeZone)) 
 		}
 		else {
@@ -186,7 +178,7 @@ function mornCheck(msg) {
 }
 
 function calculateTimeDisplacement(user) {
-	var userTimeNames = getUniquePlayerNames(ds.timezones)
+	var userTimeNames = ds.getUniquePlayerNames(ds.timezones)
 	
 	if(userTimeNames.includes(user)) {
 		var index = userTimeNames.indexOf(user)
@@ -227,15 +219,6 @@ function goodCheck(msg) {
 	}
 }
 
-//This function doubles as a way to turn the 2-Dimensional arrays into 1-Dimensional
-//Primarily it is used to get all usernames on record
-function getUniquePlayerNames(data) {
-	let playerNames = data.map((entry) => {
-		return entry[0] //["name", score] => ["name"]
-	})
-	return [...new Set(playerNames)] //["Dave", "Dave"] => ["Dave"]
-}
-
 function calculatePlayerScores(data, players) {
 	return players.map((playerName) => {
 		let playerScores = data.filter((entry) => {
@@ -250,15 +233,10 @@ function calculatePlayerScores(data, players) {
 }
 
 function calculateTotalScores() {
-	let playerNames = getUniquePlayerNames(ds.morning_log) //Get all unique names
+	let playerNames = ds.getUniquePlayerNames(ds.morning_log) //Get all unique names
 	let result = calculatePlayerScores(ds.morning_log, playerNames) //Get all objects 
 	result.sort(function(a, b) {
 		return b.total_score - a.total_score;
 	})
 	return result
-}
-
-function getPlayerScore(name) {
-	nameArray = [name]
-	return calculatePlayerScores(ds.morning_log, nameArray).total_score
 } 

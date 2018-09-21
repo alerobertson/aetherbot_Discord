@@ -11,10 +11,20 @@ module.exports = {
 		morning_log.push([user, result])
 	},
 	add_timezone_entry: (user, result) => {
-		custom_timezones.push([user, result])
+		let userNames = module.exports.getUniquePlayerNames(custom_timezones)
+		if(userNames.includes(user)) {
+			let index = userNames.indexOf(user)
+			custom_timezones[index][1] = result
+		}
+		else {
+			custom_timezones.push([user, result])
+		}
 	},
-	update_timezone_entry: (result, index) => {
-		custom_timezones[index][1] = result
+	getUniquePlayerNames: (data) => {
+		let playerNames = data.map((entry) => {
+			return entry[0] //["name", score] => ["name"]
+		})
+		return [...new Set(playerNames)] //["Dave", "Dave"] => ["Dave"]
 	},
 	write_to_disk: () => {
 		fs.writeFileSync('database.txt', '');
