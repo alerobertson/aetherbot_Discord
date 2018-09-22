@@ -127,7 +127,7 @@ function commandCheck(msg) {
 	if(command.substring(0, 8) == "timezone") {
 		subCommand = command.slice(8)
 		subCommand = subCommand.trim()
-		if(!isNaN(subCommand)) {
+		if(!isNaN(subCommand) && subCommand.length > 0) {
 			var timeZone = parseInt(subCommand)
 
 			let userTimeNames = getUniquePlayerNames(ds.timezones)
