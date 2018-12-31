@@ -1,124 +1,88 @@
+/* Author: Alexander Robertson 2018
+ * 
+ * AetherBot_Discord
+ *
+ * Purpose: A Discord bot personal project. For use with the Discord messaging app.
+ * Involves a leader board for people saying good morning at appropriate hours.
+ * Uses Discord.JS
+*/
 const Discord = require("discord.js")
 const client = new Discord.Client()
 const config = require("./config.json")
-const ds = require("./datastore.js")
 
-var howdyVar = 1
- 
-module.exports = {
-	wordCheck: wordCheck
-}
-
-// skip logging in to discord api when running tests
-if(!process.env.TEST) client.login(config.token) 
-
+// MYSQL statement wrapper
+const db = require("./database.js")
+	
 client.on("ready", () => {
 	console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`)
 	client.user.setActivity(`++help`)
-	ds.load_from_disk()
-	setInterval(ds.write_to_disk, 1.8e+6) // every 30 minutes
-});
+	console.log(datetimeString(new Date()))
+	db.createConnection()
+})
 
 client.on("guildCreate", guild => {
 	console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`)
 	client.user.setActivity(`++help`)
-});
+})
 
 client.on("guildDelete", guild => {
 	console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`)
 	client.user.setActivity(`++help`)
-});
+})
 
-//Every time a message is sent in a place AetherBot can read
+// Every time a message is sent in a place AetherBot can read
 client.on('message', msg => {
-	//Don't read messages from a bot, including AetherBot
+	// Don't read messages from bots
 	if(msg.author.bot) return 
 	
-	//Format messages outside of guilds (Direct/Group) as: >>username>>: message
-	//Mainly for debugging
-	if(msg.channel.type != 'text') {
-		console.log('>>'+msg.author.username+'>>: '+msg.content)
-	}
+	// Only read messages from text channels
+	if(msg.channel.type != 'text') return
 
 	wordCheck(msg)
-});
+})
 
-//Every time a message is edited in a place AetherBot can read
+// Every time a message is edited in a place AetherBot can read
 client.on('messageUpdate', (msgOld, msgNew) => {
-	//Don't read messages from a bot, including AetherBot
+	// Don't read messages from bots
 	if(msgNew.author.bot) return 
 	
-	//Format messages outside of guilds (Direct/Group) as: >>username>>: message
-	//Mainly for debugging
-	if(msgNew.channel.type != 'text') {
-		console.log('>>'+msgNew.author.username+'>>: '+msgNew.content)
-	}
+	// Only read messages from text channels
+	if(msgNew.channel.type != 'text') return
 
 	wordCheck(msgNew)
-});
+})
 
 function wordCheck(msg) {
-	//Check for goodbot/badbot
+	// Check for goodbot/badbot
 	goodCheck(msg)
 	
-	//Check if someone is saying good morning and reward/punish
+	// Check if someone is saying good morning and reward/punish
 	mornCheck(msg)
 	
-	//Howdy
-	howdy(msg)
-	
-	//Check for commands (++command)
+	// Check for commands (++command)
 	commandCheck(msg)
 }
 
-function howdy(msg) {
-	var msgCont = msg.content.toLowerCase()
-	msgCont = msgCont.replace(/(<{1}[:][\w]+[:][\w]+>)+/g, '')
-	msgCont = msgCont.replace(/[^0-9a-z]/gi, '')
-	if(msgCont == 'howdy') {
-		howdyVar++
-		if(howdyVar % 10 == 0) {
-			msg.reply("Woah there! That's the " + howdyVar + "th howdy!")
-		}
-	}
-}
-
-function streakCheck(username) {
-	
-}
-
-function yesterdayPoint(username) {
-	let current_day = ds.day_of_year(new Date())
-	
-	let previous_log = ds.morning_log.find(function(entry) {
-		return entry[0] == username && entry[2] == current_day - 1;
-	})
-	
-	if(previous_log) {
-		return previous_log[1]
-	}
-	else {
-		return 0
-	}
-}
-
 function commandCheck(msg) {
-	//Message must start with our defined prefix
+	// Message must start with our defined prefix
 	if(msg.content.indexOf(config.prefix) !== 0) return
 	
-	//Remove prefix and case down
+	// Remove prefix and case down
 	const args = msg.content.slice(config.prefix.length).trim()
 	const command = args.toLowerCase()
 	
+	// Log use of commands
 	console.log('>' + msg.author.username +'>: ' + config.prefix + args)
 	
+	
+	// Each simple command has a case -- Complex commands listed below
 	switch(command) {
 		case "master":
 			msg.channel.send("My master is tacosensei_")
 			break
 			
+		// Output the help messages from the config file
 		case "help":
-		
 			var helpmsgs = config.commands
 			var response = "```"
 			helpmsgs.forEach((help) => {
@@ -128,75 +92,55 @@ function commandCheck(msg) {
 			msg.reply(response)
 			break
 			
+		// Query for morning_log rankings
+		// Only returns current year and current server
 		case "mrank":
-			//Organize data in memory and show it in a simple table
 			let output = "```CURRENT STANDINGS\n\n\n"
 			output += "    Username          Score    Honor\n\n"
-			let rankings = calculateTotalScores()
-			rankings.forEach((person) => {
-				output += ("    " + person.name + " ".repeat(18 - person.name.length) + person.total_score +
-					" ".repeat(9 - person.total_score.toString().length) + countEntries(ds.morning_log, person.name) + "\n")
+			getSumOfServer(msg.guild.id).then((result) => {
+				result.forEach((person) => {
+					output += ("    " + person.username + " ".repeat(18 - person.username.length) + person.score +
+						" ".repeat(9 - person.score.toString().length) + person.honor + "\n")
+				})
+				output += "```"
+				msg.channel.send(output)
 			})
-			output += "```"
-			
-			msg.reply(output)
 			break
-
-		/*case "save":
-		
-			ds.write_to_disk()
-			var save = config.saveResponses
-			var saveResponse = save[Math.floor(Math.random()*save.length)]
 			
-			msg.reply(saveResponse)
+		// Test function used for debugging
+		/*
+		case "test":
 			break
 		*/
-		/*case "load":
-			if(msg.author.username != "tacosensei_") {
-				return
-			}
-			ds.load_from_disk()
-
-			msg.reply("Refreshing my memory")
-			break
-		*/	
-		case "mytimezone":
-			var userTimeNames = getUniquePlayerNames(ds.timezones)
-	
-			if(userTimeNames.includes(msg.author.username)) {
-				var index = userTimeNames.indexOf(msg.author.username)
-				msg.reply("Your current time on record is " + getModifiedDateString(ds.timezones[index][1]))
-			}
-			else {
-				msg.reply("Your current time on record is " + getModifiedDateString(0))
-			}
-			break
-	}
-	if(args.substring(0, 4) == "give" && msg.author.tag == "tacosensei_#3763") {
-		var user = args.slice(4).slice(0, -2)
-		var amount = args.slice(-2)
-		let current_day = ds.day_of_year(new Date())
 		
-		ds.add_entry(user, parseInt(amount), current_day)
-	
-		msg.reply("Yes sir!")
+		// Returns a time stamp for the current time (for that user)
+		case "mytimezone":
+			getUserDate(msg.author.tag).then((userDate) => {
+				msg.reply("Your time right now: " + datetimeString(userDate))
+			})
+			break
 	}
+	
+	// Complex commands
+	
+	// Adds or subtracts hours relative to UTC-5 (Eastern) depending on user preference
+	// Most users are UTC-5, but will consider changing default to UTC-0
 	if(command.substring(0, 8) == "timezone") {
 		subCommand = command.slice(8)
 		subCommand = subCommand.trim()
 		if(!isNaN(subCommand) && subCommand.length > 0) {
 			var timeZone = parseInt(subCommand)
-
-			let userTimeNames = getUniquePlayerNames(ds.timezones)
-			if (userTimeNames.includes(msg.author.username)) {
-				let index = userTimeNames.indexOf(msg.author.username)
-				ds.update_timezone_entry(timeZone, index)
-			}
-			else {
-				ds.add_timezone_entry(msg.author.username, timeZone)
-			}
-			
-			msg.reply("Setting your time to " + getModifiedDateString(timeZone)) 
+			userExists(msg.author.tag, 'timezone').then((result) => {
+				if(result) {
+					db.query("UPDATE timezone SET offset = " + timeZone + " WHERE username = '" + msg.author.tag + "';")
+				}
+				else {
+					db.query("INSERT INTO timezone (username, offset) VALUES ('" + msg.author.tag + "', " + timeZone + ");")
+				}
+			})
+			let d = new Date()
+			d.setHours(d.getHours() + timeZone)
+			msg.reply("Setting your time to " + timeString(d))
 		}
 		else {
 			msg.reply("I can't parse that! Do like this: ``" + config.prefix +
@@ -205,82 +149,197 @@ function commandCheck(msg) {
 	}
 }
 
+// Check for "good morning"
 function mornCheck(msg) {
-//When your friends try to be cheeky and add symbols and spaces to try and trick the bot
+
 	var msgCont = msg.content.toLowerCase()
-	//This line removes Discord custom emotes
+	// This line removes Discord custom emotes
 	msgCont = msgCont.replace(/(<{1}[:][\w]+[:][\w]+>)+/g, '')
-	//Basically remove anything thats not 0-9, a-z
+	// remove anything thats not 0-9, a-z
 	msgCont = msgCont.replace(/[^0-9a-z]/gi, '')
 	
-	//Load our definitions of Good Morning
+	// Load our definitions of Good Morning
 	var mornings = config.mornings;
+	if(!mornings.includes(msgCont)) {
+		return
+	}
 	
-	
-	if(mornings.includes(msgCont) && newDay(msg.author.username)) {
-		//This uses the timezone of the server the bot is running on
-		//Consider changing that timezone if you and the users are from the same timezone
-		var datetime = new Date()
-		var hour = datetime.getHours()
-		var minutes = datetime.getMinutes()
-		
-		//Consider userTime[] local database
-		var timeDisplacement = calculateTimeDisplacement(msg.author.username)
-		var newHour = (hour+timeDisplacement+24) % 24
-		
-		if(newHour >= 12) {
-			msg.reply("morning ended " + ((newHour - 12) * 60 + minutes) + " minutes ago.")
-			var tardy = config.tardyResponses
-			var tardyResponse = tardy[Math.floor(Math.random()*tardy.length)]
-			msg.channel.send(tardyResponse)
-			ds.add_entry(msg.author.username, -1, ds.day_of_year(new Date()))
+	// User must not already have an entry today
+	entryToday(msg.author.tag).then((result) => {
+		if(!result) {
+			
+			// Consider the user's timezone
+			getUserDate(msg.author.tag).then((d) => {
+				
+				// If after 12:00 relative to their timezone
+				if(d.getHours() >= 12) {
+					var tardy = config.tardyResponses
+					var tardyResponse = tardy[Math.floor(Math.random()*tardy.length)]
+					
+					// Query INSERT INTO entries
+					newEntry(msg.author.tag, msg.guild.id, datetimeString(d), '-1', '1')
+					msg.channel.send(tardyResponse)
+				}
+				else {
+					
+					// User gets redemption if they have negative score from the previous day
+					scoreYesterday(msg.author.tag).then((lastScore) => {
+						if(lastScore < 0) {
+							
+							// Query INSERT INTO entries
+							newEntry(msg.author.tag, msg.guild.id, datetimeString(d), '2', '1')
+							var redemption = config.redemptionResponses
+							var redemptionResponse = redemption[Math.floor(Math.random()*redemption.length)]
+							msg.channel.send(redemptionResponse)
+						}
+						else {
+							// Query INSERT INTO entries
+							newEntry(msg.author.tag, msg.guild.id, datetimeString(d), '1', '1')
+						}
+					})
+				}
+			})
 		}
-		else {
+	})
+}
 
-			if(yesterdayPoint(msg.author.username) == -1) {
-				msg.reply("good morning! I knew I could count on you!")
-				ds.add_entry(msg.author.username, 2, ds.day_of_year(new Date()))
+// Query INSERT INTO entries
+function newEntry(username, server, datetime, score, honor) {
+	console.log("Just called newEntry")
+	db.query("INSERT INTO entries (username, server, datetime, score, honor) VALUES ('" + username +
+		"', '" + server + "', '" + datetime + "', " + score + ", " + honor + ");")
+}
+
+// Query SELECT * FROM table WHERE username = 'username'
+function userExists(username, table) {
+	return new Promise((resolve, reject) => {
+		db.query("SELECT * FROM " + table + " WHERE username = '" + username + "';").then((result) => {
+			console.log(result)
+			resolve(result.length != 0)
+		})
+	})
+}
+
+// Query SELECT * FROM entries WHERE username = 'username' AND CONVERT(datetime, date) = '(today)'
+// Return true if user has an entry today
+function entryToday(username) {
+	return new Promise((resolve, reject) => {
+		getUserDate(username).then((userDate) => {
+			db.query("SELECT * FROM entries WHERE username = '" + username + "' AND CONVERT(datetime, date) = '" +
+				dateString(userDate) + "';").then((result) => {
+				resolve(result.length != 0)
+			})
+		})
+	})
+}
+
+// Query SELECT SUM(score) AS num FROM entries WHERE username = 'username' AND CONVERT(datetime, date) = '(yesterday)'
+// Return the score from previous day
+function scoreYesterday(username) {
+	return new Promise((resolve, reject) => {
+		getUserDate(username).then((userDate) => {
+			userDate.setDate(userDate.getDate() - 1)
+			db.query("SELECT SUM(score) AS num FROM entries WHERE username = '" + username + "' AND CONVERT(datetime, date) = '" +
+				dateString(userDate) + "';").then((result) => {
+					if(result[0].num) {
+						resolve(result[0].num)
+					}
+					else {
+						resolve(0)
+					}
+			})
+		})
+	})
+}
+
+// Query SELECT offset FROM timezone WHERE username = 'username'
+// Return the offset INT
+function getTimezoneOffset(username) {
+	return new Promise((resolve, reject) => {
+		db.query("SELECT offset FROM timezone WHERE username = '" + username + "';").then((result) => {
+			if(result.length != 0) {
+				console.log(result[0].offset)
+				resolve(result[0].offset)
 			}
 			else {
-				ds.add_entry(msg.author.username, 1, ds.day_of_year(new Date()))
+				console.log("User " + username + " has no offset recorded!")
+				resolve(0)
 			}
-		}
-		return;
-	}
+		})
+	})
 }
 
-function newDay(user) {
-	let current_day = ds.day_of_year(new Date())
-	
-	return !ds.morning_log.find((entry) => entry[0] == user && entry[2] == current_day)
+// Query SELECT SUM(column) AS num FROM table WHERE username = 'username'
+// Returns the sum of a column for a user from a table
+
+// Function currently not in use
+function getSumOfUser(username, column, table) {
+	return new Promise((resolve, reject) => {
+		db.query("SELECT SUM(" + column + ") AS num FROM " + table + " WHERE username = '" + username + "';").then((result) => {
+			resolve(result[0].num)
+		})
+	})
 }
 
-function calculateTimeDisplacement(user) {
-	var userTimeNames = getUniquePlayerNames(ds.timezones)
-	
-	if(userTimeNames.includes(user)) {
-		var index = userTimeNames.indexOf(user)
-		var modifier = ds.timezones[index][1]
-		return modifier
-	}
-	else {
-		return 0
-	}
+// Query SELECT username, SUM(score) AS 'score', SUM(honor) AS 'honor' FROM entries WHERE server = 'server' AND
+// year(datetime) = 'current_year' GROUP BY username
+
+// Returns an array of results
+function getSumOfServer(server) {
+	return new Promise((resolve, reject) => {
+		db.query("SELECT username, SUM(score) AS 'score', SUM(honor) AS 'honor' FROM entries WHERE server = '" + server + "'" +
+			" AND year(datetime) = '" + getYear() + "' GROUP BY username;").then((result) => {
+				resolve(result)
+			})
+	})
 }
 
-function getModifiedDateString(modifier) {
-	currentDate = new Date()
-	currentMinutes = currentDate.getMinutes().toString()
-	currentHour = currentDate.getHours()
+// Creates a Date object based on the user's timezone on record
+function getUserDate(username) {
+	return new Promise((resolve, reject) => {
+		getTimezoneOffset(username).then((offset) => {
+			let d = new Date()
+			d.setHours(d.getHours() + offset)
+			resolve(d)
+		})
+	})
 	
-	if(currentDate.getMinutes() < 10) {
-		currentMinutes = "0" + currentMinutes
-	}
-	currentHour = (currentHour + modifier + 24) % 24
-	
-	return (currentHour) + ":" + currentMinutes
+}
+// Creates a relevant string for the Date object
+// YYYY-MM-DD HH-MM-SS
+function datetimeString(d) {
+	return dateString(d) + ' ' + timeString(d)
 }
 
+// Creates a relevant string for the Date object
+// YYYY-MM-DD
+function dateString(d) {
+	let mm = d.getMonth() + 1
+	if(mm < 10) { mm = "0" + mm }
+	let dd = d.getDate()
+	if(dd < 10) { dd = "0" + dd }
+	return d.getFullYear() + "-" + mm + "-" + dd
+}
+
+// Creates a relevant string for the Date object
+// HH-MM-SS
+function timeString(d) {
+	let hh = d.getHours()
+	if(hh < 10) { hh = "0" + hh }
+	let mm = d.getMinutes()
+	if(mm < 10) { mm = "0" + mm }
+	let ss = d.getSeconds()
+	if(ss < 10) { ss = "0" + ss }
+	return hh + ':' + mm + ':' + ss
+}
+
+// Current year UTC-5
+function getYear() {
+	let d = new Date()
+	return d.getFullYear()
+}
+
+// No real use, just for fun
 function goodCheck(msg) {
 	var msgCont = msg.content.toLowerCase();
 	msgCont = msgCont.replace(/[^0-9a-z]/gi, '');
@@ -296,50 +355,3 @@ function goodCheck(msg) {
 			break;
 	}
 }
-
-//This function doubles as a way to turn the 2-Dimensional arrays into 1-Dimensional
-//Primarily it is used to get all usernames on record
-function getUniquePlayerNames(data) {
-	let playerNames = data.map((entry) => {
-		return entry[0] //["name", score] => ["name"]
-	})
-	return [...new Set(playerNames)] //["Dave", "Dave"] => ["Dave"]
-}
-
-function calculatePlayerScores(data, players) {
-	return players.map((playerName) => {
-		let playerScores = data.filter((entry) => {
-			return entry[0] == playerName //["Dave", "Sally", "Chris", "Jeff", "Dave"] => ["Dave", "Dave"]
-		})
-		let playerScore = playerScores.reduce((acc, scoreEntry) => {
-			return acc + parseInt(scoreEntry[1]) //["Dave", 1], ["Dave", 1] => ["Dave", 2]
-		}, 0)
-		
-		return { name: playerName, total_score: playerScore } //["Dave", 2] => [name: "Dave", score: 2]
-	})
-}
-
-function countEntries(data, name) {
-	let count = 0
-	data.forEach((entry) => {
-		if(entry[0] == name) {
-			count += 1
-		}
-	})
-	return count
-}
-
-function calculateTotalScores() {
-	let playerNames = getUniquePlayerNames(ds.morning_log) //Get all unique names
-	
-	let result = calculatePlayerScores(ds.morning_log, playerNames) //Get all objects 
-	result.sort(function(a, b) {
-		return b.total_score - a.total_score;
-	})
-	return result
-}
-
-function getPlayerScore(name) {
-	nameArray = [name]
-	return calculatePlayerScores(ds.morning_log, nameArray).total_score
-} 

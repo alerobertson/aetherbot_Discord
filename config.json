@@ -5,8 +5,7 @@
 		"++help: List all commands \n",
 		"++master: Shows my author \n",
 		"++mrank: List the Morning scores\n",
-		"++save: Manually save scores to server\n",
-		"++timezone#: Set your timezone relative to the server time\n",
+		"++timezone#: Set your difference in hours relative to EST (+/- hours)\n",
 		"++mytimezone: Show what I think your time is right now\n"
 	],
 	"tardyResponses": [
@@ -16,12 +15,11 @@
 		"No good. Perhaps tomorrow you will improve."
 		
 	],
-	"saveResponses": [
-		"Look at all this data!",
-		"Gonna look this over later!",
-		"Will do!",
-		"You got it!",
-		"All done!"
+	"redemptionResponses": [
+		":)!!!!",
+		"I knew you could do it!",
+		":D!!!",
+		"<3<3<3<3"
 	],
 	"mornings": [
 		"morning",
@@ -43,14 +41,15 @@
 		"mournin",
 		"mourning",
 		"murnin",
-		"おはよう",
-		"おはようございます",
 		"mourn",
 		"gmorning",
 		"gmornin",
 		"gmorn",
 		"gninrom",
 		"nrom",
-		"ninrom"
+		"ninrom",
+		"morningbitches",
+		"morningbitch",
+		"morningbitchs"
 	]
 }
