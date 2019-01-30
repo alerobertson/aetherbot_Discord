@@ -368,5 +368,5 @@ function woke(msg){
 	if (msg == "i am woke" || msg == "i am up" || msg = "i am out of bed"){
 		msg.channel.send(response[Math.floor(Math.random() * response.length)])
 	}
-
+	return;
 }
