@@ -60,6 +60,9 @@ function wordCheck(msg) {
 	// Check if someone is saying good morning and reward/punish
 	mornCheck(msg)
 
+	//Check for woke
+	wooke(msg)
+
 	// Check for commands (++command)
 	commandCheck(msg)
 
