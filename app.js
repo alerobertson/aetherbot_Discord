@@ -1,5 +1,5 @@
 /* Author: Alexander Robertson 2018
- * 
+ *
  * AetherBot_Discord
  *
  * Purpose: A Discord bot personal project. For use with the Discord messaging app.
@@ -13,7 +13,7 @@ client.login(config.token)
 
 // MYSQL statement wrapper
 const db = require("./database.js")
-	
+
 client.on("ready", () => {
 	console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`)
 	client.user.setActivity(`++help`)
@@ -34,8 +34,8 @@ client.on("guildDelete", guild => {
 // Every time a message is sent in a place AetherBot can read
 client.on('message', msg => {
 	// Don't read messages from bots
-	if(msg.author.bot) return 
-	
+	if(msg.author.bot) return
+
 	// Only read messages from text channels
 	if(msg.channel.type != 'text') return
 
@@ -45,8 +45,8 @@ client.on('message', msg => {
 // Every time a message is edited in a place AetherBot can read
 client.on('messageUpdate', (msgOld, msgNew) => {
 	// Don't read messages from bots
-	if(msgNew.author.bot) return 
-	
+	if(msgNew.author.bot) return
+
 	// Only read messages from text channels
 	if(msgNew.channel.type != 'text') return
 
@@ -56,32 +56,33 @@ client.on('messageUpdate', (msgOld, msgNew) => {
 function wordCheck(msg) {
 	// Check for goodbot/badbot
 	goodCheck(msg)
-	
+
 	// Check if someone is saying good morning and reward/punish
 	mornCheck(msg)
-	
+
 	// Check for commands (++command)
 	commandCheck(msg)
+
 }
 
 function commandCheck(msg) {
 	// Message must start with our defined prefix
 	if(msg.content.indexOf(config.prefix) !== 0) return
-	
+
 	// Remove prefix and case down
 	const args = msg.content.slice(config.prefix.length).trim()
 	const command = args.toLowerCase()
-	
+
 	// Log use of commands
 	console.log('>' + msg.author.username +'>: ' + config.prefix + args)
-	
-	
+
+
 	// Each simple command has a case -- Complex commands listed below
 	switch(command) {
 		case "master":
 			msg.channel.send("My master is tacosensei_")
 			break
-			
+
 		// Output the help messages from the config file
 		case "help":
 			var helpmsgs = config.commands
@@ -92,7 +93,7 @@ function commandCheck(msg) {
 			response += "```"
 			msg.reply(response)
 			break
-			
+
 		// Query for morning_log rankings
 		// Only returns current year and current server
 		case "mrank":
@@ -107,13 +108,13 @@ function commandCheck(msg) {
 				msg.channel.send(output)
 			})
 			break
-			
+
 		// Test function used for debugging
 		/*
 		case "test":
 			break
 		*/
-		
+
 		// Returns a time stamp for the current time (for that user)
 		case "mytimezone":
 			getUserDate(msg.author.tag).then((userDate) => {
@@ -121,9 +122,9 @@ function commandCheck(msg) {
 			})
 			break
 	}
-	
+
 	// Complex commands
-	
+
 	// Adds or subtracts hours relative to UTC-5 (Eastern) depending on user preference
 	// Most users are UTC-5, but will consider changing default to UTC-0
 	if(command.substring(0, 8) == "timezone") {
@@ -158,35 +159,35 @@ function mornCheck(msg) {
 	msgCont = msgCont.replace(/(<{1}[:][\w]+[:][\w]+>)+/g, '')
 	// remove anything thats not 0-9, a-z
 	msgCont = msgCont.replace(/[^0-9a-z]/gi, '')
-	
+
 	// Load our definitions of Good Morning
 	var mornings = config.mornings;
 	if(!mornings.includes(msgCont)) {
 		return
 	}
-	
+
 	// User must not already have an entry today
 	entryToday(msg.author.tag).then((result) => {
 		if(!result) {
-			
+
 			// Consider the user's timezone
 			getUserDate(msg.author.tag).then((d) => {
-				
+
 				// If after 12:00 relative to their timezone
 				if(d.getHours() >= 12) {
 					var tardy = config.tardyResponses
 					var tardyResponse = tardy[Math.floor(Math.random()*tardy.length)]
-					
+
 					// Query INSERT INTO entries
 					newEntry(msg.author.tag, msg.guild.id, datetimeString(d), '-1', '1')
 					msg.channel.send(tardyResponse)
 				}
 				else {
-					
+
 					// User gets redemption if they have negative score from the previous day
 					scoreYesterday(msg.author.tag).then((lastScore) => {
 						if(lastScore < 0) {
-							
+
 							// Query INSERT INTO entries
 							newEntry(msg.author.tag, msg.guild.id, datetimeString(d), '2', '1')
 							var redemption = config.redemptionResponses
@@ -304,7 +305,7 @@ function getUserDate(username) {
 			resolve(d)
 		})
 	})
-	
+
 }
 // Creates a relevant string for the Date object
 // YYYY-MM-DD HH-MM-SS
@@ -355,4 +356,14 @@ function goodCheck(msg) {
 			msg.channel.send(":|");
 			break;
 	}
+}
+
+function woke(msg){
+	msg = msg.toLowerCase();
+	var response = ["Well done my child! Now grasp the day by the horns and hold on.", "Very Good, be sure to stretch today, it will make the stairs much easier.", "Incredible, be sure to eat some yummy food before enduring the rest of your day. Food is fuel"];
+
+	if (msg == "i am woke" || msg == "i am up" || msg = "i am out of bed"){
+		msg.channel.send(myArray[Math.floor(Math.random() * myArray.length)];)
+	}
+
 }
