@@ -104,7 +104,7 @@ function commandCheck(msg) {
 			output += "    Username          Score    Honor\n\n"
 			getSumOfServer(msg.guild.id).then((result) => {
 				result.forEach((person) => {
-					output += ("    " + person.username + " ".repeat(18 - person.username.length) + person.score +
+					output += ("    " + person.username.slice(0,-5) + " ".repeat(18 - person.username.slice(0,-5).length) + person.score +
 						" ".repeat(9 - person.score.toString().length) + person.honor + "\n")
 				})
 				output += "```"
@@ -293,7 +293,7 @@ function getSumOfUser(username, column, table) {
 function getSumOfServer(server) {
 	return new Promise((resolve, reject) => {
 		db.query("SELECT username, SUM(score) AS 'score', SUM(honor) AS 'honor' FROM entries WHERE server = '" + server + "'" +
-			" AND year(datetime) = '" + getYear() + "' GROUP BY username;").then((result) => {
+			" AND year(datetime) = '" + getYear() + "' GROUP BY username ORDER BY score DESC, honor DESC, username ASC;").then((result) => {
 				resolve(result)
 			})
 	})
