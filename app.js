@@ -362,10 +362,10 @@ function goodCheck(msg) {
 }
 
 function woke(msg){
-	msg = msg.content.toLowerCase();
+	msgCont = msg.content.toLowerCase()
 	var response = ["Well done my child! Now grasp the day by the horns and hold on.", "Very Good, be sure to stretch today, it will make the stairs much easier.", "Incredible, be sure to eat some yummy food before enduring the rest of your day. Food is fuel"];
 
-	if (msg == "i am woke" || msg == "i am up" || msg = "i am out of bed"){
+	if (msgCont == "i am woke" || msgCont == "i am up" || msgCont == "i am out of bed"){
 		msg.channel.send(response[Math.floor(Math.random() * response.length)])
 	}
 	return;
