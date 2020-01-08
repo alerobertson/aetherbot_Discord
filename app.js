@@ -9,10 +9,24 @@
 const Discord = require("discord.js")
 const client = new Discord.Client()
 const config = require("./config.json")
+const https = require('https')
+var CronJob = require('cron').CronJob
+console.log("Starting..")
 client.login(config.token)
 
 // MYSQL statement wrapper
 const db = require("./database.js")
+
+var job = new CronJob('0 9 * * *', () => {
+	getMotd().then((quote) => {
+		getMotdChannels().then((results) => {
+			results.forEach((result) => {
+				let channel = client.channels.get(result.channel)
+				channel.send(quote)
+			})
+		})
+	})
+},true,'America/Toronto')
 
 client.on("ready", () => {
 	console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`)
@@ -100,15 +114,14 @@ function commandCheck(msg) {
 		// Query for morning_log rankings
 		// Only returns current year and current server
 		case "mrank":
-			let output = "```CURRENT STANDINGS\n\n\n"
-			output += "    Username          Score    Honor\n\n"
 			getSumOfServer(msg.guild.id).then((result) => {
-				result.forEach((person) => {
-					output += ("    " + person.username.slice(0,-5) + " ".repeat(18 - person.username.slice(0,-5).length) + person.score +
-						" ".repeat(9 - person.score.toString().length) + person.honor + "\n")
-				})
-				output += "```"
-				msg.channel.send(output)
+				display(msg, result)
+			})
+			break
+			
+		case "split":
+			getSumOfSplit(msg.guild.id).then((result) => {
+				display(msg, result)
 			})
 			break
 
@@ -122,6 +135,14 @@ function commandCheck(msg) {
 		case "mytimezone":
 			getUserDate(msg.author.tag).then((userDate) => {
 				msg.reply("Your time right now: " + datetimeString(userDate))
+			})
+			break
+		case "motd":
+			//addMotdChannel(msg.channel.id)
+			break
+		case "quote":
+			getMotd().then((quote) => {
+				msg.channel.send(quote)
 			})
 			break
 	}
@@ -154,18 +175,23 @@ function commandCheck(msg) {
 	}
 }
 
+function display(msg, result) {
+	let output = "```CURRENT STANDINGS\n\n\n"
+	output += "    Username          Score    Honor\n\n"
+	result.forEach((person) => {
+		output += ("    " + person.username.slice(0,-5) + " ".repeat(18 - person.username.slice(0,-5).length) + person.score +
+			" ".repeat(9 - person.score.toString().length) + person.honor + "\n")
+	})
+	output += "```"
+	msg.channel.send(output)
+}
+
 // Check for "good morning"
 function mornCheck(msg) {
+	let str = msg.content.toLowerCase()
+	const regex = /\b(\S*morn\S*|\S*ohayo\S*|\S*ohio\S*)\b/gm;
 
-	var msgCont = msg.content.toLowerCase()
-	// This line removes Discord custom emotes
-	msgCont = msgCont.replace(/(<{1}[:][\w]+[:][\w]+>)+/g, '')
-	// remove anything thats not 0-9, a-z
-	msgCont = msgCont.replace(/[^0-9a-z]/gi, '')
-
-	// Load our definitions of Good Morning
-	var mornings = config.mornings;
-	if(!mornings.includes(msgCont)) {
+	if(regex.exec(str) == null) {
 		return
 	}
 
@@ -274,6 +300,31 @@ function getTimezoneOffset(username) {
 	})
 }
 
+function getCurrentSplit() {
+	let m = getMonth()
+	let month_one
+	let month_two
+	if(m < 3) {
+		month_one = 1
+		month_two = 3
+	}
+	else if(m < 6) {
+		month_one = 4
+		month_two = 6
+	}
+	else if(m < 9) {
+		month_one = 7
+		month_two = 9
+	}
+	else {
+		month_one = 10
+		month_two = 12
+	}
+	
+	return ('month(datetime) >= ' + month_one + ' AND month(datetime) <= ' + month_two)
+	
+}
+
 // Query SELECT SUM(column) AS num FROM table WHERE username = 'username'
 // Returns the sum of a column for a user from a table
 
@@ -283,6 +334,15 @@ function getSumOfUser(username, column, table) {
 		db.query("SELECT SUM(" + column + ") AS num FROM " + table + " WHERE username = '" + username + "';").then((result) => {
 			resolve(result[0].num)
 		})
+	})
+}
+
+function getSumOfSplit(server) {
+	return new Promise((resolve, reject) => {
+		db.query("SELECT username, SUM(score) AS 'score', SUM(honor) AS 'honor' FROM entries WHERE server = '" + server + "'" +
+			" AND year(datetime) = '" + getYear() + "' AND " + getCurrentSplit() + " GROUP BY username ORDER BY score DESC, honor DESC, username ASC;").then((result) => {
+				resolve(result)
+			})
 	})
 }
 
@@ -344,6 +404,11 @@ function getYear() {
 	return d.getFullYear()
 }
 
+function getMonth() {
+	let d = new Date()
+	return d.getMonth()
+}
+
 // No real use, just for fun
 function goodCheck(msg) {
 	var msgCont = msg.content.toLowerCase();
@@ -359,6 +424,44 @@ function goodCheck(msg) {
 			msg.channel.send(":|");
 			break;
 	}
+}
+
+function addMotdChannel(channel_id) {
+	db.query(`INSERT INTO motd (channel) VALUES (${channel_id})`)
+}
+
+function getMotdChannels() {
+	return new Promise((resolve, reject) => {
+		db.query(`SELECT channel FROM motd`).then((response) => {
+			resolve(response)
+		})
+	})
+}
+
+function getMotd() {
+	return new Promise((resolve, reject) => {
+		let day_one = new Date("December 18, 2019")
+		let day = Math.floor((new Date().getTime() - day_one.getTime()) / (1000 * 3600 * 24))
+		let options = {
+			hostname: 'api.paperquotes.com',
+			path: `/apiv1/quotes/?language=en&limit=1&offset=${day}&tags=motivation`,
+			headers: {
+				Authorization: `Token ${config.paperquotesToken}`
+			}
+		}
+		https.get(options, (response) => {
+			var result = ''
+			response.on('data', (chunk) => {
+				result += chunk;
+			});
+		
+			response.on('end', () => {
+				let paperquote = JSON.parse(result)
+				let quote = paperquote.results[0].quote
+				resolve(quote)
+			});
+		})
+	})
 }
 
 function woke(msg){

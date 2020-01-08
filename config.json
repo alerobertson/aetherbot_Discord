@@ -1,5 +1,6 @@
 {
 	"token": "BotTokenGoesHere",
+	"paperquotesToken": "PaperQuotesTokenGoesHere",
 	"prefix": "++",
 	"commands": [
 		"++help: List all commands \n",
@@ -21,35 +22,4 @@
 		":D!!!",
 		"<3<3<3<3"
 	],
-	"mornings": [
-		"morning",
-		"goodmorning",
-		"goodmorn",
-		"goodmornin",
-		"guudmorn",
-		"guudmorning",
-		"guudmornin",
-		"gudmorning",
-		"gudmornin",
-		"gudmorn",
-		"morn",
-		"mornin",
-		"mornyan",
-		"ohio",
-		"ohayo",
-		"ohayou",
-		"mournin",
-		"mourning",
-		"murnin",
-		"mourn",
-		"gmorning",
-		"gmornin",
-		"gmorn",
-		"gninrom",
-		"nrom",
-		"ninrom",
-		"morningbitches",
-		"morningbitch",
-		"morningbitchs"
-	]
 }
