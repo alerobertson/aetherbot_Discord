@@ -114,13 +114,19 @@ function commandCheck(msg) {
 		// Query for morning_log rankings
 		// Only returns current year and current server
 		case "mrank":
-			getSumOfServer(msg.guild.id).then((result) => {
+			getSumOfYear(msg.guild.id).then((result) => {
 				display(msg, result)
 			})
 			break
 			
 		case "split":
 			getSumOfSplit(msg.guild.id).then((result) => {
+				display(msg, result)
+			})
+			break
+
+		case "alltime":
+			getSumOfAlltime(msg.guild.id).then((result) => {
 				display(msg, result)
 			})
 			break
@@ -337,6 +343,7 @@ function getSumOfUser(username, column, table) {
 	})
 }
 
+// Returns an array of results, based on which quarter of the year is now
 function getSumOfSplit(server) {
 	return new Promise((resolve, reject) => {
 		db.query("SELECT username, SUM(score) AS 'score', SUM(honor) AS 'honor' FROM entries WHERE server = '" + server + "'" +
@@ -350,7 +357,17 @@ function getSumOfSplit(server) {
 // year(datetime) = 'current_year' GROUP BY username
 
 // Returns an array of results
-function getSumOfServer(server) {
+function getSumOfAlltime(server) {
+	return new Promise((resolve, reject) => {
+		db.query("SELECT username, SUM(score) AS 'score', SUM(honor) AS 'honor' FROM entries WHERE server = '" + server + "'" +
+			" GROUP BY username ORDER BY score DESC, honor DESC, username ASC;").then((result) => {
+				resolve(result)
+			})
+	})
+}
+
+// Returns an array of results, based on current year
+function getSumOfYear(server) {
 	return new Promise((resolve, reject) => {
 		db.query("SELECT username, SUM(score) AS 'score', SUM(honor) AS 'honor' FROM entries WHERE server = '" + server + "'" +
 			" AND year(datetime) = '" + getYear() + "' GROUP BY username ORDER BY score DESC, honor DESC, username ASC;").then((result) => {
