@@ -6,8 +6,7 @@
 */
 const mysql = require('mysql')
 const config = require('./database_config.json')
-
-var connection
+let connection
 
 module.exports = {
 	createConnection: () => {
@@ -38,4 +37,3 @@ module.exports = {
 		})
 	}
 }
-	
