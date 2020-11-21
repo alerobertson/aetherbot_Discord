@@ -17,6 +17,8 @@ client.login(config.token)
 // MYSQL statement wrapper
 const db = require("./database.js")
 
+const wk = require('./wanikani.js')
+
 var job = new CronJob('0 9 * * *', () => {
 	getMotd().then((quote) => {
 		getMotdChannels().then((results) => {
@@ -131,12 +133,14 @@ function commandCheck(msg) {
 			})
 			break
 
-		// Test function used for debugging
-		/*
-		case "test":
+		case "wkreview":
+			waniGetTokens().then((response) => {
+				waniGetData(response).then((data) => {
+					waniDisplay(msg, data)
+				})
+			})
 			break
-		*/
-
+		
 		// Returns a time stamp for the current time (for that user)
 		case "mytimezone":
 			getUserDate(msg.author.tag).then((userDate) => {
@@ -489,4 +493,50 @@ function woke(msg){
 		msg.channel.send(response[Math.floor(Math.random() * response.length)])
 	}
 	return;
+}
+
+// WaniKani
+
+async function waniAddToken(username, api_token) {
+	return db.query(`INSERT INTO wanikani (username, api_token) VALUES (${username}, ${api_token})`)
+}
+
+async function waniGetTokens() {
+	return db.query(`SELECT * FROM wanikani`).then((response) => {
+		return response
+	})
+}
+
+function waniDisplay(msg, result) {
+	let output = "```\n"
+	output += "Username          To Do    Completed\n\n"
+	result.forEach((person) => {
+		output += ("" + person.username.slice(0,-5) + " ".repeat(18 - person.username.slice(0,-5).length) + person.to_do +
+			" ".repeat(9 - person.to_do.toString().length) + person.completed + "\n")
+	})
+	output += "```"
+	msg.channel.send(output)
+}
+
+function waniGetData(users) {
+	let promises = []
+	let d = new Date()
+	let updated_after = dateString(d) + 'T00:00:00-03:00'
+
+	users.forEach((user) => {
+		promises.push(new Promise((resolve, reject) => {
+			wk.fetchSummary(user.api_token).then((summary) => {
+				wk.fetchReviews(user.api_token, updated_after).then((reviews) => {
+					resolve({
+						username: user.username,
+						to_do: summary.data.reviews[0].subject_ids.length,
+						completed: reviews.total_count
+					})
+				})
+			})
+		}))
+	})
+	return Promise.all(promises).then((data) => {
+		return data
+	})
 }
