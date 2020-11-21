@@ -14,10 +14,13 @@ var CronJob = require('cron').CronJob
 console.log("Starting..")
 client.login(config.token)
 
+const api_server = require('./web/api.js')
+api_server.start('/api')
+
 // MYSQL statement wrapper
 const db = require("./database.js")
 
-const wk = require('./wanikani.js')
+const wk = require('./services/wanikani.js')
 
 var job = new CronJob('0 9 * * *', () => {
 	getMotd().then((quote) => {
@@ -120,7 +123,7 @@ function commandCheck(msg) {
 				display(msg, result)
 			})
 			break
-			
+
 		case "split":
 			getSumOfSplit(msg.guild.id).then((result) => {
 				display(msg, result)
@@ -140,7 +143,7 @@ function commandCheck(msg) {
 				})
 			})
 			break
-		
+
 		// Returns a time stamp for the current time (for that user)
 		case "mytimezone":
 			getUserDate(msg.author.tag).then((userDate) => {
@@ -330,9 +333,9 @@ function getCurrentSplit() {
 		month_one = 10
 		month_two = 12
 	}
-	
+
 	return ('month(datetime) >= ' + month_one + ' AND month(datetime) <= ' + month_two)
-	
+
 }
 
 // Query SELECT SUM(column) AS num FROM table WHERE username = 'username'
@@ -475,7 +478,7 @@ function getMotd() {
 			response.on('data', (chunk) => {
 				result += chunk;
 			});
-		
+
 			response.on('end', () => {
 				let paperquote = JSON.parse(result)
 				let quote = paperquote.results[0].quote
@@ -539,4 +542,11 @@ function waniGetData(users) {
 	return Promise.all(promises).then((data) => {
 		return data
 	})
+}
+
+module.exports = {
+	wanikani: {
+		getTokens: waniGetTokens,
+		getData: waniGetData
+	}
 }

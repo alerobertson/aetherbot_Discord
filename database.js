@@ -5,7 +5,11 @@
  *
 */
 const mysql = require('mysql')
-const config = require('./database_config.json')
+try {
+	const config = require('./database_config.json')
+} catch(e) {
+	console.error("DB config not found, running databaseless");
+}
 
 var connection
 
@@ -38,4 +42,3 @@ module.exports = {
 		})
 	}
 }
-	
