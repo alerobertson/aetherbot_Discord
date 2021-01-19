@@ -5,22 +5,24 @@
  *
 */
 const mysql = require('mysql')
-const config = require('./database_config.json')
-let connection
+const config = require('./config.json')
+var connection
+
+function createConnection() {
+    connection =  mysql.createConnection({
+        host: config.host,
+        user: config.user,
+        password: config.password,
+        database: config.database
+    })
+    connection.connect( (err) => {
+        if(err) throw err
+    })
+    return
+}
 
 module.exports = {
-	createConnection: () => {
-		connection =  mysql.createConnection({
-			host: config.host,
-			user: config.user,
-			password: config.password,
-			database: config.database
-		})
-		connection.connect( (err) => {
-			if(err) throw err
-		})
-		return
-	},
+	createConnection: createConnection,
 	query: (sql) => {
 		return new Promise((resolve, reject) => {
 			if(!connection) {
@@ -28,10 +30,8 @@ module.exports = {
 			}
 			connection.query(sql, (err, result) => {
 				if(err) {
-					console.log(err)
 					reject(err)
 				}
-				console.log("SQL> " + sql + "... " + result)
 				resolve(result)
 			})
 		})
