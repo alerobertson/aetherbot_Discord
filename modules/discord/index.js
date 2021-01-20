@@ -13,6 +13,7 @@ const config = require('./config.json')
 // modules
 const db = require("../mysql/index.js")
 const paperquotes = require('../paperquotes')
+const wanikani = require('../wanikani')
 
 // submodules
 const motd = require('./motd')
