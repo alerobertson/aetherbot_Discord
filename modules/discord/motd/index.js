@@ -17,7 +17,7 @@ function getMotdChannels() {
 module.exports = {
     fetchChannels: getMotdChannels,
     addChannel: addMotdChannel,
-    init: () => {
+    init: (client) => {
         var job = new CronJob('0 9 * * *', () => {
             paperquotes.fetchQuote(1, 'motivation').then((result) => {
                 let quote = result[0].quote
