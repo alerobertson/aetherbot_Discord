@@ -9,5 +9,8 @@
 const discord = require('./modules/discord')
 discord.init()
 
+const slack = require('./modules/slack')
+slack.init()
+
 const api_server = require('./web/api.js')
 api_server.start('/api')
