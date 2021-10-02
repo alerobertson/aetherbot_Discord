@@ -1,5 +1,9 @@
-const lob = require('./boosters/LOB/LOB.json');
-const lob_cards = sortCards(lob)
+const config = require('./config.json')
+const db = require('../mysql')
+const { 
+    v1: uuidv1, // Time Based
+    v4: uuidv4, // Random
+} = require('uuid');
 
 const rarities = {
     COMMON: 'common',
@@ -29,9 +33,9 @@ function sortCards(cards) {
 // 1:24 - Ultra Rare - 4.1667&
 // 1:5 - Super Rare - 20%
 
-const super_rarity = 20.0
-const ultra_rarity = 4.1667
-const secret_rarity = 3.225
+const super_rarity = config.super_rarity
+const ultra_rarity = config.ultra_rarity
+const secret_rarity = config.secret_rarity
 
 function determineRarity(value) {
     var rarity = rarities.COMMON
@@ -66,7 +70,11 @@ function pull(cards, rarity) {
     }
 }
 
-function assembleBooster(cards) {
+function assembleBooster() {
+    const code = config.current_set_code
+    const booster_set = require(`./boosters/${code}/${code}.json`);
+    const cards = sortCards(booster_set)
+
     let booster = []
 
     // Commons, 7
@@ -90,6 +98,114 @@ function assembleBooster(cards) {
     return booster
 }
 
+async function getPack(pack_code) {
+    let pack = await db.query(`SELECT * FROM packs WHERE code="${pack_code}";`)
+        .then((result) => {
+            if(result[0]) {
+                let pack = result[0]
+                return pack
+            }
+            else {
+                console.error('No pack with code "' + pack_code + "' found!")
+                return null
+            }
+        },
+        (err) => {
+            console.error(err)
+            return null
+        })
+
+    return pack
+}
+
+async function getCards(owner) {
+    return db.query(`SELECT * FROM cards WHERE owner="${owner}"`)
+        .then((result) => {
+            return result
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+}
+
+async function packIsValid(pack_code) {
+    let pack = await getPack(pack_code)
+    return pack != null && !pack.opened
+}
+
+async function packOwner(pack_code) {
+    let pack = await getPack(pack_code)
+    if(pack) { return pack.owner }
+    else { return null }
+}
+
+async function addCardsToCollection(owner, cards) {
+    let query = 'INSERT INTO cards (code, name, owner) VALUES '
+    for(i = 0; i < cards.length; i++) {
+        let card = cards[i]
+        query += `("${card.code}", "${card.name}", "${owner}")`
+        if(i != cards.length - 1) { query += ',' }
+        else { query += ';' }
+    }
+
+    return db.query(query)
+        .then((result) => {
+            return true
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+    
+}
+
+async function openPack(pack_code) {
+    let pack_is_valid = await packIsValid(pack_code)
+
+    if(!pack_is_valid) {
+        return null
+    }
+    else {
+        let owner = await packOwner(pack_code)
+        let booster = await assembleBooster()
+        let success = await addCardsToCollection(owner, booster)
+        if(success) {
+            return db.query(`UPDATE packs SET opened=true WHERE code="${pack_code}";`)
+            .then((result) => {
+                return {owner, booster}
+            },
+            (err) => {
+                console.error(err)
+                return null
+            })
+        }
+        else {
+            return null
+        }  
+    }
+}
+
+async function generatePackCode(user_id) {
+    const pack_code = uuidv1()
+
+    var result = await db.query(`INSERT INTO packs (code, owner, opened) VALUES ("${pack_code}", "${user_id}", false)`)
+        .then((result) => {
+            return pack_code
+        },
+        (err) => {
+            console.error(err)
+            return null
+        })
+    return result
+}
+
 module.exports = {
-    assembleBooster
+    assembleBooster,
+    generatePackCode,
+    openPack,
+    packIsValid,
+    packOwner,
+    getPack,
+    getCards
 }

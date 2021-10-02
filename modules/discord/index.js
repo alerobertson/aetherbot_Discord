@@ -14,6 +14,7 @@ const config = require('./config.json')
 const db = require("../mysql/index.js")
 const paperquotes = require('../paperquotes')
 const wanikani = require('../wanikani')
+const yugioh = require('../yugioh')
 
 // submodules
 const motd = require('./motd')
@@ -39,6 +40,8 @@ function commandCheck(msg) {
     // Remove prefix and case down
     const args = msg.content.slice(config.prefix.length).trim()
     const command = args.toLowerCase()
+
+    const user = msg.member.user
 
     // Log use of commands
     console.log('>' + msg.author.username + '>: ' + config.prefix + args)
@@ -129,6 +132,14 @@ function commandCheck(msg) {
             msg.reply("I can't parse that! Do like this: ``" + config.prefix +
                 "timezone+7`` or ``" + config.prefix + "timezone-5``")
         }
+    }
+
+    if (command.substring(0, 6) == "ygpack" && user.id == '164847467395940352') {
+        subCommand = command.slice(6)
+        subCommand = subCommand.trim()
+        yugioh.generatePackCode(subCommand).then((code) => {
+            user.send(`${config.domain}/yugioh/booster/${code}`)
+        })
     }
 }
 

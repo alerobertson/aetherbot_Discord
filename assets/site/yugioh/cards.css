@@ -1,0 +1,119 @@
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+/*
+.card:hover img {
+    transform: scale(1.3);
+}
+.card {
+    cursor: pointer;
+}
+*/
+
+.card img {
+    width: 100%;
+    height: 100%;
+}
+
+.card-box .card {
+    width: calc(421px * 0.7);
+    height: calc(614px * 0.7);
+}
+.card-box {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card-box .card {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+
+/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+
+.flip-card {
+    width: calc(421px * 0.7);
+    height: calc(614px * 0.7);
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.flip-card_effect {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transition: box-shadow 0.2s;
+}
+
+.flip-card.rare:hover .flip-card_effect {
+    -webkit-box-shadow: inset 0px 0px 21px 20px rgba(69,111,255,0.85); 
+    box-shadow: inset 0px 0px 21px 20px rgba(69,111,255,0.85);
+}
+
+.flip-card.super_rare:hover .flip-card_effect {
+    -webkit-box-shadow: inset 0px 0px 21px 20px rgba(194,69,255,0.85); 
+    box-shadow: inset 0px 0px 21px 20px rgba(194,69,255,0.85);
+}
+
+.flip-card.ultra_rare:hover .flip-card_effect {
+    -webkit-box-shadow: inset 0px 0px 21px 20px rgba(255,221,46,0.85); 
+    box-shadow: inset 0px 0px 21px 20px rgba(255,221,46,0.85);
+}
+
+.flip-card.secret_rare:hover .flip-card_effect {
+    -webkit-box-shadow: inset 0px 0px 21px 20px rgba(255,51,51,0.85); 
+    box-shadow: inset 0px 0px 21px 20px rgba(255,51,51,0.85);
+}
+
+
+/* This container is needed to position the front and back side */
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+
+.flip-card.flip .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+
+/* Position the front and back side */
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    /* Safari */
+    backface-visibility: hidden;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+
+/* Style the front side (fallback if image is missing) */
+
+.flip-card-front {
+    color: black;
+}
+
+
+/* Style the back side */
+
+.flip-card-back {
+    color: white;
+    transform: rotateY(180deg);
+}
