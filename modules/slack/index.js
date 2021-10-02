@@ -23,11 +23,14 @@ async function postRequest(url, message) {
 module.exports = {
     postMessage: postRequest,
     init: () => {
-        var job = new CronJob('0 9 * * *', () => {
-            paperquotes.fetchQuote(1, 'motivation').then((result) => {
-                let quote = result[0].quote
-                postRequest(config.webhook, quote)
-            })
-        },true,'America/Toronto')
+        var webhooks = config.webhooks
+        webhooks.forEach((webhook) => {
+        	var job = new CronJob('0 9 * * *', () => {
+           		paperquotes.fetchQuote(1, 'motivation').then((result) => {
+               	 		let quote = result[0].quote
+                		postRequest(webhook, quote)
+            		})
+        	},true,'America/Toronto')
+	})
     }
 }
