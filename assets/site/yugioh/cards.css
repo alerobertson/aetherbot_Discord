@@ -22,6 +22,7 @@
     width: calc(421px * 0.7);
     height: calc(614px * 0.7);
 }
+
 .card-box {
     display: flex;
     flex-wrap: wrap;
@@ -50,23 +51,23 @@
 }
 
 .flip-card.rare:hover .flip-card_effect {
-    -webkit-box-shadow: inset 0px 0px 21px 20px rgba(69,111,255,0.85); 
-    box-shadow: inset 0px 0px 21px 20px rgba(69,111,255,0.85);
+    -webkit-box-shadow: inset 0px 0px 21px 20px rgba(69, 111, 255, 0.85);
+    box-shadow: inset 0px 0px 21px 20px rgba(69, 111, 255, 0.85);
 }
 
 .flip-card.super_rare:hover .flip-card_effect {
-    -webkit-box-shadow: inset 0px 0px 21px 20px rgba(194,69,255,0.85); 
-    box-shadow: inset 0px 0px 21px 20px rgba(194,69,255,0.85);
+    -webkit-box-shadow: inset 0px 0px 21px 20px rgba(194, 69, 255, 0.85);
+    box-shadow: inset 0px 0px 21px 20px rgba(194, 69, 255, 0.85);
 }
 
 .flip-card.ultra_rare:hover .flip-card_effect {
-    -webkit-box-shadow: inset 0px 0px 21px 20px rgba(255,221,46,0.85); 
-    box-shadow: inset 0px 0px 21px 20px rgba(255,221,46,0.85);
+    -webkit-box-shadow: inset 0px 0px 21px 20px rgba(255, 221, 46, 0.85);
+    box-shadow: inset 0px 0px 21px 20px rgba(255, 221, 46, 0.85);
 }
 
 .flip-card.secret_rare:hover .flip-card_effect {
-    -webkit-box-shadow: inset 0px 0px 21px 20px rgba(255,51,51,0.85); 
-    box-shadow: inset 0px 0px 21px 20px rgba(255,51,51,0.85);
+    -webkit-box-shadow: inset 0px 0px 21px 20px rgba(255, 51, 51, 0.85);
+    box-shadow: inset 0px 0px 21px 20px rgba(255, 51, 51, 0.85);
 }
 
 
@@ -116,4 +117,55 @@
 .flip-card-back {
     color: white;
     transform: rotateY(180deg);
+}
+
+.booster_pack {
+    position: absolute;
+    top: -700px;
+    transition: top 1s ease-in-out;
+}
+
+.booster_pack a {
+    width: 300px;
+    margin: auto;
+    display: block;
+    position: relative;
+}
+
+.booster_pack a:hover img {
+    transform: scale(1.05);
+}
+
+.booster_pack img {
+    width: 100%;
+    transition: transform 0.2s ease-in-out;
+}
+
+.booster {
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+
+/* Booster Shine */
+
+.booster_pack a:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+}
+
+.booster_pack a:hover:after {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0);
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }

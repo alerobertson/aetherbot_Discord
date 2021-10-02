@@ -19,6 +19,16 @@ const flipCardTemplate = (
 )
 const booster_code = window.location.pathname.split('/').pop()
 
+$('.booster_pack a').on('click', function(e) {
+    e.preventDefault();
+    $('.booster_pack').css('top', '-700px')
+    setTimeout( function(){
+        $('.booster_pack').css("display", "none");
+        $('.booster').css("opacity", "1");
+    },1000);
+    openBooster();
+})
+
 function openBooster() {
     $.ajax({
         url: '/api/yugioh/open/' + booster_code,
@@ -28,7 +38,7 @@ function openBooster() {
             renderCards('.cards', data.booster)
         },
         error: function (error) {
-            $('.cards').html('<p>' + error.responseText + '</p>')
+            $('#message p').html('This card pack has already been opened or the code is invalid!')
         }
     })
 }
@@ -47,4 +57,31 @@ function renderCards(selector, cards) {
     })
 }
 
-openBooster()
+async function checkCode(code) {
+    let valid = false
+    await $.ajax({
+        url: '/api/yugioh/check-code/' + code,
+        type: "GET",
+        data: {},
+        success: function (data) {
+            valid = data.valid
+        }
+    })
+    return valid
+}
+
+async function start() {
+    let valid = await checkCode(booster_code)
+    console.log(valid)
+    if(valid) {
+        setTimeout( function(){
+            $('.booster_pack').css('top', 20)
+            $('.booster_pack').css('position', 'relative')
+        },1000);
+    }
+    else {
+        $('#message p').html('This card pack has already been opened or the code is invalid!')
+    }
+}
+
+start()

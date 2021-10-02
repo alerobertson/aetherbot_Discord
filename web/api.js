@@ -14,6 +14,8 @@ const start = function (namespace) {
 	app.use(namespace, [
 		yugiohController
 	])
+	app.use('/yugioh/assets/boosters', express.static('assets/boosters'))
+	app.use('/api/yugioh', express.static('assets/site/yugioh'))
 
 	app.listen(port, () => {
 		console.log('REST API active at ' + namespace + ' on port ' + port)
