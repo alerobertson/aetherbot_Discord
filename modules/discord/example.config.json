@@ -19,5 +19,6 @@
 		"++mrank: List the Morning scores\n",
 		"++timezone#: Set your difference in hours relative to EST (+/- hours)\n",
 		"++mytimezone: Show what I think your time is right now\n"
-	]
+	],
+	"domain": "http://localhost:4001/api"
 }
