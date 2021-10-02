@@ -1,0 +1,758 @@
+[
+    {
+        "name": "Tri-Horned Dragon",
+        "attribute": "DARK",
+        "rarity": "secret_rare",
+        "code": "LOB-000"
+    },
+    {
+        "name": "Blue-Eyes White Dragon",
+        "attribute": "LIGHT",
+        "rarity": "ultra_rare",
+        "code": "LOB-001"
+    },
+    {
+        "name": "Hitotsu-Me Giant",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-002"
+    },
+    {
+        "name": "Flame Swordsman",
+        "attribute": "FIRE",
+        "rarity": "super_rare",
+        "code": "LOB-003"
+    },
+    {
+        "name": "Skull Servant",
+        "attribute": "DARK",
+        "rarity": "common",
+        "code": "LOB-004"
+    },
+    {
+        "name": "Dark Magician",
+        "attribute": "DARK",
+        "rarity": "ultra_rare",
+        "code": "LOB-005"
+    },
+    {
+        "name": "Gaia The Fierce Knight",
+        "attribute": "EARTH",
+        "rarity": "ultra_rare",
+        "code": "LOB-006"
+    },
+    {
+        "name": "Celtic Guardian",
+        "attribute": "EARTH",
+        "rarity": "super_rare",
+        "code": "LOB-007"
+    },
+    {
+        "name": "Basic Insect",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-008"
+    },
+    {
+        "name": "Mammoth Graveyard",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-009"
+    },
+    {
+        "name": "Silver Fang",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-010"
+    },
+    {
+        "name": "Dark Gray",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-011"
+    },
+    {
+        "name": "Trial of Nightmare",
+        "attribute": "DARK",
+        "rarity": "common",
+        "code": "LOB-012"
+    },
+    {
+        "name": "Nemuriko",
+        "attribute": "DARK",
+        "rarity": "common",
+        "code": "LOB-013"
+    },
+    {
+        "name": "The 13th Grave",
+        "attribute": "DARK",
+        "rarity": "common",
+        "code": "LOB-014"
+    },
+    {
+        "name": "Charubin the Fire Knight",
+        "attribute": "FIRE",
+        "rarity": "rare",
+        "code": "LOB-015"
+    },
+    {
+        "name": "Flame Manipulator",
+        "attribute": "FIRE",
+        "rarity": "common",
+        "code": "LOB-016"
+    },
+    {
+        "name": "Monster Egg",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-017"
+    },
+    {
+        "name": "Firegrass",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-018"
+    },
+    {
+        "name": "Darkfire Dragon",
+        "attribute": "DARK",
+        "rarity": "rare",
+        "code": "LOB-019"
+    },
+    {
+        "name": "Dark King of the Abyss",
+        "attribute": "DARK",
+        "rarity": "common",
+        "code": "LOB-020"
+    },
+    {
+        "name": "Fiend Reflection #2",
+        "attribute": "LIGHT",
+        "rarity": "common",
+        "code": "LOB-021"
+    },
+    {
+        "name": "Fusionist",
+        "attribute": "EARTH",
+        "rarity": "rare",
+        "code": "LOB-022"
+    },
+    {
+        "name": "Turtle Tiger",
+        "attribute": "WATER",
+        "rarity": "common",
+        "code": "LOB-023"
+    },
+    {
+        "name": "Petit Dragon",
+        "attribute": "WIND",
+        "rarity": "common",
+        "code": "LOB-024"
+    },
+    {
+        "name": "Petit Angel",
+        "attribute": "LIGHT",
+        "rarity": "common",
+        "code": "LOB-025"
+    },
+    {
+        "name": "Hinotama Soul",
+        "attribute": "FIRE",
+        "rarity": "common",
+        "code": "LOB-026"
+    },
+    {
+        "name": "Aqua Madoor",
+        "attribute": "WATER",
+        "rarity": "rare",
+        "code": "LOB-027"
+    },
+    {
+        "name": "Kagemusha of the Blue Flame",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-028"
+    },
+    {
+        "name": "Flame Ghost",
+        "attribute": "DARK",
+        "rarity": "rare",
+        "code": "LOB-029"
+    },
+    {
+        "name": "Two-Mouth Darkruler",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-030"
+    },
+    {
+        "name": "Dissolverock",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-031"
+    },
+    {
+        "name": "Root Water",
+        "attribute": "WATER",
+        "rarity": "common",
+        "code": "LOB-032"
+    },
+    {
+        "name": "The Furious Sea King",
+        "attribute": "WATER",
+        "rarity": "common",
+        "code": "LOB-033"
+    },
+    {
+        "name": "Green Phantom King",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-034"
+    },
+    {
+        "name": "Ray & Temperature",
+        "attribute": "LIGHT",
+        "rarity": "common",
+        "code": "LOB-035"
+    },
+    {
+        "name": "King Fog",
+        "attribute": "DARK",
+        "rarity": "common",
+        "code": "LOB-036"
+    },
+    {
+        "name": "Mystical Sheep #2",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-037"
+    },
+    {
+        "name": "Masaki the Legendary Swordsman",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-038"
+    },
+    {
+        "name": "Kurama",
+        "attribute": "WIND",
+        "rarity": "common",
+        "code": "LOB-039"
+    },
+    {
+        "name": "Legendary Sword",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-040"
+    },
+    {
+        "name": "Beast Fangs",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-041"
+    },
+    {
+        "name": "Violet Crystal",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-042"
+    },
+    {
+        "name": "Book of Secret Arts",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-043"
+    },
+    {
+        "name": "Power of Kaishin",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-044"
+    },
+    {
+        "name": "Dragon Capture Jar",
+        "attribute": "TRAP",
+        "rarity": "rare",
+        "code": "LOB-045"
+    },
+    {
+        "name": "Forest",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-046"
+    },
+    {
+        "name": "Wasteland",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-047"
+    },
+    {
+        "name": "Mountain",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-048"
+    },
+    {
+        "name": "Sogen",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-049"
+    },
+    {
+        "name": "Umi",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-050"
+    },
+    {
+        "name": "Yami",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-051"
+    },
+    {
+        "name": "Dark Hole",
+        "attribute": "SPELL",
+        "rarity": "super_rare",
+        "code": "LOB-052"
+    },
+    {
+        "name": "Raigeki",
+        "attribute": "SPELL",
+        "rarity": "super_rare",
+        "code": "LOB-053"
+    },
+    {
+        "name": "Red Medicine",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-054"
+    },
+    {
+        "name": "Sparks",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-055"
+    },
+    {
+        "name": "Hinotama",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-056"
+    },
+    {
+        "name": "Fissure",
+        "attribute": "SPELL",
+        "rarity": "rare",
+        "code": "LOB-057"
+    },
+    {
+        "name": "Trap Hole",
+        "attribute": "TRAP",
+        "rarity": "super_rare",
+        "code": "LOB-058"
+    },
+    {
+        "name": "Polymerization",
+        "attribute": "SPELL",
+        "rarity": "super_rare",
+        "code": "LOB-059"
+    },
+    {
+        "name": "Remove Trap",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-060"
+    },
+    {
+        "name": "Two-Pronged Attack",
+        "attribute": "TRAP",
+        "rarity": "rare",
+        "code": "LOB-061"
+    },
+    {
+        "name": "Mystical Elf",
+        "attribute": "LIGHT",
+        "rarity": "super_rare",
+        "code": "LOB-062"
+    },
+    {
+        "name": "Tyhone",
+        "attribute": "WIND",
+        "rarity": "common",
+        "code": "LOB-063"
+    },
+    {
+        "name": "Beaver Warrior",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-064"
+    },
+    {
+        "name": "Gravedigger Ghoul",
+        "attribute": "SPELL",
+        "rarity": "rare",
+        "code": "LOB-065"
+    },
+    {
+        "name": "Curse of Dragon",
+        "attribute": "DARK",
+        "rarity": "super_rare",
+        "code": "LOB-066"
+    },
+    {
+        "name": "Karbonala Warrior",
+        "attribute": "EARTH",
+        "rarity": "rare",
+        "code": "LOB-067"
+    },
+    {
+        "name": "Giant Soldier of Stone",
+        "attribute": "EARTH",
+        "rarity": "rare",
+        "code": "LOB-068"
+    },
+    {
+        "name": "Uraby",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-069"
+    },
+    {
+        "name": "Red-Eyes Black Dragon",
+        "attribute": "DARK",
+        "rarity": "ultra_rare",
+        "code": "LOB-070"
+    },
+    {
+        "name": "Reaper of the Cards",
+        "attribute": "DARK",
+        "rarity": "rare",
+        "code": "LOB-071"
+    },
+    {
+        "name": "Witty Phantom",
+        "attribute": "DARK",
+        "rarity": "common",
+        "code": "LOB-072"
+    },
+    {
+        "name": "Larvas",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-073"
+    },
+    {
+        "name": "Hard Armor",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-074"
+    },
+    {
+        "name": "Man Eater",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-075"
+    },
+    {
+        "name": "M-Warrior #1",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-076"
+    },
+    {
+        "name": "M-Warrior #2",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-077"
+    },
+    {
+        "name": "Spirit of the Harp",
+        "attribute": "LIGHT",
+        "rarity": "rare",
+        "code": "LOB-078"
+    },
+    {
+        "name": "Armaill",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-079"
+    },
+    {
+        "name": "Terra the Terrible",
+        "attribute": "DARK",
+        "rarity": "common",
+        "code": "LOB-080"
+    },
+    {
+        "name": "Frenzied Panda",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-081"
+    },
+    {
+        "name": "Kumootoko",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-082"
+    },
+    {
+        "name": "Meda Bat",
+        "attribute": "DARK",
+        "rarity": "common",
+        "code": "LOB-083"
+    },
+    {
+        "name": "Enchanting Mermaid",
+        "attribute": "WATER",
+        "rarity": "common",
+        "code": "LOB-084"
+    },
+    {
+        "name": "Fireyarou",
+        "attribute": "FIRE",
+        "rarity": "common",
+        "code": "LOB-085"
+    },
+    {
+        "name": "Dragoness the Wicked Knight",
+        "attribute": "WIND",
+        "rarity": "rare",
+        "code": "LOB-086"
+    },
+    {
+        "name": "One-Eyed Shield Dragon",
+        "attribute": "WIND",
+        "rarity": "common",
+        "code": "LOB-087"
+    },
+    {
+        "name": "Dark Energy",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-088"
+    },
+    {
+        "name": "Laser Cannon Armor",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-089"
+    },
+    {
+        "name": "Vile Germs",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-090"
+    },
+    {
+        "name": "Silver Bow and Arrow",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-091"
+    },
+    {
+        "name": "Dragon Treasure",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-092"
+    },
+    {
+        "name": "Electro-Whip",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-093"
+    },
+    {
+        "name": "Mystical Moon",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-094"
+    },
+    {
+        "name": "Stop Defense",
+        "attribute": "SPELL",
+        "rarity": "rare",
+        "code": "LOB-095"
+    },
+    {
+        "name": "Machine Conversion Factory",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-096"
+    },
+    {
+        "name": "Raise Body Heat",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-097"
+    },
+    {
+        "name": "Follow Wind",
+        "attribute": "SPELL",
+        "rarity": "common",
+        "code": "LOB-098"
+    },
+    {
+        "name": "Goblin's Secret Remedy",
+        "attribute": "SPELL",
+        "rarity": "rare",
+        "code": "LOB-099"
+    },
+    {
+        "name": "Final Flame",
+        "attribute": "SPELL",
+        "rarity": "rare",
+        "code": "LOB-100"
+    },
+    {
+        "name": "Swords of Revealing Light",
+        "attribute": "SPELL",
+        "rarity": "super_rare",
+        "code": "LOB-101"
+    },
+    {
+        "name": "Metal Dragon",
+        "attribute": "WIND",
+        "rarity": "rare",
+        "code": "LOB-102"
+    },
+    {
+        "name": "Spike Seadra",
+        "attribute": "WATER",
+        "rarity": "common",
+        "code": "LOB-103"
+    },
+    {
+        "name": "Tripwire Beast",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-104"
+    },
+    {
+        "name": "Skull Red Bird",
+        "attribute": "WIND",
+        "rarity": "common",
+        "code": "LOB-105"
+    },
+    {
+        "name": "Armed Ninja",
+        "attribute": "EARTH",
+        "rarity": "rare",
+        "code": "LOB-106"
+    },
+    {
+        "name": "Flower Wolf",
+        "attribute": "EARTH",
+        "rarity": "rare",
+        "code": "LOB-107"
+    },
+    {
+        "name": "Man-Eater Bug",
+        "attribute": "EARTH",
+        "rarity": "super_rare",
+        "code": "LOB-108"
+    },
+    {
+        "name": "Sand Stone",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-109"
+    },
+    {
+        "name": "Hane-Hane",
+        "attribute": "EARTH",
+        "rarity": "rare",
+        "code": "LOB-110"
+    },
+    {
+        "name": "Misairuzame",
+        "attribute": "WATER",
+        "rarity": "common",
+        "code": "LOB-111"
+    },
+    {
+        "name": "Steel Ogre Grotto #1",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-112"
+    },
+    {
+        "name": "Lesser Dragon",
+        "attribute": "WIND",
+        "rarity": "common",
+        "code": "LOB-113"
+    },
+    {
+        "name": "Darkworld Thorns",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-114"
+    },
+    {
+        "name": "Drooling Lizard",
+        "attribute": "EARTH",
+        "rarity": "common",
+        "code": "LOB-115"
+    },
+    {
+        "name": "Armored Starfish",
+        "attribute": "WATER",
+        "rarity": "common",
+        "code": "LOB-116"
+    },
+    {
+        "name": "Succubus Knight",
+        "attribute": "DARK",
+        "rarity": "common",
+        "code": "LOB-117"
+    },
+    {
+        "name": "Monster Reborn",
+        "attribute": "SPELL",
+        "rarity": "ultra_rare",
+        "code": "LOB-118"
+    },
+    {
+        "name": "Pot of Greed",
+        "attribute": "SPELL",
+        "rarity": "rare",
+        "code": "LOB-119"
+    },
+    {
+        "name": "Right Leg of the Forbidden One",
+        "attribute": "DARK",
+        "rarity": "ultra_rare",
+        "code": "LOB-120"
+    },
+    {
+        "name": "Left Leg of the Forbidden One",
+        "attribute": "DARK",
+        "rarity": "ultra_rare",
+        "code": "LOB-121"
+    },
+    {
+        "name": "Right Arm of the Forbidden One",
+        "attribute": "DARK",
+        "rarity": "ultra_rare",
+        "code": "LOB-122"
+    },
+    {
+        "name": "Left Arm of the Forbidden One",
+        "attribute": "DARK",
+        "rarity": "ultra_rare",
+        "code": "LOB-123"
+    },
+    {
+        "name": "Exodia the Forbidden One",
+        "attribute": "DARK",
+        "rarity": "ultra_rare",
+        "code": "LOB-124"
+    },
+    {
+        "name": "Gaia the Dragon Champion",
+        "attribute": "WIND",
+        "rarity": "secret_rare",
+        "code": "LOB-125"
+    }
+]
