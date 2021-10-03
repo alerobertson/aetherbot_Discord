@@ -105,6 +105,54 @@ function commandCheck(msg) {
                 msg.channel.send(quote)
             })
             break
+        case "ygbox":
+            msg.reply(`${config.domain}/yugioh/box/${msg.author.id}`)
+            break
+        case "yginit":
+            yugioh.getPacks(msg.author.id).then((packs) => {
+                if(packs.length <= 0) {
+                    let promises = []
+                    promises.push(yugioh.generatePackCode(msg.author.id))
+                    promises.push(yugioh.generatePackCode(msg.author.id))
+                    Promise.all(promises).then(() => {
+                        msg.reply('Welcome! You have been awarded (2) packs! Open one with ``++ygopenpack``')
+                    })
+                }
+                else {
+                    msg.channel.send('You have already been initialized!')
+                }
+            })
+            break
+        case "ygpacks":
+            yugioh.getPacks(msg.author.id).then((packs) => {
+                if(packs.length <= 0) {
+                    msg.reply('You haven\'t become a duelist yet! Use ``++yginit`` to start.')
+                }
+                packs = packs.filter(pack => !pack.opened)
+                if(packs.length <= 0) {
+                    msg.reply(`You currently have ${packs.length} unopened packs.`)
+                }
+                else {
+                    msg.reply(`You currently have ${packs.length} unopened packs.` + ' Use ``++ygopenpack`` to open one!')
+                }
+            })
+            break
+        case "ygopenpack":
+            yugioh.getPacks(msg.author.id).then((packs) => {
+                if(packs.length <= 0) {
+                    msg.reply('You haven\'t become a duelist yet! Use ``++yginit`` to start.')
+                }
+                packs = packs.filter(pack => !pack.opened)
+                if(packs.length <= 0) {
+                    msg.reply(`You currently have ${packs.length} unopened packs.`)
+                }
+                else {
+                    yugioh.generatePackCode(msg.author.id).then((code) => {
+                        user.send(`${config.domain}/yugioh/booster/${code}`)
+                    })
+                }
+            })
+            break
     }
 
     // Complex commands
@@ -134,7 +182,7 @@ function commandCheck(msg) {
         }
     }
 
-    if (command.substring(0, 6) == "ygpack" && user.id == '164847467395940352') {
+    if (command.substring(0, 6) == "yggivepack" && user.id == '164847467395940352') {
         subCommand = command.slice(6)
         subCommand = subCommand.trim()
         yugioh.generatePackCode(subCommand).then((code) => {
@@ -442,6 +490,7 @@ function waniDisplay(msg, result) {
 }
 
 module.exports = {
+    datetimeString,
     init: () => {
         client.login(config.token)
 

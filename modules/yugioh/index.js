@@ -129,6 +129,17 @@ async function getCards(owner) {
         })
 }
 
+async function getPacks(owner) {
+    return db.query(`SELECT * FROM packs WHERE owner="${owner}";`)
+        .then((result) => {
+            return result
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+}
+
 async function packIsValid(pack_code) {
     let pack = await getPack(pack_code)
     return pack != null && !pack.opened
@@ -191,6 +202,7 @@ async function generatePackCode(user_id) {
 
     var result = await db.query(`INSERT INTO packs (code, owner, opened) VALUES ("${pack_code}", "${user_id}", false)`)
         .then((result) => {
+            updateLatestPack(user_id, new Date())
             return pack_code
         },
         (err) => {
@@ -198,6 +210,21 @@ async function generatePackCode(user_id) {
             return null
         })
     return result
+}
+
+async function updateLatestPack(owner, d) {
+    let datetime = datetimeString(d)
+
+
+    return db.query(`INSERT INTO duelists (id, last_pack) VALUES("${owner}", "${datetime}") ON DUPLICATE KEY UPDATE last_pack="${datetime}"`)
+        .then((result) => {
+            return true
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+
 }
 
 async function importSetInfo(set_name) {
@@ -264,6 +291,34 @@ async function importSetInfo(set_name) {
     
 }
 
+// Creates a relevant string for the Date object
+// YYYY-MM-DD HH-MM-SS
+function datetimeString(d) {
+	return dateString(d) + ' ' + timeString(d)
+}
+
+// Creates a relevant string for the Date object
+// YYYY-MM-DD
+function dateString(d) {
+	let mm = d.getMonth() + 1
+	if(mm < 10) { mm = "0" + mm }
+	let dd = d.getDate()
+	if(dd < 10) { dd = "0" + dd }
+	return d.getFullYear() + "-" + mm + "-" + dd
+}
+
+// Creates a relevant string for the Date object
+// HH-MM-SS
+function timeString(d) {
+	let hh = d.getHours()
+	if(hh < 10) { hh = "0" + hh }
+	let mm = d.getMinutes()
+	if(mm < 10) { mm = "0" + mm }
+	let ss = d.getSeconds()
+	if(ss < 10) { ss = "0" + ss }
+	return hh + ':' + mm + ':' + ss
+}
+
 module.exports = {
     assembleBooster,
     generatePackCode,
@@ -272,5 +327,6 @@ module.exports = {
     packOwner,
     getPack,
     getCards,
+    getPacks,
     importSetInfo
 }
