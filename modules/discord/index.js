@@ -128,12 +128,14 @@ function commandCheck(msg) {
                 if(packs.length <= 0) {
                     msg.reply('You haven\'t become a duelist yet! Use ``++yginit`` to start.')
                 }
-                packs = packs.filter(pack => !pack.opened)
-                if(packs.length <= 0) {
-                    msg.reply(`You currently have ${packs.length} unopened packs.`)
-                }
                 else {
-                    msg.reply(`You currently have ${packs.length} unopened packs.` + ' Use ``++ygopenpack`` to open one!')
+                    packs = packs.filter(pack => !pack.opened)
+                    if(packs.length <= 0) {
+                        msg.reply(`You currently have ${packs.length} unopened packs.`)
+                    }
+                    else {
+                        msg.reply(`You currently have ${packs.length} unopened packs.` + ' Use ``++ygopenpack`` to open one!')
+                    }
                 }
             })
             break
@@ -142,14 +144,14 @@ function commandCheck(msg) {
                 if(packs.length <= 0) {
                     msg.reply('You haven\'t become a duelist yet! Use ``++yginit`` to start.')
                 }
-                packs = packs.filter(pack => !pack.opened)
-                if(packs.length <= 0) {
-                    msg.reply(`You currently have ${packs.length} unopened packs.`)
-                }
                 else {
-                    yugioh.generatePackCode(msg.author.id).then((code) => {
-                        user.send(`${config.domain}/yugioh/booster/${code}`)
-                    })
+                    packs = packs.filter(pack => !pack.opened)
+                    if(packs.length <= 0) {
+                        msg.reply(`You currently have ${packs.length} unopened packs.`)
+                    }
+                    else {
+                        user.send(`${config.domain}/yugioh/booster/${packs[0].code}`)
+                    }
                 }
             })
             break

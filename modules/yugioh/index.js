@@ -198,7 +198,7 @@ async function openPack(pack_code) {
 }
 
 async function generatePackCode(user_id) {
-    const pack_code = uuidv1()
+    const pack_code = uuidv4()
 
     var result = await db.query(`INSERT INTO packs (code, owner, opened) VALUES ("${pack_code}", "${user_id}", false)`)
         .then((result) => {
