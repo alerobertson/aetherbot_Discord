@@ -3,756 +3,1395 @@
         "name": "Tri-Horned Dragon",
         "attribute": "DARK",
         "rarity": "secret_rare",
-        "code": "LOB-000"
+        "code": "LOB-000",
+        "description": "An unworthy dragon with three sharp horns sprouting from its head.",
+        "type": "monster",
+        "attack": "2850",
+        "defense": "2350",
+        "monster_type": "Dragon/Normal",
+        "level": "8"
     },
     {
         "name": "Blue-Eyes White Dragon",
         "attribute": "LIGHT",
         "rarity": "ultra_rare",
-        "code": "LOB-001"
+        "code": "LOB-001",
+        "description": "This legendary dragon is a powerful engine of destruction. Virtually invincible, very few have faced this awesome creature and lived to tell the tale.",
+        "type": "monster",
+        "attack": "3000",
+        "defense": "2500",
+        "monster_type": "Dragon/Normal",
+        "level": "8"
     },
     {
         "name": "Hitotsu-Me Giant",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-002"
+        "code": "LOB-002",
+        "description": "A one-eyed behemoth with thick, powerful arms made for delivering punishing blows.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "1000",
+        "monster_type": "Beast-Warrior/Normal",
+        "level": "4"
     },
     {
         "name": "Flame Swordsman",
         "attribute": "FIRE",
         "rarity": "super_rare",
-        "code": "LOB-003"
+        "code": "LOB-003",
+        "description": "\"Flame Manipulator\" + \"Masaki the Legendary Swordsman\"",
+        "type": "monster",
+        "attack": "1800",
+        "defense": "1600",
+        "monster_type": "Warrior/Fusion",
+        "level": "5"
     },
     {
         "name": "Skull Servant",
         "attribute": "DARK",
         "rarity": "common",
-        "code": "LOB-004"
+        "code": "LOB-004",
+        "description": "A skeletal ghost that isn't strong but can mean trouble in large numbers.",
+        "type": "monster",
+        "attack": "300",
+        "defense": "200",
+        "monster_type": "Zombie/Normal",
+        "level": "1"
     },
     {
         "name": "Dark Magician",
         "attribute": "DARK",
         "rarity": "ultra_rare",
-        "code": "LOB-005"
+        "code": "LOB-005",
+        "description": "The ultimate wizard in terms of attack and defense.",
+        "type": "monster",
+        "attack": "2500",
+        "defense": "2100",
+        "monster_type": "Spellcaster/Normal",
+        "level": "7"
     },
     {
         "name": "Gaia The Fierce Knight",
         "attribute": "EARTH",
         "rarity": "ultra_rare",
-        "code": "LOB-006"
+        "code": "LOB-006",
+        "description": "A knight whose horse travels faster than the wind. His battle-charge is a force to be reckoned with.",
+        "type": "monster",
+        "attack": "2300",
+        "defense": "2100",
+        "monster_type": "Warrior/Normal",
+        "level": "7"
     },
     {
         "name": "Celtic Guardian",
         "attribute": "EARTH",
         "rarity": "super_rare",
-        "code": "LOB-007"
+        "code": "LOB-007",
+        "description": "An elf who learned to wield a sword, he baffles enemies with lightning-swift attacks.",
+        "type": "monster",
+        "attack": "1400",
+        "defense": "1200",
+        "monster_type": "Warrior/Normal",
+        "level": "4"
     },
     {
         "name": "Basic Insect",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-008"
+        "code": "LOB-008",
+        "description": "Usually found traveling in swarms, this creature's ideal environment is the forest.",
+        "type": "monster",
+        "attack": "500",
+        "defense": "700",
+        "monster_type": "Insect/Normal",
+        "level": "2"
     },
     {
         "name": "Mammoth Graveyard",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-009"
+        "code": "LOB-009",
+        "description": "A mammoth that protects the graves of its pack and is absolutely merciless when facing grave-robbers.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "800",
+        "monster_type": "Dinosaur/Normal",
+        "level": "3"
     },
     {
         "name": "Silver Fang",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-010"
+        "code": "LOB-010",
+        "description": "A snow wolf that's beautiful to the eye, but absolutely vicious in battle.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "800",
+        "monster_type": "Beast/Normal",
+        "level": "3"
     },
     {
         "name": "Dark Gray",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-011"
+        "code": "LOB-011",
+        "description": "Entirely gray, this beast has rarely been seen by mortal eyes.",
+        "type": "monster",
+        "attack": "800",
+        "defense": "900",
+        "monster_type": "Beast/Normal",
+        "level": "3"
     },
     {
         "name": "Trial of Nightmare",
         "attribute": "DARK",
         "rarity": "common",
-        "code": "LOB-012"
+        "code": "LOB-012",
+        "description": "This fiend passes judgment on enemies that are locked in coffins.",
+        "type": "monster",
+        "attack": "1300",
+        "defense": "900",
+        "monster_type": "Fiend/Normal",
+        "level": "4"
     },
     {
         "name": "Nemuriko",
         "attribute": "DARK",
         "rarity": "common",
-        "code": "LOB-013"
+        "code": "LOB-013",
+        "description": "A child-like creature that controls a sleep fiend to beckon enemies into eternal slumber.",
+        "type": "monster",
+        "attack": "800",
+        "defense": "700",
+        "monster_type": "Spellcaster/Normal",
+        "level": "3"
     },
     {
         "name": "The 13th Grave",
         "attribute": "DARK",
         "rarity": "common",
-        "code": "LOB-014"
+        "code": "LOB-014",
+        "description": "A zombie that suddenly appeared from plot #13 - an empty grave.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "900",
+        "monster_type": "Zombie/Normal",
+        "level": "3"
     },
     {
         "name": "Charubin the Fire Knight",
         "attribute": "FIRE",
         "rarity": "rare",
-        "code": "LOB-015"
+        "code": "LOB-015",
+        "description": "\"Monster Egg\" + \"Hinotama Soul\"",
+        "type": "monster",
+        "attack": "1100",
+        "defense": "800",
+        "monster_type": "Pyro/Fusion",
+        "level": "3"
     },
     {
         "name": "Flame Manipulator",
         "attribute": "FIRE",
         "rarity": "common",
-        "code": "LOB-016"
+        "code": "LOB-016",
+        "description": "This Spellcaster attacks enemies with fire-related spells such as \"Sea of Flames\" and \"Wall of Fire\".",
+        "type": "monster",
+        "attack": "900",
+        "defense": "1000",
+        "monster_type": "Spellcaster/Normal",
+        "level": "3"
     },
     {
         "name": "Monster Egg",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-017"
+        "code": "LOB-017",
+        "description": "A warrior hidden within an egg that attacks enemies by flinging eggshells.",
+        "type": "monster",
+        "attack": "600",
+        "defense": "900",
+        "monster_type": "Warrior/Normal",
+        "level": "3"
     },
     {
         "name": "Firegrass",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-018"
+        "code": "LOB-018",
+        "description": "A fire-breathing plant found growing near volcanoes.",
+        "type": "monster",
+        "attack": "700",
+        "defense": "600",
+        "monster_type": "Plant/Normal",
+        "level": "2"
     },
     {
         "name": "Darkfire Dragon",
         "attribute": "DARK",
         "rarity": "rare",
-        "code": "LOB-019"
+        "code": "LOB-019",
+        "description": "\"Firegrass\" + \"Petit Dragon\"",
+        "type": "monster",
+        "attack": "1500",
+        "defense": "1250",
+        "monster_type": "Dragon/Fusion",
+        "level": "4"
     },
     {
         "name": "Dark King of the Abyss",
         "attribute": "DARK",
         "rarity": "common",
-        "code": "LOB-020"
+        "code": "LOB-020",
+        "description": "It's said that this King of the Netherworld once had the power to rule over the dark.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "800",
+        "monster_type": "Fiend/Normal",
+        "level": "3"
     },
     {
         "name": "Fiend Reflection #2",
         "attribute": "LIGHT",
         "rarity": "common",
-        "code": "LOB-021"
+        "code": "LOB-021",
+        "description": "A bird-beast that summons reinforcements with a hand mirror.",
+        "type": "monster",
+        "attack": "1100",
+        "defense": "1400",
+        "monster_type": "Winged Beast/Normal",
+        "level": "4"
     },
     {
         "name": "Fusionist",
         "attribute": "EARTH",
         "rarity": "rare",
-        "code": "LOB-022"
+        "code": "LOB-022",
+        "description": "\"Petit Angel\" + \"Mystical Sheep #2\"",
+        "type": "monster",
+        "attack": "900",
+        "defense": "700",
+        "monster_type": "Beast/Fusion",
+        "level": "3"
     },
     {
         "name": "Turtle Tiger",
         "attribute": "WATER",
         "rarity": "common",
-        "code": "LOB-023"
+        "code": "LOB-023",
+        "description": "A tiger encased in a protective shell that attacks with razor-sharp fangs.",
+        "type": "monster",
+        "attack": "1000",
+        "defense": "1500",
+        "monster_type": "Aqua/Normal",
+        "level": "4"
     },
     {
         "name": "Petit Dragon",
         "attribute": "WIND",
         "rarity": "common",
-        "code": "LOB-024"
+        "code": "LOB-024",
+        "description": "A very small dragon known for its vicious attacks.",
+        "type": "monster",
+        "attack": "600",
+        "defense": "700",
+        "monster_type": "Dragon/Normal",
+        "level": "2"
     },
     {
         "name": "Petit Angel",
         "attribute": "LIGHT",
         "rarity": "common",
-        "code": "LOB-025"
+        "code": "LOB-025",
+        "description": "A quick-moving and tiny fairy that's very difficult to hit.",
+        "type": "monster",
+        "attack": "600",
+        "defense": "900",
+        "monster_type": "Fairy/Normal",
+        "level": "3"
     },
     {
         "name": "Hinotama Soul",
         "attribute": "FIRE",
         "rarity": "common",
-        "code": "LOB-026"
+        "code": "LOB-026",
+        "description": "An intensely hot flame creature that rams anything standing in its way.",
+        "type": "monster",
+        "attack": "600",
+        "defense": "500",
+        "monster_type": "Pyro/Normal",
+        "level": "2"
     },
     {
         "name": "Aqua Madoor",
         "attribute": "WATER",
         "rarity": "rare",
-        "code": "LOB-027"
+        "code": "LOB-027",
+        "description": "A wizard of the waters that conjures a liquid wall to crush any enemies that oppose him.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "2000",
+        "monster_type": "Spellcaster/Normal",
+        "level": "4"
     },
     {
         "name": "Kagemusha of the Blue Flame",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-028"
+        "code": "LOB-028",
+        "description": "Serving as a double for the Ruler of the Blue Flame, he's a master swordsman that wields a fine blade.",
+        "type": "monster",
+        "attack": "800",
+        "defense": "400",
+        "monster_type": "Warrior/Normal",
+        "level": "2"
     },
     {
         "name": "Flame Ghost",
         "attribute": "DARK",
         "rarity": "rare",
-        "code": "LOB-029"
+        "code": "LOB-029",
+        "description": "\"Skull Servant\" + \"Dissolverock\"",
+        "type": "monster",
+        "attack": "1000",
+        "defense": "800",
+        "monster_type": "Zombie/Fusion",
+        "level": "3"
     },
     {
         "name": "Two-Mouth Darkruler",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-030"
+        "code": "LOB-030",
+        "description": "A dinosaur with two deadly jaws, it stores electricity in its horn and releases high voltage bolts from the mouth on its back.",
+        "type": "monster",
+        "attack": "900",
+        "defense": "700",
+        "monster_type": "Dinosaur/Normal",
+        "level": "3"
     },
     {
         "name": "Dissolverock",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-031"
+        "code": "LOB-031",
+        "description": "A monster born in the lava pits, it generates intense heat that can melt away its enemies.",
+        "type": "monster",
+        "attack": "900",
+        "defense": "1000",
+        "monster_type": "Rock/Normal",
+        "level": "3"
     },
     {
         "name": "Root Water",
         "attribute": "WATER",
         "rarity": "common",
-        "code": "LOB-032"
+        "code": "LOB-032",
+        "description": "An amphibian capable of calling up a massive tidal wave from the dark seas to wipe out enemy monsters.",
+        "type": "monster",
+        "attack": "900",
+        "defense": "800",
+        "monster_type": "Fish/Normal",
+        "level": "3"
     },
     {
         "name": "The Furious Sea King",
         "attribute": "WATER",
         "rarity": "common",
-        "code": "LOB-033"
+        "code": "LOB-033",
+        "description": "Grand King of the Seven Seas, he's able to summon massive tidal waves to drown the enemy.",
+        "type": "monster",
+        "attack": "800",
+        "defense": "700",
+        "monster_type": "Aqua/Normal",
+        "level": "3"
     },
     {
         "name": "Green Phantom King",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-034"
+        "code": "LOB-034",
+        "description": "This youthful king of the forests lives in a green world, abundant with trees and wildlife.",
+        "type": "monster",
+        "attack": "500",
+        "defense": "1600",
+        "monster_type": "Plant/Normal",
+        "level": "3"
     },
     {
         "name": "Ray & Temperature",
         "attribute": "LIGHT",
         "rarity": "common",
-        "code": "LOB-035"
+        "code": "LOB-035",
+        "description": "The Sun and the North Wind join hands to deliver a devastating combination of heat and gale-force winds.",
+        "type": "monster",
+        "attack": "1000",
+        "defense": "1000",
+        "monster_type": "Fairy/Normal",
+        "level": "3"
     },
     {
         "name": "King Fog",
         "attribute": "DARK",
         "rarity": "common",
-        "code": "LOB-036"
+        "code": "LOB-036",
+        "description": "A fiend that dwells in a blinding curtain of smoke.",
+        "type": "monster",
+        "attack": "1000",
+        "defense": "900",
+        "monster_type": "Fiend/Normal",
+        "level": "3"
     },
     {
         "name": "Mystical Sheep #2",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-037"
+        "code": "LOB-037",
+        "description": "A monstrous sheep with a long tail for hypnotizing enemies.",
+        "type": "monster",
+        "attack": "800",
+        "defense": "1000",
+        "monster_type": "Beast/Normal",
+        "level": "3"
     },
     {
         "name": "Masaki the Legendary Swordsman",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-038"
+        "code": "LOB-038",
+        "description": "Legendary swordmaster Masaki is a veteran of over 100 battles.",
+        "type": "monster",
+        "attack": "1100",
+        "defense": "1100",
+        "monster_type": "Warrior/Normal",
+        "level": "4"
     },
     {
         "name": "Kurama",
         "attribute": "WIND",
         "rarity": "common",
-        "code": "LOB-039"
+        "code": "LOB-039",
+        "description": "A vicious bird that attacks from the skies with its whip-like tail.",
+        "type": "monster",
+        "attack": "800",
+        "defense": "800",
+        "monster_type": "Winged Beast/Normal",
+        "level": "3"
     },
     {
         "name": "Legendary Sword",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-040"
+        "code": "LOB-040",
+        "description": "Equip only to a Warrior monster. It gains 300 ATK/DEF.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Beast Fangs",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-041"
+        "code": "LOB-041",
+        "description": "A Beast-Type monster equipped with this card increases its ATK and DEF by 300 points.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Violet Crystal",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-042"
+        "code": "LOB-042",
+        "description": "(This card is not treated as a \"Crystal\" card.)Equip only to a Zombie monster. It gains 300 ATK/DEF.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Book of Secret Arts",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-043"
+        "code": "LOB-043",
+        "description": "A Spellcaster-Type monster equipped with this card increases its ATK and DEF by 300 points.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Power of Kaishin",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-044"
+        "code": "LOB-044",
+        "description": "Equip only to an Aqua monster. It gains 300 ATK/DEF.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Dragon Capture Jar",
         "attribute": "TRAP",
         "rarity": "rare",
-        "code": "LOB-045"
+        "code": "LOB-045",
+        "description": "Change all face-up Dragon-Type monsters on the field to Defense Position, also they cannot change their battle positions.",
+        "type": "trap",
+        "spell_trap_type": "Continuous"
     },
     {
         "name": "Forest",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-046"
+        "code": "LOB-046",
+        "description": "All Insect, Beast, Plant, and Beast-Warrior monsters on the field gain 200 ATK/DEF.",
+        "type": "spell",
+        "spell_trap_type": "Field"
     },
     {
         "name": "Wasteland",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-047"
+        "code": "LOB-047",
+        "description": "All Dinosaur, Zombie, and Rock monsters on the field gain 200 ATK/DEF.",
+        "type": "spell",
+        "spell_trap_type": "Field"
     },
     {
         "name": "Mountain",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-048"
+        "code": "LOB-048",
+        "description": "All Dragon, Winged Beast, and Thunder monsters on the field gain 200 ATK/DEF.",
+        "type": "spell",
+        "spell_trap_type": "Field"
     },
     {
         "name": "Sogen",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-049"
+        "code": "LOB-049",
+        "description": "All Warrior and Beast-Warrior monsters on the field gain 200 ATK/DEF.",
+        "type": "spell",
+        "spell_trap_type": "Field"
     },
     {
         "name": "Umi",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-050"
+        "code": "LOB-050",
+        "description": "All Fish, Sea Serpent, Thunder, and Aqua monsters on the field gain 200 ATK/DEF, also all Machine and Pyro monsters on the field lose 200 ATK/DEF.",
+        "type": "spell",
+        "spell_trap_type": "Field"
     },
     {
         "name": "Yami",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-051"
+        "code": "LOB-051",
+        "description": "All Fiend and Spellcaster monsters on the field gain 200 ATK/DEF, also all Fairy monsters on the field lose 200 ATK/DEF.",
+        "type": "spell",
+        "spell_trap_type": "Field"
     },
     {
         "name": "Dark Hole",
         "attribute": "SPELL",
         "rarity": "super_rare",
-        "code": "LOB-052"
+        "code": "LOB-052",
+        "description": "Destroy all monsters on the field.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Raigeki",
         "attribute": "SPELL",
         "rarity": "super_rare",
-        "code": "LOB-053"
+        "code": "LOB-053",
+        "description": "Destroy all monsters your opponent controls.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Red Medicine",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-054"
+        "code": "LOB-054",
+        "description": "Increase your Life Points by 500 points.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Sparks",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-055"
+        "code": "LOB-055",
+        "description": "Inflict 200 points of damage to your opponent's Life Points.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Hinotama",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-056"
+        "code": "LOB-056",
+        "description": "Inflict 500 damage to your opponent.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Fissure",
         "attribute": "SPELL",
         "rarity": "rare",
-        "code": "LOB-057"
+        "code": "LOB-057",
+        "description": "Destroy the 1 face-up monster your opponent controls that has the lowest ATK (your choice, if tied).",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Trap Hole",
         "attribute": "TRAP",
         "rarity": "super_rare",
-        "code": "LOB-058"
+        "code": "LOB-058",
+        "description": "When your opponent Normal or Flip Summons 1 monster with 1000 or more ATK: Target that monster; destroy that target.",
+        "type": "trap",
+        "spell_trap_type": ""
     },
     {
         "name": "Polymerization",
         "attribute": "SPELL",
         "rarity": "super_rare",
-        "code": "LOB-059"
+        "code": "LOB-059",
+        "description": "Fusion Summon 1 Fusion Monster from your Extra Deck, using monsters from your hand or field as Fusion Material.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Remove Trap",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-060"
+        "code": "LOB-060",
+        "description": "Select 1 face-up Trap Card on the field and destroy it.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Two-Pronged Attack",
         "attribute": "TRAP",
         "rarity": "rare",
-        "code": "LOB-061"
+        "code": "LOB-061",
+        "description": "Select and destroy 2 of your monsters and 1 of your opponent's monsters.",
+        "type": "trap",
+        "spell_trap_type": ""
     },
     {
         "name": "Mystical Elf",
         "attribute": "LIGHT",
         "rarity": "super_rare",
-        "code": "LOB-062"
+        "code": "LOB-062",
+        "description": "A delicate elf that lacks offense, but has a terrific defense backed by mystical power.",
+        "type": "monster",
+        "attack": "800",
+        "defense": "2000",
+        "monster_type": "Spellcaster/Normal",
+        "level": "4"
     },
     {
         "name": "Tyhone",
         "attribute": "WIND",
         "rarity": "common",
-        "code": "LOB-063"
+        "code": "LOB-063",
+        "description": "Capable of firing cannonballs from its mouth for long-range attacks, this creature is particularly effective in mountain battles.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "1400",
+        "monster_type": "Winged Beast/Normal",
+        "level": "4"
     },
     {
         "name": "Beaver Warrior",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-064"
+        "code": "LOB-064",
+        "description": "What this creature lacks in size it makes up for in defense when battling in the prairie.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "1500",
+        "monster_type": "Beast-Warrior/Normal",
+        "level": "4"
     },
     {
         "name": "Gravedigger Ghoul",
         "attribute": "SPELL",
         "rarity": "rare",
-        "code": "LOB-065"
+        "code": "LOB-065",
+        "description": "Select 2 Monster Cards from your opponent's Graveyard. These Monster Cards are removed from play for the remainder of the Duel.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Curse of Dragon",
         "attribute": "DARK",
         "rarity": "super_rare",
-        "code": "LOB-066"
+        "code": "LOB-066",
+        "description": "A wicked dragon that taps into dark forces to execute a powerful attack.",
+        "type": "monster",
+        "attack": "2000",
+        "defense": "1500",
+        "monster_type": "Dragon/Normal",
+        "level": "5"
     },
     {
         "name": "Karbonala Warrior",
         "attribute": "EARTH",
         "rarity": "rare",
-        "code": "LOB-067"
+        "code": "LOB-067",
+        "description": "\"M-Warrior #1\" + \"M-Warrior #2\"",
+        "type": "monster",
+        "attack": "1500",
+        "defense": "1200",
+        "monster_type": "Warrior/Fusion",
+        "level": "4"
     },
     {
         "name": "Giant Soldier of Stone",
         "attribute": "EARTH",
         "rarity": "rare",
-        "code": "LOB-068"
+        "code": "LOB-068",
+        "description": "A giant warrior made of stone. A punch from this creature has earth-shaking results.",
+        "type": "monster",
+        "attack": "1300",
+        "defense": "2000",
+        "monster_type": "Rock/Normal",
+        "level": "3"
     },
     {
         "name": "Uraby",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-069"
+        "code": "LOB-069",
+        "description": "Fast on its feet, this dinosaur rips enemies to shreds with its sharp claws.",
+        "type": "monster",
+        "attack": "1500",
+        "defense": "800",
+        "monster_type": "Dinosaur/Normal",
+        "level": "4"
     },
     {
         "name": "Red-Eyes Black Dragon",
         "attribute": "DARK",
         "rarity": "ultra_rare",
-        "code": "LOB-070"
+        "code": "LOB-070",
+        "description": "A ferocious dragon with a deadly attack.",
+        "type": "monster",
+        "attack": "2400",
+        "defense": "2000",
+        "monster_type": "Dragon/Normal",
+        "level": "7"
     },
     {
         "name": "Reaper of the Cards",
         "attribute": "DARK",
         "rarity": "rare",
-        "code": "LOB-071"
+        "code": "LOB-071",
+        "description": "FLIP: Select 1 Trap Card on the field and destroy it. If the selected card is Set, pick up and see the card. If it is a Trap Card, it is destroyed. If it is a Spell Card, return it to its original position.",
+        "type": "monster",
+        "attack": "1380",
+        "defense": "1930",
+        "monster_type": "Fiend/Effect",
+        "level": "5"
     },
     {
         "name": "Witty Phantom",
         "attribute": "DARK",
         "rarity": "common",
-        "code": "LOB-072"
+        "code": "LOB-072",
+        "description": "Dressed in a night-black tuxedo, this creature presides over the darkness.",
+        "type": "monster",
+        "attack": "1400",
+        "defense": "1300",
+        "monster_type": "Fiend/Normal",
+        "level": "4"
     },
     {
         "name": "Larvas",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-073"
+        "code": "LOB-073",
+        "description": "A fast-moving, bird-like creature that strangles opposing monsters with its long, thin arms.",
+        "type": "monster",
+        "attack": "800",
+        "defense": "1000",
+        "monster_type": "Beast/Normal",
+        "level": "3"
     },
     {
         "name": "Hard Armor",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-074"
+        "code": "LOB-074",
+        "description": "A living suit of armor that attacks enemies with a bone-jarring tackle.",
+        "type": "monster",
+        "attack": "300",
+        "defense": "1200",
+        "monster_type": "Warrior/Normal",
+        "level": "3"
     },
     {
         "name": "Man Eater",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-075"
+        "code": "LOB-075",
+        "description": "Man-eating plant with poison feelers for attacking enemies.",
+        "type": "monster",
+        "attack": "800",
+        "defense": "600",
+        "monster_type": "Plant/Normal",
+        "level": "2"
     },
     {
         "name": "M-Warrior #1",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-076"
+        "code": "LOB-076",
+        "description": "Specializing in combination attacks, this warrior uses magnetism to block an enemy's escape.",
+        "type": "monster",
+        "attack": "1000",
+        "defense": "500",
+        "monster_type": "Warrior/Normal",
+        "level": "3"
     },
     {
         "name": "M-Warrior #2",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-077"
+        "code": "LOB-077",
+        "description": "Specializing in combination attacks, this warrior is equipped with a tough, magnetically coated armor.",
+        "type": "monster",
+        "attack": "500",
+        "defense": "1000",
+        "monster_type": "Warrior/Normal",
+        "level": "3"
     },
     {
         "name": "Spirit of the Harp",
         "attribute": "LIGHT",
         "rarity": "rare",
-        "code": "LOB-078"
+        "code": "LOB-078",
+        "description": "A spirit that soothes the soul with the music of its heavenly harp.",
+        "type": "monster",
+        "attack": "800",
+        "defense": "2000",
+        "monster_type": "Fairy/Normal",
+        "level": "4"
     },
     {
         "name": "Armaill",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-079"
+        "code": "LOB-079",
+        "description": "A strange warrior who manipulates three deadly blades with both hands and his tail.",
+        "type": "monster",
+        "attack": "700",
+        "defense": "1300",
+        "monster_type": "Warrior/Normal",
+        "level": "3"
     },
     {
         "name": "Terra the Terrible",
         "attribute": "DARK",
         "rarity": "common",
-        "code": "LOB-080"
+        "code": "LOB-080",
+        "description": "Known as a swamp dweller, this creature is a minion of the dark forces.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "1300",
+        "monster_type": "Fiend/Normal",
+        "level": "4"
     },
     {
         "name": "Frenzied Panda",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-081"
+        "code": "LOB-081",
+        "description": "A savage beast that carries a big bamboo stick for beating down its enemies.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "1000",
+        "monster_type": "Beast/Normal",
+        "level": "4"
     },
     {
         "name": "Kumootoko",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-082"
+        "code": "LOB-082",
+        "description": "A massive, intelligent spider that traps enemies with webbing.",
+        "type": "monster",
+        "attack": "700",
+        "defense": "1400",
+        "monster_type": "Insect/Normal",
+        "level": "3"
     },
     {
         "name": "Meda Bat",
         "attribute": "DARK",
         "rarity": "common",
-        "code": "LOB-083"
+        "code": "LOB-083",
+        "description": "An eyeball fiend created by a servant of the wicked, it uses \"Dark Blasts\" to blow away its enemies.",
+        "type": "monster",
+        "attack": "800",
+        "defense": "400",
+        "monster_type": "Fiend/Normal",
+        "level": "2"
     },
     {
         "name": "Enchanting Mermaid",
         "attribute": "WATER",
         "rarity": "common",
-        "code": "LOB-084"
+        "code": "LOB-084",
+        "description": "A beautiful mermaid that lures voyagers to a watery grave.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "900",
+        "monster_type": "Fish/Normal",
+        "level": "3"
     },
     {
         "name": "Fireyarou",
         "attribute": "FIRE",
         "rarity": "common",
-        "code": "LOB-085"
+        "code": "LOB-085",
+        "description": "A malevolent creature wrapped in flames that attacks enemies with intense fire.",
+        "type": "monster",
+        "attack": "1300",
+        "defense": "1000",
+        "monster_type": "Pyro/Normal",
+        "level": "4"
     },
     {
         "name": "Dragoness the Wicked Knight",
         "attribute": "WIND",
         "rarity": "rare",
-        "code": "LOB-086"
+        "code": "LOB-086",
+        "description": "\"Armaill\" + \"One-Eyed Shield Dragon\"",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "900",
+        "monster_type": "Warrior/Fusion",
+        "level": "3"
     },
     {
         "name": "One-Eyed Shield Dragon",
         "attribute": "WIND",
         "rarity": "common",
-        "code": "LOB-087"
+        "code": "LOB-087",
+        "description": "This dragon wears a shield not only for its own protection, but also for ramming its enemies.",
+        "type": "monster",
+        "attack": "700",
+        "defense": "1300",
+        "monster_type": "Dragon/Normal",
+        "level": "3"
     },
     {
         "name": "Dark Energy",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-088"
+        "code": "LOB-088",
+        "description": "A Fiend-Type monster equipped with this card increases its ATK and DEF by 300 points.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Laser Cannon Armor",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-089"
+        "code": "LOB-089",
+        "description": "Equip only to an Insect monster. It gains 300 ATK/DEF.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Vile Germs",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-090"
+        "code": "LOB-090",
+        "description": "A Plant-Type monster equipped with this card increases its ATK and DEF by 300 points.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Silver Bow and Arrow",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-091"
+        "code": "LOB-091",
+        "description": "A Fairy-Type monster equipped with this card increases its ATK and DEF by 300 points.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Dragon Treasure",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-092"
+        "code": "LOB-092",
+        "description": "A Dragon-Type monster equipped with this card increases its ATK and DEF by 300 points.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Electro-Whip",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-093"
+        "code": "LOB-093",
+        "description": "A Thunder-Type monster equipped with this card increases its ATK and DEF by 300 points.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Mystical Moon",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-094"
+        "code": "LOB-094",
+        "description": "Equip only to a Beast-Warrior-Type monster. It gains 300 ATK and DEF.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Stop Defense",
         "attribute": "SPELL",
         "rarity": "rare",
-        "code": "LOB-095"
+        "code": "LOB-095",
+        "description": "Select 1 Defense Position monster on your opponent's side of the field and change it to Attack Position.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Machine Conversion Factory",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-096"
+        "code": "LOB-096",
+        "description": "Equip only to a Machine monster. It gains 300 ATK/DEF.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Raise Body Heat",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-097"
+        "code": "LOB-097",
+        "description": "Equip only to a Dinosaur monster. It gains 300 ATK/DEF.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Follow Wind",
         "attribute": "SPELL",
         "rarity": "common",
-        "code": "LOB-098"
+        "code": "LOB-098",
+        "description": "A Winged Beast-Type monster equipped with this card increases its ATK and DEF by 300 points.",
+        "type": "spell",
+        "spell_trap_type": "Equip"
     },
     {
         "name": "Goblin's Secret Remedy",
         "attribute": "SPELL",
         "rarity": "rare",
-        "code": "LOB-099"
+        "code": "LOB-099",
+        "description": "Increase your Life Points by 600 points.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Final Flame",
         "attribute": "SPELL",
         "rarity": "rare",
-        "code": "LOB-100"
+        "code": "LOB-100",
+        "description": "Inflict 600 points of damage to your opponent's Life Points.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Swords of Revealing Light",
         "attribute": "SPELL",
         "rarity": "super_rare",
-        "code": "LOB-101"
+        "code": "LOB-101",
+        "description": "After this card's activation, it remains on the field, but you must destroy it during the End Phase of your opponent's 3rd turn. When this card is activated: If your opponent controls a face-down monster, flip all monsters they control face-up. While this card is face-up on the field, your opponent's monsters cannot declare an attack.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Metal Dragon",
         "attribute": "WIND",
         "rarity": "rare",
-        "code": "LOB-102"
+        "code": "LOB-102",
+        "description": "\"Steel Ogre Grotto #1\" + \"Lesser Dragon\"",
+        "type": "monster",
+        "attack": "1850",
+        "defense": "1700",
+        "monster_type": "Machine/Fusion",
+        "level": "6"
     },
     {
         "name": "Spike Seadra",
         "attribute": "WATER",
         "rarity": "common",
-        "code": "LOB-103"
+        "code": "LOB-103",
+        "description": "Using the spikes sprouting from its body, this creature stabs its opponents and floods them with electricity.",
+        "type": "monster",
+        "attack": "1600",
+        "defense": "1300",
+        "monster_type": "Sea Serpent/Normal",
+        "level": "5"
     },
     {
         "name": "Tripwire Beast",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-104"
+        "code": "LOB-104",
+        "description": "This creature attacks with electromagnetic waves.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "1300",
+        "monster_type": "Thunder/Normal",
+        "level": "4"
     },
     {
         "name": "Skull Red Bird",
         "attribute": "WIND",
         "rarity": "common",
-        "code": "LOB-105"
+        "code": "LOB-105",
+        "description": "This monster swoops down and attacks with a rain of knives stored in its wings.",
+        "type": "monster",
+        "attack": "1550",
+        "defense": "1200",
+        "monster_type": "Winged Beast/Normal",
+        "level": "4"
     },
     {
         "name": "Armed Ninja",
         "attribute": "EARTH",
         "rarity": "rare",
-        "code": "LOB-106"
+        "code": "LOB-106",
+        "description": "FLIP: Target 1 Spell Card on the field; destroy that target. (If the target is Set, reveal it, and destroy it if it is a Spell Card. Otherwise, return it to its original position.)",
+        "type": "monster",
+        "attack": "300",
+        "defense": "300",
+        "monster_type": "Warrior/Effect",
+        "level": "1"
     },
     {
         "name": "Flower Wolf",
         "attribute": "EARTH",
         "rarity": "rare",
-        "code": "LOB-107"
+        "code": "LOB-107",
+        "description": "\"Silver Fang\" + \"Darkworld Thorns\"",
+        "type": "monster",
+        "attack": "1800",
+        "defense": "1400",
+        "monster_type": "Beast/Fusion",
+        "level": "5"
     },
     {
         "name": "Man-Eater Bug",
         "attribute": "EARTH",
         "rarity": "super_rare",
-        "code": "LOB-108"
+        "code": "LOB-108",
+        "description": "FLIP: Target 1 monster on the field; destroy it.",
+        "type": "monster",
+        "attack": "450",
+        "defense": "600",
+        "monster_type": "Insect/Flip/Effect",
+        "level": "2"
     },
     {
         "name": "Sand Stone",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-109"
+        "code": "LOB-109",
+        "description": "Appears from underground and attacks with long, snake-like tentacles.",
+        "type": "monster",
+        "attack": "1300",
+        "defense": "1600",
+        "monster_type": "Rock/Normal",
+        "level": "5"
     },
     {
         "name": "Hane-Hane",
         "attribute": "EARTH",
         "rarity": "rare",
-        "code": "LOB-110"
+        "code": "LOB-110",
+        "description": "FLIP: Select 1 monster on the field and return it to its owner's hand.",
+        "type": "monster",
+        "attack": "450",
+        "defense": "500",
+        "monster_type": "Beast/Effect",
+        "level": "2"
     },
     {
         "name": "Misairuzame",
         "attribute": "WATER",
         "rarity": "common",
-        "code": "LOB-111"
+        "code": "LOB-111",
+        "description": "A missile-launching fish protected by deadly spikes.",
+        "type": "monster",
+        "attack": "1400",
+        "defense": "1600",
+        "monster_type": "Fish/Normal",
+        "level": "5"
     },
     {
         "name": "Steel Ogre Grotto #1",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-112"
+        "code": "LOB-112",
+        "description": "A steel idol worshipped in the Land of Machines.",
+        "type": "monster",
+        "attack": "1400",
+        "defense": "1800",
+        "monster_type": "Machine/Normal",
+        "level": "5"
     },
     {
         "name": "Lesser Dragon",
         "attribute": "WIND",
         "rarity": "common",
-        "code": "LOB-113"
+        "code": "LOB-113",
+        "description": "A minor dragon incapable of breathing fire.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "1000",
+        "monster_type": "Dragon/Normal",
+        "level": "4"
     },
     {
         "name": "Darkworld Thorns",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-114"
+        "code": "LOB-114",
+        "description": "A thorny plant found in the darklands that wraps itself around any unwary traveler.",
+        "type": "monster",
+        "attack": "1200",
+        "defense": "900",
+        "monster_type": "Plant/Normal",
+        "level": "3"
     },
     {
         "name": "Drooling Lizard",
         "attribute": "EARTH",
         "rarity": "common",
-        "code": "LOB-115"
+        "code": "LOB-115",
+        "description": "A blood-sucking snake in human form that attacks any living being that passes nearby.",
+        "type": "monster",
+        "attack": "900",
+        "defense": "800",
+        "monster_type": "Reptile/Normal",
+        "level": "3"
     },
     {
         "name": "Armored Starfish",
         "attribute": "WATER",
         "rarity": "common",
-        "code": "LOB-116"
+        "code": "LOB-116",
+        "description": "A bluish starfish with a solid hide capable of fending off attacks.",
+        "type": "monster",
+        "attack": "850",
+        "defense": "1400",
+        "monster_type": "Aqua/Normal",
+        "level": "4"
     },
     {
         "name": "Succubus Knight",
         "attribute": "DARK",
         "rarity": "common",
-        "code": "LOB-117"
+        "code": "LOB-117",
+        "description": "A warrior wizard adept in casting bone-chilling spells.",
+        "type": "monster",
+        "attack": "1650",
+        "defense": "1300",
+        "monster_type": "Warrior/Normal",
+        "level": "5"
     },
     {
         "name": "Monster Reborn",
         "attribute": "SPELL",
         "rarity": "ultra_rare",
-        "code": "LOB-118"
+        "code": "LOB-118",
+        "description": "Target 1 monster in either GY; Special Summon it.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Pot of Greed",
         "attribute": "SPELL",
         "rarity": "rare",
-        "code": "LOB-119"
+        "code": "LOB-119",
+        "description": "Draw 2 cards.",
+        "type": "spell",
+        "spell_trap_type": ""
     },
     {
         "name": "Right Leg of the Forbidden One",
         "attribute": "DARK",
         "rarity": "ultra_rare",
-        "code": "LOB-120"
+        "code": "LOB-120",
+        "description": "A forbidden right leg sealed by magic. Whosoever breaks this seal will know infinite power.",
+        "type": "monster",
+        "attack": "200",
+        "defense": "300",
+        "monster_type": "Spellcaster/Normal",
+        "level": "1"
     },
     {
         "name": "Left Leg of the Forbidden One",
         "attribute": "DARK",
         "rarity": "ultra_rare",
-        "code": "LOB-121"
+        "code": "LOB-121",
+        "description": "A forbidden left leg sealed by magic. Whosoever breaks this seal will know infinite power.",
+        "type": "monster",
+        "attack": "200",
+        "defense": "300",
+        "monster_type": "Spellcaster/Normal",
+        "level": "1"
     },
     {
         "name": "Right Arm of the Forbidden One",
         "attribute": "DARK",
         "rarity": "ultra_rare",
-        "code": "LOB-122"
+        "code": "LOB-122",
+        "description": "A forbidden right arm sealed by magic. Whosoever breaks this seal will know infinite power.",
+        "type": "monster",
+        "attack": "200",
+        "defense": "300",
+        "monster_type": "Spellcaster/Normal",
+        "level": "1"
     },
     {
         "name": "Left Arm of the Forbidden One",
         "attribute": "DARK",
         "rarity": "ultra_rare",
-        "code": "LOB-123"
+        "code": "LOB-123",
+        "description": "A forbidden left arm sealed by magic. Whosoever breaks this seal will know infinite power.",
+        "type": "monster",
+        "attack": "200",
+        "defense": "300",
+        "monster_type": "Spellcaster/Normal",
+        "level": "1"
     },
     {
         "name": "Exodia the Forbidden One",
         "attribute": "DARK",
         "rarity": "ultra_rare",
-        "code": "LOB-124"
+        "code": "LOB-124",
+        "description": "If you have \"Right Leg of the Forbidden One\", \"Left Leg of the Forbidden One\", \"Right Arm of the Forbidden One\" and \"Left Arm of the Forbidden One\" in addition to this card in your hand, you win the Duel.",
+        "type": "monster",
+        "attack": "1000",
+        "defense": "1000",
+        "monster_type": "Spellcaster/Effect",
+        "level": "3"
     },
     {
         "name": "Gaia the Dragon Champion",
         "attribute": "WIND",
         "rarity": "secret_rare",
-        "code": "LOB-125"
+        "code": "LOB-125",
+        "description": "\"Gaia The Fierce Knight\" + \"Curse of Dragon\"",
+        "type": "monster",
+        "attack": "2600",
+        "defense": "2100",
+        "monster_type": "Dragon/Fusion",
+        "level": "7"
     }
 ]

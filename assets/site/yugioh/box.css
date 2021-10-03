@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+header {
+    padding: 10px;
+    background-color: #bbb;
+}
+
+select {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.fancybox-content {
+    background-color: transparent;
+}
+.fancybox-slide--html .fancybox-close-small {
+    color: white;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+}
+
+.card-box .card {
+    margin: 1px;
+    width: calc(421px * 0.4);
+    height: calc(614px * 0.4);
+}
+
+.card-box {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1px;
+}
+
+.card-box .card {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.card .inspect-card {
+    display: block;
+    position: relative;
+}
+
+.card_effect {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transition: box-shadow 0.2s;
+}
+
+.card.rare:hover .card_effect {
+    -webkit-box-shadow: inset 0px 0px 21px 10px rgba(69, 111, 255, 0.85);
+    box-shadow: inset 0px 0px 21px 10px rgba(69, 111, 255, 0.85);
+}
+
+.card.super_rare:hover .card_effect {
+    -webkit-box-shadow: inset 0px 0px 21px 10px rgba(194, 69, 255, 0.85);
+    box-shadow: inset 0px 0px 21px 10px rgba(194, 69, 255, 0.85);
+}
+
+.card.ultra_rare:hover .card_effect {
+    -webkit-box-shadow: inset 0px 0px 21px 10px rgba(255, 221, 46, 0.85);
+    box-shadow: inset 0px 0px 21px 10px rgba(255, 221, 46, 0.85);
+}
+
+.card.secret_rare:hover .card_effect {
+    -webkit-box-shadow: inset 0px 0px 21px 10px rgba(255, 51, 51, 0.85);
+    box-shadow: inset 0px 0px 21px 10px rgba(255, 51, 51, 0.85);
+}

@@ -119,7 +119,7 @@ async function getPack(pack_code) {
 }
 
 async function getCards(owner) {
-    return db.query(`SELECT * FROM cards WHERE owner="${owner}"`)
+    return db.query(`SELECT card_info.*  FROM cards INNER JOIN card_info ON cards.code=card_info.code WHERE cards.owner="${owner}";`)
         .then((result) => {
             return result
         },
@@ -200,6 +200,70 @@ async function generatePackCode(user_id) {
     return result
 }
 
+async function importSetInfo(set_name) {
+    let booster_set = require(`./boosters/${set_name}/${set_name}.json`);
+    let monsters = booster_set.filter(element => element.type == "monster")
+    let spells_and_traps = booster_set.filter(element => element.type == "spell" || element.type == "trap")
+
+    let monsters_query = 'INSERT INTO card_info (code, name, level, attribute, type, attack, defense, monster_type, description, rarity) VALUES '
+    for(i = 0; i < monsters.length; i++) {
+        let card = monsters[i]
+        
+        // Parse numbers
+        card.level = parseInt(card.level)
+
+        Object.keys(card).forEach((key) => {
+            if(typeof card[key] === 'string' || card[key] instanceof String) {
+                card[key] = card[key].replace(/"/g, '""')
+            }
+        })
+
+        monsters_query += `("${card.code}", "${card.name}", ${card.level}, "${card.attribute}", "${card.type}", "${card.attack}", "${card.defense}", "${card.monster_type}", "${card.description}", "${card.rarity}")`
+        if(i != monsters.length - 1) { monsters_query += ',' }
+        else { monsters_query += ';' }
+    }
+
+    let spells_and_traps_query = 'INSERT INTO card_info (code, name, `spell_trap_type`, attribute, type, description, rarity) VALUES '
+    for(i = 0; i < spells_and_traps.length; i++) {
+        let card = spells_and_traps[i]
+
+        Object.keys(card).forEach((key) => {
+            if(typeof card[key] === 'string' || card[key] instanceof String) {
+                card[key] = card[key].replace(/"/g, '""')
+            }
+        })
+        console.log(card.spell_trap_type)
+
+        spells_and_traps_query += `("${card.code}", "${card.name}", "${card.spell_trap_type}", "${card.attribute}", "${card.type}", "${card.description}", "${card.rarity}")`
+        if(i != spells_and_traps.length - 1) { spells_and_traps_query += ',' }
+        else { spells_and_traps_query += ';' }
+    }
+
+    let promises = []
+    promises.push(db.query(monsters_query)
+        .then((result) => {
+            return true
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+    )
+
+    promises.push(db.query(spells_and_traps_query)
+        .then((result) => {
+            return true
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+    )
+
+    return Promise.all(promises)
+    
+}
+
 module.exports = {
     assembleBooster,
     generatePackCode,
@@ -207,5 +271,6 @@ module.exports = {
     packIsValid,
     packOwner,
     getPack,
-    getCards
+    getCards,
+    importSetInfo
 }

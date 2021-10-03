@@ -1,14 +1,33 @@
 <html>
     <head>
         <title>Aether Yu-Gi-Oh!</title>
-        <link rel="stylesheet" href="/api/yugioh/cards.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css"/>
+        <link rel="stylesheet" href="/api/yugioh/box.css">
     </head>
     <body>
+        <header>
+            <div class="flex">
+                <select class="filter sorting-type">
+                    <option selected value="name">Name</option>
+                    <option value="type">Card Type</option>
+                    <option value="rarity_index">Rarity</option>
+                    <option value="level">Monster Level</option>
+                    <option value="spell_trap_type">Spell/Trap Type</option>
+                    <option value="attack">Attack</option>
+                    <option value="defense">Defense</option>
+                </select>
+                <select class="filter sorting-direction">
+                    <option selected value="false">Descending</option>
+                    <option value="true">Ascending</option>
+                </select>
+            </div>
+        </header>
         <div class="card-box">
             <!-- Card Widget -->
         </div>
     </body>
 </html>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 <script src="https://unpkg.com/mustache@latest"></script>
 <script src="/api/yugioh/box.js"></script>
