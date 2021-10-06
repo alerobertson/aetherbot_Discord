@@ -184,8 +184,8 @@ function commandCheck(msg) {
         }
     }
 
-    if (command.substring(0, 6) == "yggivepack" && user.id == '164847467395940352') {
-        subCommand = command.slice(6)
+    if (command.substring(0, 10) == "yggivepack" && user.id == '164847467395940352') {
+        subCommand = command.slice(10)
         subCommand = subCommand.trim()
         yugioh.generatePackCode(subCommand).then((code) => {
             user.send(`${config.domain}/yugioh/booster/${code}`)
