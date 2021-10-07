@@ -338,7 +338,7 @@ function timeString(d) {
 }
 
 async function scoreLastWeek(username) {
-    return db.query(`SELECT SUM(honor) AS honor, SUM(score) AS score FROM entries WHERE username="${username}" AND DATE(datetime) > ADDDATE(CURRENT_DATE, -8) AND DATE(datetime) < CURRENT_DATE;`).then((result) => {
+    return db.query(`SELECT SUM(honor) AS honor, SUM(score) AS score FROM entries WHERE username="${username}" AND DATE(datetime) > ADDDATE(CURRENT_DATE, -7);`).then((result) => {
         if (result[0]) {
             return result[0]
         }
