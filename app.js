@@ -12,5 +12,8 @@ discord.init()
 const slack = require('./modules/slack')
 slack.init()
 
+const yugioh = require('./modules/yugioh')
+yugioh.init()
+
 const api_server = require('./web/api.js')
 api_server.start('/api')

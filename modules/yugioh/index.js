@@ -1,5 +1,7 @@
 const config = require('./config.json')
 const db = require('../mysql')
+const discordApi = require('../discord/api.js')
+var CronJob = require('cron').CronJob
 const { 
     v1: uuidv1, // Time Based
     v4: uuidv4, // Random
@@ -130,7 +132,23 @@ async function getCards(owner) {
 }
 
 async function getPacks(owner) {
-    return db.query(`SELECT * FROM packs WHERE owner="${owner}";`)
+    let query = `SELECT * FROM packs;`
+    if(owner) {
+        query = `SELECT * FROM packs WHERE owner="${owner}";`
+    }
+    return db.query(query)
+        .then((result) => {
+            return result
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+}
+
+async function getPackOwners() {
+    let query = `SELECT DISTINCT owner FROM packs;`
+    return db.query(query)
         .then((result) => {
             return result
         },
@@ -319,6 +337,17 @@ function timeString(d) {
 	return hh + ':' + mm + ':' + ss
 }
 
+async function scoreLastWeek(username) {
+    return db.query(`SELECT SUM(honor) AS honor, SUM(score) AS score FROM entries WHERE username="${username}" AND DATE(datetime) > ADDDATE(CURRENT_DATE, -8) AND DATE(datetime) < CURRENT_DATE;`).then((result) => {
+        if (result[0]) {
+            return result[0]
+        }
+        else {
+            return null
+        }
+    })
+}
+
 module.exports = {
     assembleBooster,
     generatePackCode,
@@ -328,5 +357,33 @@ module.exports = {
     getPack,
     getCards,
     getPacks,
-    importSetInfo
+    importSetInfo,
+    init: () => {
+        var job = new CronJob('0 21 * * 5', () => {
+            getPackOwners().then((packs) => {
+                let promises = []
+                let users = []
+                packs.forEach((pack) => {
+                    promises.push(
+                        discordApi.getUser(pack.owner).then((user) => {
+                            users.push(user)
+                        })
+                    )
+                })
+                Promise.all(promises).then(() => {
+                    users.forEach((user) => {
+                        scoreLastWeek(user.username + "#" + user.discriminator).then((results) => {
+                            let number_of_packs = 2
+                            if(results.honor >= 5) {
+                                number_of_packs++
+                            }
+                            for(let i = 0; i < number_of_packs; i++) {
+                                generatePackCode(user.id)
+                            }
+                        })
+                    })
+                })
+            })
+        },true,'America/Toronto')
+    }
 }
