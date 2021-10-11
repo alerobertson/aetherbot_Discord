@@ -155,6 +155,26 @@ function commandCheck(msg) {
                 }
             })
             break
+        case "ygopenall":
+            yugioh.getPacks(msg.author.id).then((packs) => {
+                if(packs.length <= 0) {
+                    msg.reply('You haven\'t become a duelist yet! Use ``++yginit`` to start.')
+                }
+                else {
+                    packs = packs.filter(pack => !pack.opened)
+                    if(packs.length <= 0) {
+                        msg.reply(`You currently have ${packs.length} unopened packs.`)
+                    }
+                    else {
+                        let string = '';
+                        packs.forEach((pack) => {
+                            string += `${config.domain}/yugioh/booster/${pack.code}\n`
+                        })
+                        user.send(string)
+                    }
+                }
+            })
+            break
     }
 
     // Complex commands
