@@ -14,10 +14,15 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
+    "cors": "^2.8.5",
     "cron": "^1.7.2",
     "discord.js": "^11.4.2",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
+    "node-fetch": "^3.0.0",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "discord-oauth2": "^2.8.0"
   }
 }

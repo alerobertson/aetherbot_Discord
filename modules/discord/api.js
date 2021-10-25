@@ -12,8 +12,20 @@ async function get(url) {
     })
 }
 
+async function getMe(access_token) {
+    headers = {
+        "Authorization": "Bearer " + access_token
+    }
+    return axios.get('https://discord.com/api/users/@me', { headers: headers }).then((response) => {
+        return response.data
+    }).catch((error) => {
+        return {}
+    })
+}
+
 module.exports = {
     getUser: async (id) => {
         return get('/users/' + id)
-    }
+    },
+    getMe
 }

@@ -121,7 +121,7 @@ async function getPack(pack_code) {
 }
 
 async function getCards(owner) {
-    return db.query(`SELECT card_info.*  FROM cards INNER JOIN card_info ON cards.code=card_info.code WHERE cards.owner="${owner}";`)
+    return db.query(`SELECT card_info.*, cards.id  FROM cards INNER JOIN card_info ON cards.code=card_info.code WHERE cards.owner="${owner}";`)
         .then((result) => {
             return result
         },
@@ -348,6 +348,23 @@ async function scoreLastWeek(username) {
     })
 }
 
+async function addTokens(token_data) {
+    let site_token = uuidv4()
+    await db.query(`UPDATE duelists SET discord_token="${token_data.access_token}", site_token="${site_token}", refresh_token="${token_data.refresh_token}" WHERE id="${token_data.id}";`)
+    return site_token
+}
+
+async function getUserBySiteToken(site_token) {
+    return db.query(`SELECT * FROM duelists where site_token="${site_token}"`).then((result) => {
+        if (result[0]) {
+            return result[0]
+        }
+        else {
+            return null
+        }
+    })
+}
+
 module.exports = {
     assembleBooster,
     generatePackCode,
@@ -358,6 +375,8 @@ module.exports = {
     getCards,
     getPacks,
     importSetInfo,
+    addTokens,
+    getUserBySiteToken,
     init: () => {
         var job = new CronJob('0 21 * * 5', () => {
             getPackOwners().then((packs) => {
