@@ -16,4 +16,4 @@ const yugioh = require('./modules/yugioh')
 yugioh.init()
 
 const api_server = require('./web/api.js')
-api_server.start('/api')
+api_server.start('/')

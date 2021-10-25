@@ -20,5 +20,10 @@
 		"++timezone#: Set your difference in hours relative to EST (+/- hours)\n",
 		"++mytimezone: Show what I think your time is right now\n"
 	],
-	"domain": "http://localhost:4001/api"
+	"domain": "http://localhost:4001/api",
+	"application": {
+		"client_id": "",
+		"client_secret": "",
+		"yugioh_domain": "http://localhost:5000"
+	}
 }
