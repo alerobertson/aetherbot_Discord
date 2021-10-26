@@ -1,7 +1,7 @@
 const cardTemplate = (
     '<div class="card {{rarity}}" card-name="{{name}}" card-code="{{code}}"><a class="inspect-card" href="#inspect">' +
         '<div class="card_effect"></div>' +
-        '<img alt="{{name}}" src="/api/yugioh/card/{{code}}" />' +
+        '<img alt="{{name}}" src="/yugioh/card/{{code}}" />' +
     '</a></div>'
 )
 const owner_code = window.location.pathname.split('/').pop()
@@ -13,7 +13,7 @@ function copyArray(array) {
 
 function openBooster() {
     $.ajax({
-        url: '/api/yugioh/get-cards/' + owner_code,
+        url: '/yugioh/get-cards/' + owner_code,
         type: "GET",
         data: {},
         success: function (cards) {

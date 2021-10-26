@@ -1,6 +1,6 @@
 const cardTemplate = (
     '<div class="card">' +
-        '<img alt="{{name}}" src="/api/yugioh/card/{{code}}" />' +
+        '<img alt="{{name}}" src="/yugioh/card/{{code}}" />' +
     '</div>'
 )
 const flipCardTemplate = (
@@ -8,11 +8,11 @@ const flipCardTemplate = (
         '<div class="flip-card-inner card">' +
             '<div class="flip-card-front">' +
                 '<div class="flip-card_effect"></div>' +
-                '<img alt="Back of Card" src="/api/yugioh/card/BACK" />' +
+                '<img alt="Back of Card" src="/yugioh/card/BACK" />' +
             '</div>' +
             '<div class="flip-card-back">' +
                 '<div class="flip-card_effect"></div>' +
-                '<img alt="{{name}}" src="/api/yugioh/card/{{code}}" />' +
+                '<img alt="{{name}}" src="/yugioh/card/{{code}}" />' +
             '</div>' +
         '</div>' +
     '</div>'
@@ -31,7 +31,7 @@ $('.booster_pack a').on('click', function(e) {
 
 function openBooster() {
     $.ajax({
-        url: '/api/yugioh/open/' + booster_code,
+        url: '/yugioh/open/' + booster_code,
         type: "GET",
         data: {},
         success: function (data) {
@@ -60,7 +60,7 @@ function renderCards(selector, cards) {
 async function checkCode(code) {
     let valid = false
     await $.ajax({
-        url: '/api/yugioh/check-code/' + code,
+        url: '/yugioh/check-code/' + code,
         type: "GET",
         data: {},
         success: function (data) {
