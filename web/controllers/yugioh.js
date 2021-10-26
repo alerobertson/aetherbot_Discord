@@ -19,6 +19,11 @@ router.get('/yugioh/card/:code', (req, res) => {
     res.sendFile(path.resolve(__dirname + '../../../assets/cards/' + code + '.jpg'));
 });
 
+router.get('/yugioh/booster-art/:code', (req, res) => {
+    let code = req.params.code
+    res.sendFile(path.resolve(__dirname + '../../../assets/boosters/' + code + '.png'));
+});
+
 router.get('/yugioh/box/:owner', (req, res) => {
     res.sendFile(path.resolve(__dirname + '../../../assets/site/yugioh/box.html'));
 });
@@ -38,7 +43,7 @@ router.get('/yugioh/my-cards/', async(req, res) => {
         let auth_token = req.headers.auth_token
         let user = await yugioh.getUserBySiteToken(auth_token)
         if(!user) {
-            res.sendStatus(404)
+            res.sendStatus(401)
         }
         else {
             let cards = await yugioh.getCards(user.id)
@@ -46,7 +51,25 @@ router.get('/yugioh/my-cards/', async(req, res) => {
         }
     }
     else {
-        res.sendStatus(404)
+        res.sendStatus(401)
+    }
+});
+
+router.get('/yugioh/my-packs/', async(req, res) => {
+    if(req.headers.auth_token) {
+        let auth_token = req.headers.auth_token
+        let user = await yugioh.getUserBySiteToken(auth_token)
+        if(!user) {
+            res.sendStatus(401)
+        }
+        else {
+            let packs = await yugioh.getPacks(user.id)
+            packs = packs.filter(pack => !pack.opened)
+            res.send(packs)
+        }
+    }
+    else {
+        res.sendStatus(401)
     }
 });
 
