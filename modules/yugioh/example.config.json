@@ -1,6 +1,64 @@
 {
-    "super_rarity": 20.0,
-    "ultra_rarity": 4.1667,
-    "secret_rarity": 3.225,
-    "current_set_code": "LOB"
+    "current_set_code": "LOB",
+    "sets" : {
+        "LOB": {
+            "rarities": {
+                "super_rare": 20.0,
+                "ultra_rare": 4.1667,
+                "secret_rare": 3.225
+            },
+            "markup": [
+                { 
+                    "rarity": "common",
+                    "amount": 7 
+                },
+                { 
+                    "rarity": "rare",
+                    "amount": 1 
+                },
+                { 
+                    "rarity": "random",
+                    "amount": 1 
+                }
+            ]
+        },
+        "MRD": {
+            "rarities": {
+                "super_rare": 20.0,
+                "ultra_rare": 4.1667,
+                "secret_rare": 3.225
+            },
+            "markup": [
+                { 
+                    "rarity": "common",
+                    "amount": 7 
+                },
+                { 
+                    "rarity": "rare",
+                    "amount": 1 
+                },
+                { 
+                    "rarity": "random",
+                    "amount": 1 
+                }
+            ]
+        },
+        "TP1": {
+            "rarities": {
+                "rare": 33.3333,
+                "super_rare": 5.5555,
+                "ultra_rare": 0.9259
+            },
+            "markup": [
+                { 
+                    "rarity": "common",
+                    "amount": 2 
+                },
+                { 
+                    "rarity": "random",
+                    "amount": 1 
+                }
+            ]
+        }
+    }
 }
