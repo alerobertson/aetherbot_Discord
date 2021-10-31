@@ -9,6 +9,7 @@
 const Discord = require("discord.js")
 const client = new Discord.Client()
 const config = require('./config.json')
+const yugiohConfig = require('../yugioh/config.json')
 
 // modules
 const db = require("../mysql/index.js")
@@ -207,7 +208,7 @@ function commandCheck(msg) {
     if (command.substring(0, 10) == "yggivepack" && user.id == '164847467395940352') {
         subCommand = command.slice(10)
         subCommand = subCommand.trim()
-        yugioh.generatePackCode(subCommand).then((code) => {
+        yugioh.generatePackCode(subCommand, yugiohConfig.current_set_code, true).then((code) => {
             user.send(`${config.domain}/yugioh/booster/${code}`)
         })
     }

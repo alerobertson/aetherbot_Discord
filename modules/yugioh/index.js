@@ -1,6 +1,7 @@
 const config = require('./config.json')
 const db = require('../mysql')
 const discordApi = require('../discord/api.js')
+const importFunctions = require('./import.js')
 var CronJob = require('cron').CronJob
 const { 
     v1: uuidv1, // Time Based
@@ -31,30 +32,28 @@ function sortCards(cards) {
     return new_cards
 }
 
-// 1:31 - Secret Rare - 3.225%
-// 1:24 - Ultra Rare - 4.1667&
-// 1:5 - Super Rare - 20%
-
-const super_rarity = config.super_rarity
-const ultra_rarity = config.ultra_rarity
-const secret_rarity = config.secret_rarity
-
-function determineRarity(value) {
+function determineRarity(odds, value) {
     var rarity = rarities.COMMON
+    let calculated_odds = []
+    let starting_value = 100.0
+    let rarity_keys = Object.keys(odds)
 
-    let super_odds = 100.0 - super_rarity
-    if(value >= super_odds) {
-        rarity = rarities.SUPER_RARE
+
+    for(let x = 0; x < rarity_keys.length; x++) {
+        let key = rarity_keys[x]
+        starting_value -= odds[key]
+        calculated_odds.push({
+            rarity: key,
+            value: starting_value
+        })
     }
 
-    let ultra_odds = super_odds - ultra_rarity
-    if(value < super_odds && value >= ultra_odds) {
-        rarity = rarities.ULTRA_RARE
-    }
-
-    let secret_odds = ultra_odds - secret_rarity
-    if(value < ultra_odds && value >= secret_odds) {
-        rarity = rarities.SECRET_RARE
+    for(let x = 0; x < calculated_odds.length; x++) {
+        let o = calculated_odds[x]
+        if(value >= o.value) {
+            rarity = o.rarity
+            break
+        }
     }
 
     return rarity
@@ -72,30 +71,42 @@ function pull(cards, rarity) {
     }
 }
 
-function assembleBooster() {
-    const code = config.current_set_code
-    const booster_set = require(`./boosters/${code}/${code}.json`);
-    const cards = sortCards(booster_set)
+async function getBoosterSet(set_name) {
+    let query = `SELECT * FROM card_info WHERE code LIKE "${set_name}-%";`
+    return db.query(query)
+        .then((result) => {
+            return result
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+}
 
+async function assembleBooster(set_name = config.current_set_code) {
+    const set_info = config.sets[set_name]
+    const cards = sortCards(await getBoosterSet(set_name))
     let booster = []
 
-    // Commons, 7
-    for(let x = 0; x < 7; x++) {
-        let card = pull(cards, rarities.COMMON)
-        booster.push(card)
-    }
-    // Rare, 1
-    for(let x = 0; x < 1; x++) {
-        let card = pull(cards, rarities.RARE)
-        booster.push(card)
-    }
-    // Random Card (Common / Super Rare+), 1
-    for(let x = 0; x < 1; x++) {
-        let random_value = Math.random() * 100
-        let rarity = determineRarity(random_value)
-        let card = pull(cards, rarity)
-        booster.push(card)
-    }
+    set_info.markup.forEach((markup_item) => {
+        let rarity = markup_item.rarity
+        let number_of_cards = markup_item.amount
+
+        if(rarity == "random") {
+            for(let x = 0; x < number_of_cards; x++) {
+                let random_value = Math.random() * 100
+                let rarity = determineRarity(set_info.rarities, random_value)
+                let card = pull(cards, rarity)
+                booster.push(card)
+            }
+        }
+        else {
+            for(let x = 0; x < number_of_cards; x++) {
+                let card = pull(cards, rarity)
+                booster.push(card)
+            }
+        }
+    })
 
     return booster
 }
@@ -121,7 +132,7 @@ async function getPack(pack_code) {
 }
 
 async function getCards(owner) {
-    return db.query(`SELECT card_info.*, cards.id  FROM cards INNER JOIN card_info ON cards.code=card_info.code WHERE cards.owner="${owner}";`)
+    return db.query(`SELECT card_info.*, cards.id, cards.first_edition FROM cards INNER JOIN card_info ON cards.code=card_info.code WHERE cards.owner="${owner}";`)
         .then((result) => {
             return result
         },
@@ -169,11 +180,11 @@ async function packOwner(pack_code) {
     else { return null }
 }
 
-async function addCardsToCollection(owner, cards) {
-    let query = 'INSERT INTO cards (code, name, owner) VALUES '
+async function addCardsToCollection(owner, cards, first_edition = false) {
+    let query = 'INSERT INTO cards (code, name, owner, first_edition) VALUES '
     for(i = 0; i < cards.length; i++) {
         let card = cards[i]
-        query += `("${card.code}", "${card.name}", "${owner}")`
+        query += `("${card.code}", "${card.name}", "${owner}", ${first_edition})`
         if(i != cards.length - 1) { query += ',' }
         else { query += ';' }
     }
@@ -196,18 +207,24 @@ async function openPack(pack_code) {
         return null
     }
     else {
-        let owner = await packOwner(pack_code)
-        let booster = await assembleBooster()
-        let success = await addCardsToCollection(owner, booster)
+        let pack = await getPack(pack_code)
+        let owner = pack.owner
+        let booster = await assembleBooster(pack.set_name)
+        let success = await addCardsToCollection(owner, booster, pack.first_edition)
+
         if(success) {
             return db.query(`UPDATE packs SET opened=true WHERE code="${pack_code}";`)
-            .then((result) => {
-                return {owner, booster}
-            },
-            (err) => {
-                console.error(err)
-                return null
-            })
+                .then((result) => {
+                    booster = booster.map(card => {
+                        card.first_edition = pack.first_edition ? 1 : 0
+                        return card
+                    })
+                    return {owner, booster}
+                },
+                (err) => {
+                    console.error(err)
+                    return null
+                })
         }
         else {
             return null
@@ -215,10 +232,10 @@ async function openPack(pack_code) {
     }
 }
 
-async function generatePackCode(user_id) {
+async function generatePackCode(user_id, set_name = config.current_set_code, first_edition = false) {
     const pack_code = uuidv4()
 
-    var result = await db.query(`INSERT INTO packs (code, owner, opened) VALUES ("${pack_code}", "${user_id}", false)`)
+    var result = await db.query(`INSERT INTO packs (code, owner, opened, set_name, first_edition) VALUES ("${pack_code}", "${user_id}", false, "${set_name}", ${first_edition})`)
         .then((result) => {
             updateLatestPack(user_id, new Date())
             return pack_code
@@ -243,70 +260,6 @@ async function updateLatestPack(owner, d) {
             return false
         })
 
-}
-
-async function importSetInfo(set_name) {
-    let booster_set = require(`./boosters/${set_name}/${set_name}.json`);
-    let monsters = booster_set.filter(element => element.type == "monster")
-    let spells_and_traps = booster_set.filter(element => element.type == "spell" || element.type == "trap")
-
-    let monsters_query = 'INSERT INTO card_info (code, name, level, attribute, type, attack, defense, monster_type, description, rarity) VALUES '
-    for(i = 0; i < monsters.length; i++) {
-        let card = monsters[i]
-        
-        // Parse numbers
-        card.level = parseInt(card.level)
-
-        Object.keys(card).forEach((key) => {
-            if(typeof card[key] === 'string' || card[key] instanceof String) {
-                card[key] = card[key].replace(/"/g, '""')
-            }
-        })
-
-        monsters_query += `("${card.code}", "${card.name}", ${card.level}, "${card.attribute}", "${card.type}", "${card.attack}", "${card.defense}", "${card.monster_type}", "${card.description}", "${card.rarity}")`
-        if(i != monsters.length - 1) { monsters_query += ',' }
-        else { monsters_query += ';' }
-    }
-
-    let spells_and_traps_query = 'INSERT INTO card_info (code, name, `spell_trap_type`, attribute, type, description, rarity) VALUES '
-    for(i = 0; i < spells_and_traps.length; i++) {
-        let card = spells_and_traps[i]
-
-        Object.keys(card).forEach((key) => {
-            if(typeof card[key] === 'string' || card[key] instanceof String) {
-                card[key] = card[key].replace(/"/g, '""')
-            }
-        })
-        console.log(card.spell_trap_type)
-
-        spells_and_traps_query += `("${card.code}", "${card.name}", "${card.spell_trap_type}", "${card.attribute}", "${card.type}", "${card.description}", "${card.rarity}")`
-        if(i != spells_and_traps.length - 1) { spells_and_traps_query += ',' }
-        else { spells_and_traps_query += ';' }
-    }
-
-    let promises = []
-    promises.push(db.query(monsters_query)
-        .then((result) => {
-            return true
-        },
-        (err) => {
-            console.error(err)
-            return false
-        })
-    )
-
-    promises.push(db.query(spells_and_traps_query)
-        .then((result) => {
-            return true
-        },
-        (err) => {
-            console.error(err)
-            return false
-        })
-    )
-
-    return Promise.all(promises)
-    
 }
 
 // Creates a relevant string for the Date object
@@ -374,7 +327,6 @@ module.exports = {
     getPack,
     getCards,
     getPacks,
-    importSetInfo,
     addTokens,
     getUserBySiteToken,
     init: () => {
@@ -385,7 +337,9 @@ module.exports = {
                 packs.forEach((pack) => {
                     promises.push(
                         discordApi.getUser(pack.owner).then((user) => {
-                            users.push(user)
+                            if(user.id) {
+                                users.push(user)
+                            }
                         })
                     )
                 })

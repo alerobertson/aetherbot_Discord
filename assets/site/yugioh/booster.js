@@ -1,6 +1,6 @@
 const cardTemplate = (
     '<div class="card">' +
-        '<img alt="{{name}}" src="/yugioh/card/{{code}}" />' +
+        '<img alt="{{name}}" src="/yugioh/card/{{code}}?fe={{first_edition}}" />' +
     '</div>'
 )
 const flipCardTemplate = (
@@ -12,7 +12,7 @@ const flipCardTemplate = (
             '</div>' +
             '<div class="flip-card-back">' +
                 '<div class="flip-card_effect"></div>' +
-                '<img alt="{{name}}" src="/yugioh/card/{{code}}" />' +
+                '<img alt="{{name}}" src="/yugioh/card/{{code}}?fe={{first_edition}}" />' +
             '</div>' +
         '</div>' +
     '</div>'
@@ -35,6 +35,7 @@ function openBooster() {
         type: "GET",
         data: {},
         success: function (data) {
+            console.log(data)
             renderCards('.cards', data.booster)
         },
         error: function (error) {
@@ -70,9 +71,25 @@ async function checkCode(code) {
     return valid
 }
 
+async function getPackInfo(code) {
+    return $.ajax({
+        url: '/yugioh/pack/' + code,
+        type: "GET",
+        data: {}
+    })
+    .then((response) => {
+        return response.pack
+    },(error) => {
+        console.log(error)
+        return {}
+    })
+}
+
 async function start() {
     let valid = await checkCode(booster_code)
-    console.log(valid)
+    let pack = await getPackInfo(booster_code)
+    console.log(pack)
+    $('.booster_pack img').attr('src', '/yugioh/booster-art/' + pack.set_name)
     if(valid) {
         setTimeout( function(){
             $('.booster_pack').css('top', 20)

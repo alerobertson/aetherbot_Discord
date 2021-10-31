@@ -1,6 +1,7 @@
 const express = require('express')
 const axios = require('axios')
 const router = express.Router();
+const sharp = require('sharp')
 const path = require('path');
 const yugioh = require('../../modules/yugioh')
 const discordApi = require('../../modules/discord/api')
@@ -14,9 +15,21 @@ router.get('/yugioh/booster/:code', (req, res) => {
     res.sendFile(path.resolve(__dirname + '../../../assets/site/yugioh/booster.html'));
 });
 
-router.get('/yugioh/card/:code', (req, res) => {
+router.get('/yugioh/card/:code', async (req, res) => {
     let code = req.params.code
-    res.sendFile(path.resolve(__dirname + '../../../assets/cards/' + code + '.jpg'));
+    if(req.query.fe == 1) {
+        let file = await sharp(path.resolve(__dirname + '../../../assets/cards/' + code + '.jpg'))
+            .composite([{ 
+                input: path.resolve(__dirname + '../../../assets/cards/FE.png')
+            }])
+            .toFormat('jpg')
+            .toBuffer()
+    
+        res.end(file, 'binary');
+    }
+    else {
+        res.sendFile(path.resolve(__dirname + '../../../assets/cards/' + code + '.jpg'));
+    }
 });
 
 router.get('/yugioh/booster-art/:code', (req, res) => {
@@ -89,6 +102,17 @@ router.get('/yugioh/check-code/:code', async(req, res) => {
     res.send({ valid })
 });
 
+router.get('/yugioh/pack/:code', async(req, res) => {
+    let code = req.params.code
+    let pack = await yugioh.getPack(code)
+    if(pack) {
+        res.send({ pack })
+    }
+    else {
+        res.sendStatus(404)
+    }
+});
+
 // Discord OAuth2
 async function getToken(code) {
 	headers = {
@@ -124,13 +148,8 @@ router.get('/yugioh/auth/', async(req, res) => {
 		else {
 			res.sendStatus(400)
 		}
-		console.log(token_data)
 	}
     
-})
-
-router.get('/yugioh/test/', async(req, res) => {
-    console.log(req.query)
 })
 
 module.exports = router
