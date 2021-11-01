@@ -351,7 +351,7 @@ module.exports = {
                                 number_of_packs++
                             }
                             for(let i = 0; i < number_of_packs; i++) {
-                                generatePackCode(user.id)
+                                generatePackCode(user.id, config.current_set_code, true)
                             }
                         })
                     })
