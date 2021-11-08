@@ -7,6 +7,7 @@ const {
     v1: uuidv1, // Time Based
     v4: uuidv4, // Random
 } = require('uuid');
+const discord = require('../discord')
 
 const rarities = {
     COMMON: 'common',
@@ -132,7 +133,7 @@ async function getPack(pack_code) {
 }
 
 async function getCards(owner) {
-    return db.query(`SELECT card_info.*, cards.id, cards.first_edition FROM cards INNER JOIN card_info ON cards.code=card_info.code WHERE cards.owner="${owner}";`)
+    return db.query(`SELECT card_info.*, cards.owner, cards.id, cards.first_edition FROM cards INNER JOIN card_info ON cards.code=card_info.code WHERE cards.owner="${owner}";`)
         .then((result) => {
             return result
         },
@@ -318,6 +319,124 @@ async function getUserBySiteToken(site_token) {
     })
 }
 
+async function getDuelists() {
+    return db.query(`SELECT id FROM duelists WHERE discord_token IS NOT NULL;`).then((response) => {
+        let duelist_ids = response.map(duelist => duelist.id)
+        return discordApi.getUsers(duelist_ids)
+    })
+}
+
+async function validateOwnership(cards, owner) {
+    if(!cards.length) {
+        return true
+    }
+    let count = await db.query(`SELECT COUNT(*) AS count FROM cards WHERE id in (${cards.toString()}) AND owner="${owner}";`).then((response) => {
+        return response[0].count
+    })
+    return cards.length == count
+}
+
+async function cardsInOffer(cards) {
+    let count = await db.query(`SELECT COUNT(*) AS count FROM offer_cards WHERE id in (${cards.toString()});`).then((response) => {
+        return response[0].count
+    }) 
+    return count > 0
+}
+
+// [], "12319827541897", [], "12319827541897"
+async function addOffer(offer, id, partner_offer, partner_id) {
+    let card_ids = offer.concat(partner_offer)
+    if(!card_ids.length) {
+        return false
+    }
+
+    let trade_id = await db.query(`INSERT INTO offers (owner, target, state) VALUES ("${id}", "${partner_id}", "open")`).then((response) => {
+        return response.insertId
+    })
+
+    let query = 'INSERT INTO offer_cards (id, trade_id) VALUES '
+    for(i = 0; i < card_ids.length; i++) {
+        let card_id = card_ids[i]
+        query += `("${card_id}", "${trade_id}")`
+        if(i != card_ids.length - 1) { query += ',' }
+        else { query += ';' }
+    }
+
+    return db.query(query)
+        .then((result) => {
+            return true
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+    
+}
+
+async function sanitizeOffers(offers) {
+    let offers_by_trade_id = {}
+    offers.forEach((offer) => {
+        if(!offers_by_trade_id[offer.trade_id]) {
+            offers_by_trade_id[offer.trade_id] = [offer]
+        }
+        else {
+            offers_by_trade_id[offer.trade_id].push(offer)
+        }
+    })
+
+    let compiled_offers = []
+    Object.keys(offers_by_trade_id).forEach((trade_id) => {
+        let offer_cards = offers_by_trade_id[trade_id]
+        let offer_owner = offer_cards[0].offer_owner
+        let offer_target = offer_cards[0].offer_target
+        let state = offer_cards[0].state
+        let owner_offer = offer_cards.filter(c => c.owner == c.offer_owner)
+        let target_offer = offer_cards.filter(c => c.owner == c.offer_target)
+
+        compiled_offers.push({
+            owner: { offer: owner_offer, user: offer_owner },
+            target: { offer: target_offer, user: offer_target },
+            id: trade_id,
+            state: state
+        })
+    })
+
+    let guild_members = await discordApi.getUsers()
+
+    // Add discord data
+    compiled_offers = compiled_offers.map((offer) => {
+        let owner = guild_members.find(member => offer.owner.user == member.id)
+        let target = guild_members.find(member => offer.target.user == member.id)
+        offer.owner.user = owner
+        offer.target.user = target
+        return offer
+    })
+
+    return compiled_offers
+}
+
+async function getOffers(user_id) {
+    let offers = await db.query(`SELECT card_info.*, cards.code, cards.first_edition, cards.owner, offers.owner AS offer_owner, offers.target AS offer_target, offers.state, offer_cards.* FROM offers INNER JOIN offer_cards ON offer_cards.trade_id=offers.id INNER JOIN cards ON offer_cards.id=cards.id INNER JOIN card_info ON cards.code=card_info.code WHERE (offers.owner="${user_id}" OR offers.target="${user_id}");`)
+    let compiled_offers = await sanitizeOffers(offers)
+    return compiled_offers
+}
+
+async function getOffer(offer_id) {
+    let offers = await db.query(`SELECT card_info.*, cards.code, cards.first_edition, cards.owner, offers.owner AS offer_owner, offers.target AS offer_target, offers.state, offer_cards.* FROM offers INNER JOIN offer_cards ON offer_cards.trade_id=offers.id INNER JOIN cards ON offer_cards.id=cards.id INNER JOIN card_info ON cards.code=card_info.code WHERE (offers.id="${offer_id}");`)
+    let compiled_offers = await sanitizeOffers(offers)
+    return compiled_offers[0]
+}
+
+async function setOfferState(offer_id, state) {
+    let query = `UPDATE offers SET state="${state}" WHERE id=${offer_id};`
+    return db.query(query)
+}
+
+async function setCardOwner(card_id, new_owner) {
+    let query = `UPDATE cards SET owner="${new_owner}" WHERE id=${card_id};`
+    return db.query(query)
+}
+
 module.exports = {
     assembleBooster,
     generatePackCode,
@@ -329,6 +448,14 @@ module.exports = {
     getPacks,
     addTokens,
     getUserBySiteToken,
+    getDuelists,
+    validateOwnership,
+    addOffer,
+    cardsInOffer,
+    getOffers,
+    getOffer,
+    setOfferState,
+    setCardOwner,
     init: () => {
         var job = new CronJob('0 21 * * 5', () => {
             getPackOwners().then((packs) => {

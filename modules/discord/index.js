@@ -113,8 +113,8 @@ function commandCheck(msg) {
             yugioh.getPacks(msg.author.id).then((packs) => {
                 if(packs.length <= 0) {
                     let promises = []
-                    promises.push(yugioh.generatePackCode(msg.author.id))
-                    promises.push(yugioh.generatePackCode(msg.author.id))
+                    promises.push(yugioh.generatePackCode(msg.author.id, yugiohConfig.current_set_code, true))
+                    promises.push(yugioh.generatePackCode(msg.author.id, yugiohConfig.current_set_code, true))
                     Promise.all(promises).then(() => {
                         msg.reply('Welcome! You have been awarded (2) packs! Open one with ``++ygopenpack``')
                     })

@@ -96,10 +96,140 @@ router.get('/yugioh/get-cards/:owner', async(req, res) => {
     }
 });
 
+router.post('/yugioh/send-offer/', async(req, res) => {
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    if(!user || !req.body) {
+        res.sendStatus(401)
+    }
+    else {
+        // let cards_in_offer = await yugioh.cardsInOffer(req.body.offer.concat(req.body.partner_offer))
+        let offer_valid = await yugioh.validateOwnership(req.body.offer, user.id)
+        let partner_valid = await yugioh.validateOwnership(req.body.partner_offer, req.body.partner)
+        if(offer_valid && partner_valid) {
+            let success = await yugioh.addOffer(req.body.offer, user.id, req.body.partner_offer, req.body.partner)
+            if(success) {
+                res.sendStatus(201)
+            }
+            else {
+                res.sendStatus(403)
+            }
+        }
+        else {
+            res.sendStatus(403)
+        }
+    }
+});
+
 router.get('/yugioh/check-code/:code', async(req, res) => {
     let code = req.params.code
     let valid = await yugioh.packIsValid(code)
     res.send({ valid })
+});
+
+router.get('/yugioh/duelists/', async(req, res) => {
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    if(!user) {
+        res.sendStatus(401)
+    }
+    else {
+        let duelists = await yugioh.getDuelists()
+        duelists = duelists.filter(duelist => duelist.id != user.id)
+        res.send(duelists)
+    }
+});
+
+router.get('/yugioh/me/', async(req, res) => {
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    if(!user) {
+        res.sendStatus(401)
+    }
+    else {
+        res.send({
+            id: user.id,
+            site_token: user.site_token
+        })
+    }
+});
+
+router.get('/yugioh/my-offers/', async(req, res) => {
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    if(!user) {
+        res.sendStatus(401)
+    }
+    else {
+        let offers = await yugioh.getOffers(user.id)
+        res.send(offers)
+    }
+});
+
+router.get('/yugioh/cancel-offer/:id', async(req, res) => {
+    let trade_id = req.params.id
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    if(!user) {
+        res.sendStatus(401)
+    }
+    else {
+        let offer = await yugioh.getOffer(trade_id)
+        if(offer.owner.user.id == user.id) {
+            await yugioh.setOfferState(trade_id, 'cancelled')
+            res.sendStatus(201)
+        }
+        else {
+            res.sendStatus(401)
+        }
+    }
+});
+
+router.get('/yugioh/decline-offer/:id', async(req, res) => {
+    let trade_id = req.params.id
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    if(!user) {
+        res.sendStatus(401)
+    }
+    else {
+        let offer = await yugioh.getOffer(trade_id)
+        if(offer.target.user.id == user.id) {
+            await yugioh.setOfferState(trade_id, 'declined')
+            res.sendStatus(201)
+        }
+        else {
+            res.sendStatus(401)
+        }
+    }
+});
+
+router.get('/yugioh/accept-offer/:id', async(req, res) => {
+    let trade_id = req.params.id
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    if(!user) {
+        res.sendStatus(401)
+    }
+    else {
+        let offer = await yugioh.getOffer(trade_id)
+        if(offer.target.user.id == user.id) {
+            let target_id = offer.target.user.id
+            let owner_id = offer.owner.user.id
+
+            await offer.owner.offer.forEach(async (card) => {
+                await yugioh.setCardOwner(card.id, target_id)
+            })
+            await offer.target.offer.forEach(async (card) => {
+                await yugioh.setCardOwner(card.id, owner_id)
+            })
+            await yugioh.setOfferState(trade_id, 'accepted')
+            res.sendStatus(201)
+        }
+        else {
+            res.sendStatus(401)
+        }
+    }
 });
 
 router.get('/yugioh/pack/:code', async(req, res) => {
