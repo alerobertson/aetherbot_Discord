@@ -1,5 +1,5 @@
 {
-    "current_set_code": "LOB",
+    "current_set_code": "MRD",
     "sets" : {
         "LOB": {
             "rarities": {
@@ -56,6 +56,14 @@
                 },
                 { 
                     "rarity": "random",
+                    "amount": 1 
+                }
+            ]
+        },
+        "TT2": {
+            "markup": [
+                { 
+                    "rarity": "ultra_rare",
                     "amount": 1 
                 }
             ]

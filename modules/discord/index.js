@@ -212,6 +212,14 @@ function commandCheck(msg) {
             user.send(`${config.domain}/yugioh/booster/${code}`)
         })
     }
+
+    if (command.substring(0, 9) == "yggivett2" && user.id == '164847467395940352') {
+        subCommand = command.slice(9)
+        subCommand = subCommand.trim()
+        yugioh.generatePackCode(subCommand, 'TT2', false).then((code) => {
+            user.send(`${config.domain}/yugioh/booster/${code}`)
+        })
+    }
 }
 
 function display(msg, result) {
