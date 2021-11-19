@@ -132,6 +132,26 @@ async function getPack(pack_code) {
     return pack
 }
 
+async function findPack(pack_code) {
+    let pack = await db.query(`SELECT * FROM packs WHERE code LIKE "%${pack_code}%";`)
+        .then((result) => {
+            if(result[0]) {
+                let pack = result[0]
+                return pack
+            }
+            else {
+                console.error('No pack with code like "' + pack_code + '" found!')
+                return null
+            }
+        },
+        (err) => {
+            console.error(err)
+            return null
+        })
+
+    return pack
+}
+
 async function getCards(owner) {
     return db.query(`SELECT card_info.*, cards.owner, cards.id, cards.first_edition FROM cards INNER JOIN card_info ON cards.code=card_info.code WHERE cards.owner="${owner}";`)
         .then((result) => {
@@ -158,6 +178,18 @@ async function getPacks(owner) {
         })
 }
 
+async function getCoupons() {
+    let query = `SELECT * FROM packs WHERE owner="unowned" && opened=false;`
+    return db.query(query)
+        .then((result) => {
+            return result
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+}
+
 async function getPackOwners() {
     let query = `SELECT DISTINCT owner FROM packs;`
     return db.query(query)
@@ -170,9 +202,21 @@ async function getPackOwners() {
         })
 }
 
+async function setPackOwner(pack_code, new_owner) {
+    let query = `UPDATE packs SET owner="${new_owner}" WHERE code="${pack_code}"`
+    return db.query(query)
+        .then((result) => {
+            return result
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+}
+
 async function packIsValid(pack_code) {
     let pack = await getPack(pack_code)
-    return pack != null && !pack.opened
+    return pack != null && !pack.opened && pack.owner != "unowned"
 }
 
 async function packOwner(pack_code) {
@@ -444,8 +488,11 @@ module.exports = {
     packIsValid,
     packOwner,
     getPack,
+    findPack,
     getCards,
     getPacks,
+    getCoupons,
+    setPackOwner,
     addTokens,
     getUserBySiteToken,
     getDuelists,

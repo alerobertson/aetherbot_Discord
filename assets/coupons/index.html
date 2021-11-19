@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <title>Coupon Sheet</title>
+    </head>
+    <body>
+        <div id="coupons"></div>
+    </body>
+</html>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://unpkg.com/mustache@latest"></script>
+<script>
+    const coupon_template = (
+        '{{#.}}' +
+            '<div class="coupon">' +
+                '<img src="BACK.jpg" />' +
+                '<div class="coupon_code">{{code}}</div>' +
+            '</div>' +
+        '{{/.}}'
+    )
+
+    async function getCoupons() {
+        return $.ajax({
+            url: 'http://localhost:4001/yugioh/coupons/',
+            type: "GET",
+            data: {}
+        })
+        .then((response) => {
+            return response
+        },(error) => {
+            console.log(error)
+            return {}
+        })
+    }
+
+    async function start() {
+        let coupons = await getCoupons()
+        coupons = coupons.splice(18, 18)
+        $.each(coupons, (i, coupon) => {
+            coupon[coupon.set_name] = true
+            let pack_segments = coupon.code.split('-')
+            coupon.code = `${pack_segments[1]}-${pack_segments[2]}-${pack_segments[3]}`.toUpperCase()
+        })
+        let content = Mustache.render(coupon_template, coupons)
+        $('#coupons').html(content)
+    }
+
+    start()
+</script>
+<style>
+    body {
+        margin: 0;
+    }
+    #coupons {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+    .coupon {
+        position: relative;
+    }
+    .coupon_code {
+        box-sizing: border-box;
+        width: 180px;
+        height: 50px;
+        font-weight: 800;
+        position: absolute;
+        top: calc(50% - 27px);
+        right: 30px;
+        line-height: 50px;
+        font-size: 21px;
+        font-family: "Consolas";
+        color: rgb(0, 0, 0);
+        text-align: center;
+    }
+
+    @media print {
+        #coupons {
+            justify-content: space-between;
+            height: 100vh;
+            overflow-y: hidden;
+        }
+    }
+</style>

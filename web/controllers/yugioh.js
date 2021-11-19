@@ -32,6 +32,11 @@ router.get('/yugioh/card/:code', async (req, res) => {
     }
 });
 
+/*router.get('/yugioh/coupons/', async (req, res) => {
+    let coupons = await yugioh.getCoupons()
+    res.send(coupons)
+});*/
+
 router.get('/yugioh/booster-art/:code', (req, res) => {
     let code = req.params.code
     res.sendFile(path.resolve(__dirname + '../../../assets/boosters/' + code + '.png'));
@@ -240,6 +245,32 @@ router.get('/yugioh/pack/:code', async(req, res) => {
     }
     else {
         res.sendStatus(404)
+    }
+});
+
+router.get('/yugioh/redeem/:code', async(req, res) => {
+    let code = req.params.code.toLowerCase()
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    let code_expression = /^[0-9a-zA-Z]{4}[\-][0-9a-zA-Z]{4}[\-][0-9a-zA-Z]{4}$/
+    if(!user || !code.match(code_expression)) {
+        res.sendStatus(401)
+    }
+    else {
+        let pack = await yugioh.findPack(code)
+        if(pack && pack.owner == "unowned") {
+            yugioh.setPackOwner(pack.code, user.id).then((response) => {
+                if(response) {
+                    res.sendStatus(201)
+                }
+                else {
+                    res.sendStatus(401)
+                }
+            })
+        }
+        else {
+            res.sendStatus(404)
+        }
     }
 });
 
