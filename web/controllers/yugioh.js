@@ -101,6 +101,25 @@ router.get('/yugioh/get-cards/:owner', async(req, res) => {
     }
 });
 
+router.get('/yugioh/sets', async(req, res) => {
+    let card_sets = await yugioh.getCardSets()
+    if (card_sets) {
+        res.send(card_sets)
+    } else {
+        res.sendStatus(404)
+    }
+});
+
+router.get('/yugioh/sets/:set_id', async(req, res) => {
+    let set_id = req.params.set_id
+    let cards = await yugioh.getBoosterSet(set_id)
+    if (cards) {
+        res.send(cards)
+    } else {
+        res.sendStatus(404)
+    }
+});
+
 router.post('/yugioh/send-offer/', async(req, res) => {
     let auth_token = req.headers.auth_token
     let user = await yugioh.getUserBySiteToken(auth_token)
@@ -154,7 +173,8 @@ router.get('/yugioh/me/', async(req, res) => {
     else {
         res.send({
             id: user.id,
-            site_token: user.site_token
+            site_token: user.site_token,
+            gems: user.gems
         })
     }
 });
@@ -180,7 +200,7 @@ router.get('/yugioh/cancel-offer/:id', async(req, res) => {
     }
     else {
         let offer = await yugioh.getOffer(trade_id)
-        if(offer.owner.user.id == user.id) {
+        if(offer.owner.user.id == user.id && offer.state == 'open') {
             await yugioh.setOfferState(trade_id, 'cancelled')
             res.sendStatus(201)
         }
@@ -199,7 +219,7 @@ router.get('/yugioh/decline-offer/:id', async(req, res) => {
     }
     else {
         let offer = await yugioh.getOffer(trade_id)
-        if(offer.target.user.id == user.id) {
+        if(offer.target.user.id == user.id && offer.state == 'open') {
             await yugioh.setOfferState(trade_id, 'declined')
             res.sendStatus(201)
         }
@@ -218,7 +238,7 @@ router.get('/yugioh/accept-offer/:id', async(req, res) => {
     }
     else {
         let offer = await yugioh.getOffer(trade_id)
-        if(offer.target.user.id == user.id) {
+        if(offer.target.user.id == user.id && offer.state == 'open') {
             let target_id = offer.target.user.id
             let owner_id = offer.owner.user.id
 
@@ -271,6 +291,35 @@ router.get('/yugioh/redeem/:code', async(req, res) => {
         else {
             res.sendStatus(404)
         }
+    }
+});
+
+// Crafting
+router.get('/yugioh/disenchant/:id', async(req, res) => {
+    let id = req.params.id
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    let card = await yugioh.getCard(id)
+    if(!user || card.owner != user.id) {
+        res.sendStatus(401)
+    }
+    else {
+        let success = await yugioh.disenchant(id)
+        res.sendStatus(success ? 201 : 500)
+    }
+});
+
+router.get('/yugioh/enchant/:code', async(req, res) => {
+    let code = req.params.code
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    let card = await yugioh.getCardInfo(code)
+    if(!user || user.gems < card.enchant) {
+        res.sendStatus(401)
+    }
+    else {
+        let success = await yugioh.enchant(code, user.id)
+        res.sendStatus(success ? 201 : 500)
     }
 });
 

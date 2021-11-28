@@ -6,8 +6,9 @@
     "dev": "node app.js",
     "test": "TEST=true node test.js",
     "generate-pack": "node action_scripts/generate-packs.js",
-    "generate-tp1": "cross-env SET=TP1 PACKS=1 FIRST=1 node action_scripts/generate-packs.js",
-    "generate-tp1-7": "cross-env SET=TP1 PACKS=7 FIRST=1 node action_scripts/generate-packs.js"
+    "generate": "cross-env SET=MRD PACKS=3 FIRST=1 OWNER=739214836080050228 node action_scripts/generate-packs.js",
+    "generate-tp1-7": "cross-env SET=TP1 PACKS=7 FIRST=1 node action_scripts/generate-packs.js",
+    "generate-tt2": "cross-env SET=TT2 PACKS=1 FIRST=1 node action_scripts/generate-packs.js"
   },
   "repository": {
     "type": "git",

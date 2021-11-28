@@ -20,7 +20,8 @@
                     "rarity": "random",
                     "amount": 1 
                 }
-            ]
+            ],
+            "craftable": true
         },
         "MRD": {
             "rarities": {
@@ -41,7 +42,8 @@
                     "rarity": "random",
                     "amount": 1 
                 }
-            ]
+            ],
+            "craftable": false
         },
         "TP1": {
             "rarities": {
@@ -58,7 +60,8 @@
                     "rarity": "random",
                     "amount": 1 
                 }
-            ]
+            ],
+            "craftable": false
         },
         "TT2": {
             "markup": [
@@ -66,7 +69,8 @@
                     "rarity": "ultra_rare",
                     "amount": 1 
                 }
-            ]
+            ],
+            "craftable": false
         }
     }
 }

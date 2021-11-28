@@ -73,7 +73,7 @@ function pull(cards, rarity) {
 }
 
 async function getBoosterSet(set_name) {
-    let query = `SELECT * FROM card_info WHERE code LIKE "${set_name}-%";`
+    let query = `SELECT card_info.*, card_value.* FROM card_info INNER JOIN card_value ON card_info.rarity=card_value.rarity WHERE code LIKE "${set_name}-%";`
     return db.query(query)
         .then((result) => {
             return result
@@ -152,8 +152,40 @@ async function findPack(pack_code) {
     return pack
 }
 
+async function getCard(card_id) {
+    return db.query(`SELECT cards.*, card_info.*, card_value.* FROM cards INNER JOIN card_info ON cards.code=card_info.code INNER JOIN card_value ON card_info.rarity=card_value.rarity WHERE id=${card_id};`)
+        .then((result) => {
+            if(result[0]) {
+                return result[0]
+            }
+            else {
+                return false
+            }
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+}
+
+async function getCardInfo(code) {
+    return db.query(`SELECT card_info.*, card_value.* FROM card_info INNER JOIN card_value ON card_info.rarity=card_value.rarity WHERE code="${code}";`)
+        .then((result) => {
+            if(result[0]) {
+                return result[0]
+            }
+            else {
+                return false
+            }
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+}
+
 async function getCards(owner) {
-    return db.query(`SELECT card_info.*, cards.owner, cards.id, cards.first_edition FROM cards INNER JOIN card_info ON cards.code=card_info.code WHERE cards.owner="${owner}";`)
+    return db.query(`SELECT card_info.*, cards.owner, cards.id, cards.first_edition, card_value.* FROM cards INNER JOIN card_info ON cards.code=card_info.code INNER JOIN card_value ON card_info.rarity=card_value.rarity WHERE cards.owner="${owner}";`)
         .then((result) => {
             return result
         },
@@ -161,6 +193,27 @@ async function getCards(owner) {
             console.error(err)
             return false
         })
+}
+
+async function getCardSets() {
+    let card_sets = config.sets
+    let card_set_ids = Object.keys(card_sets)
+    let card_sets_array = []
+    card_set_ids.forEach(key => {
+        let value = card_sets[key]
+        card_sets_array.push({
+            set_name: key,
+            craftable: value.craftable
+        })
+    })
+
+    card_sets_array = await Promise.all(card_sets_array.map(async (set) => {
+        let cards = await getBoosterSet(set.set_name)
+        set.cards = cards
+        return set
+    }));
+
+    return card_sets_array
 }
 
 async function getPacks(owner) {
@@ -481,15 +534,41 @@ async function setCardOwner(card_id, new_owner) {
     return db.query(query)
 }
 
+async function disenchant(card_id) {
+    let card = await getCard(card_id)
+    let owner = card.owner
+    return db.query(`DELETE FROM cards WHERE id=${card_id}`).then((response) => {
+        return db.query(`UPDATE duelists SET gems=gems+${card.disenchant} WHERE id="${owner}";`)
+    }, (error) => {
+        return false
+    })
+}
+
+async function enchant(code, owner) {
+    let card = await getCardInfo(code)
+    return addCardsToCollection(owner, [card]).then((success) => {
+        if(success) {
+            return db.query(`UPDATE duelists SET gems=gems-${card.enchant} WHERE id="${owner}";`)
+        }
+        else {
+            return false
+        }
+    })
+}
+
 module.exports = {
     assembleBooster,
     generatePackCode,
+    getBoosterSet,
     openPack,
     packIsValid,
     packOwner,
     getPack,
     findPack,
     getCards,
+    getCardSets,
+    getCard,
+    getCardInfo,
     getPacks,
     getCoupons,
     setPackOwner,
@@ -503,6 +582,8 @@ module.exports = {
     getOffer,
     setOfferState,
     setCardOwner,
+    disenchant,
+    enchant,
     init: () => {
         var job = new CronJob('0 21 * * 5', () => {
             getPackOwners().then((packs) => {
