@@ -43,7 +43,7 @@
                     "amount": 1 
                 }
             ],
-            "craftable": false
+            "craftable": true
         },
         "TP1": {
             "rarities": {
@@ -67,6 +67,28 @@
             "markup": [
                 { 
                     "rarity": "ultra_rare",
+                    "amount": 1 
+                }
+            ],
+            "craftable": false
+        },
+        "SRL": {
+            "rarities": {
+                "super_rare": 20.0,
+                "ultra_rare": 4.1667,
+                "secret_rare": 3.225
+            },
+            "markup": [
+                { 
+                    "rarity": "common",
+                    "amount": 7 
+                },
+                { 
+                    "rarity": "rare",
+                    "amount": 1 
+                },
+                { 
+                    "rarity": "random",
                     "amount": 1 
                 }
             ],
