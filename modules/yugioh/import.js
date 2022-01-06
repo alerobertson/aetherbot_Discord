@@ -16,7 +16,10 @@ const type_mapping = {
     "Normal Monster": "Normal",
     "Flip Effect Monster": "Flip/Effect",
     "Fusion Monster": "Fusion",
-    "Effect Monster": "Effect"
+    "Effect Monster": "Effect",
+    "Toon Monster": "Toon",
+    "Ritual Monster": "Ritual",
+    "Ritual Effect Monster": "Ritual"
 }
 const card_type_mapping = {
     "Normal Monster": "monster",
@@ -24,11 +27,14 @@ const card_type_mapping = {
     "Fusion Monster": "monster",
     "Effect Monster": "monster",
     "Trap Card": "trap",
-    "Spell Card": "spell"
+    "Spell Card": "spell",
+    "Toon Monster": "monster",
+    "Ritual Monster": "monster",
+    "Ritual Effect Monster": "monster"
 }
 
 async function downloadImage(url, file_name) {
-    const new_path = path.resolve(__dirname, '../../images', file_name)
+    const new_path = path.resolve(__dirname, '../../assets/cards/', file_name)
     const writer = fs.createWriteStream(new_path)
 
     const response = await axios({
