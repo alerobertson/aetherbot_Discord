@@ -92,7 +92,7 @@
                     "amount": 1 
                 }
             ],
-            "craftable": false
+            "craftable": true
         },
         "PSV": {
             "rarities": {
@@ -111,6 +111,33 @@
                 },
                 { 
                     "rarity": "random",
+                    "amount": 1 
+                }
+            ],
+            "craftable": false
+        },
+        "TP2": {
+            "rarities": {
+                "rare": 33.3333,
+                "super_rare": 5.5555,
+                "ultra_rare": 0.9259
+            },
+            "markup": [
+                { 
+                    "rarity": "common",
+                    "amount": 2 
+                },
+                { 
+                    "rarity": "random",
+                    "amount": 1 
+                }
+            ],
+            "craftable": false
+        },
+        "T2": {
+            "markup": [
+                { 
+                    "rarity": "ultra_rare",
                     "amount": 1 
                 }
             ],
