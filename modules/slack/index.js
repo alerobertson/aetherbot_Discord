@@ -20,6 +20,16 @@ async function postRequest(url, message) {
     })
 }
 
+async function postQuoteFromToday() {
+    var webhooks = config.webhooks
+    webhooks.forEach(async (webhook) => {
+        await paperquotes.fetchQuote(1, 'motivation').then((result) => {
+            let quote = result[0].quote
+            postRequest(webhook, quote)
+        })
+    })
+}
+
 module.exports = {
     postMessage: postRequest,
     init: () => {
@@ -32,5 +42,6 @@ module.exports = {
             		})
         	},true,'America/Toronto')
 	})
-    }
+    },
+    postQuoteFromToday
 }

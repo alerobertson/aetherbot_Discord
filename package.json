@@ -7,9 +7,11 @@
     "test": "TEST=true node test.js",
     "generate-pack": "node action_scripts/generate-packs.js",
     "generate": "cross-env SET=SRL PACKS=1 FIRST=1 OWNER=201119681023574027 node action_scripts/generate-packs.js",
-    "generate-tp1-7": "cross-env SET=TP1 PACKS=7 FIRST=1 node action_scripts/generate-packs.js",
+    "generate-t2-1": "cross-env SET=T2 PACKS=1 FIRST=0 node action_scripts/generate-packs.js",
     "generate-tt2": "cross-env SET=TT2 PACKS=1 FIRST=1 node action_scripts/generate-packs.js",
-    "import-set": "cross-env SET=SRL node action_scripts/download-set.js"
+    "import-set": "cross-env SET=LON node action_scripts/download-set.js",
+    "generate-tp2": "cross-env SET=TP2 PACKS=15 FIRST=1 OWNER=164847467395940352 node action_scripts/generate-packs.js",
+    "post-quote-slack": "node action_scripts/post-quote-slack.js"
   },
   "repository": {
     "type": "git",

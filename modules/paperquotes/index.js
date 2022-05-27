@@ -18,7 +18,7 @@ module.exports = {
 	fetchQuote: async (limit, tag, start_date = config.start_date) => {
 		var day_one = new Date(start_date)
 		var day = Math.floor((new Date().getTime() - day_one.getTime()) / (1000 * 3600 * 24))
-		var url = `https://api.paperquotes.com/apiv1/quotes/?language=en&limit=${limit}&offset=${day}&tags=${tag}`
+		var url = `https://api.paperquotes.com/apiv1/quotes/?lang=en&limit=${limit}&offset=${day}&tags=${tag}&curated=1`
 		return getRequest(url, config.token)
     }
 }
