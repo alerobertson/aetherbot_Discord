@@ -164,6 +164,46 @@
                 }
             ],
             "craftable": true
+        },
+        "LOD": {
+            "rarities": {
+                "super_rare": 20.0,
+                "ultra_rare": 4.1667,
+                "secret_rare": 3.225
+            },
+            "markup": [
+                { 
+                    "rarity": "common",
+                    "amount": 7 
+                },
+                { 
+                    "rarity": "rare",
+                    "amount": 1 
+                },
+                { 
+                    "rarity": "random",
+                    "amount": 1 
+                }
+            ],
+            "craftable": true
+        },
+        "TP3": {
+            "rarities": {
+                "rare": 33.3333,
+                "super_rare": 5.5555,
+                "ultra_rare": 0.9259
+            },
+            "markup": [
+                { 
+                    "rarity": "common",
+                    "amount": 2 
+                },
+                { 
+                    "rarity": "random",
+                    "amount": 1 
+                }
+            ],
+            "craftable": false
         }
     }
 }
