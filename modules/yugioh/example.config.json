@@ -1,5 +1,5 @@
 {
-    "current_set_code": "MRD",
+    "current_set_code": "LOD",
     "sets" : {
         "LOB": {
             "rarities": {
@@ -185,7 +185,7 @@
                     "amount": 1 
                 }
             ],
-            "craftable": true
+            "craftable": false
         },
         "TP3": {
             "rarities": {
@@ -200,6 +200,15 @@
                 },
                 { 
                     "rarity": "random",
+                    "amount": 1 
+                }
+            ],
+            "craftable": false
+        },
+        "T3": {
+            "markup": [
+                { 
+                    "rarity": "ultra_rare",
                     "amount": 1 
                 }
             ],
