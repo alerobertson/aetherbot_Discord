@@ -21,6 +21,7 @@ const type_mapping = {
     "Ritual Monster": "Ritual",
     "Ritual Effect Monster": "Ritual",
     "Spirit Monster": "Spirit",
+    "Union Effect Monster": "Union"
 }
 const card_type_mapping = {
     "Normal Monster": "monster",
@@ -33,6 +34,7 @@ const card_type_mapping = {
     "Ritual Monster": "monster",
     "Ritual Effect Monster": "monster",
     "Spirit Monster": "monster",
+    "Union Effect Monster": "monster"
 }
 
 async function downloadImage(url, file_name) {
