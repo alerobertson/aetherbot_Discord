@@ -7,7 +7,7 @@
  * Uses Discord.JS
 */
 const Discord = require("discord.js")
-const client = new Discord.Client()
+const client = new Discord.Client({ intents: 37379 })
 const config = require('./config.json')
 const yugiohConfig = require('../yugioh/config.json')
 
@@ -21,6 +21,7 @@ const yugioh = require('../yugioh')
 const motd = require('./motd')
 
 function wordCheck(msg) {
+    console.log(msg.content)
     // Check for goodbot/badbot
     goodCheck(msg)
 
@@ -538,13 +539,18 @@ module.exports = {
             console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`)
         })
 
+        console.log("bingus")
+        client.on("interactionCreate", (interaction) => {
+            console.log(interaction)
+        })
+
         // Every time a message is sent in a place AetherBot can read
-        client.on('message', msg => {
+        client.on('messageCreate', msg => {
             // Don't read messages from bots
             if (msg.author.bot) return
 
             // Only read messages from text channels
-            if (msg.channel.type != 'text') return
+            // if (msg.channel.type != 'text') return
 
             wordCheck(msg)
         })
