@@ -556,6 +556,104 @@ async function enchant(code, owner) {
     })
 }
 
+async function saveDeck(deck_id, owner, name, cards) {
+    let deck = await getDeck(deck_id)
+    if(deck && deck.owner != owner) {
+        return false
+    }
+    if(deck) {
+        await db.query(`UPDATE decks SET name="${name}" WHERE id=${deck_id};`)
+        await db.query(`DELETE FROM deck_cards WHERE deck_id="${deck_id}";`)
+    }
+    else {
+        await db.query(`INSERT INTO decks (owner, name) VALUES ("${owner}", "${name}");`)
+    }
+    let insert_query = `INSERT INTO deck_cards (deck_id, code, first_edition) VALUES `
+    cards.forEach((card) => {
+        insert_query += `(${deck_id}, "${card.code}", ${card.first_edition}),`
+    })
+    // Replace last comma with a semi-colon
+    insert_query = insert_query.replace(/.$/,";")
+    return await db.query(insert_query).then((response) => {
+        return true
+    , (error) => {
+        return false
+    }})
+}
+
+async function newDeck(owner, name) {
+    let query = `INSERT INTO decks (owner, name) VALUES ("${owner}", "${name}");`
+    return db.query(query).then((response) => {
+        return response.insertId
+    })
+}
+
+async function renameDeck(deck_id, new_name) {
+    let query = `UPDATE decks SET name="${new_name}" WHERE id=${deck_id};`
+    return db.query(query)
+}
+
+async function getDeck(deck_id) {
+    let query = `SELECT deck_id, decks.name AS deck_name, first_edition, owner, card_info.*, card_value.* FROM deck_cards LEFT JOIN decks ON deck_cards.deck_id = decks.id LEFT JOIN card_info ON deck_cards.code = card_info.code LEFT JOIN card_value ON card_info.rarity = card_value.rarity WHERE deck_id=${deck_id};`
+    return db.query(query).then(async (response) => {
+        if(response.length > 0) {
+            let deck = {
+                id: deck_id,
+                name: response[0].name,
+                owner: response[0].owner,
+                cards: []
+            }
+            deck.cards = response.map(card => {
+                return {
+                    code: card.code,
+                    first_edition: card.first_edition
+                }
+            })
+            return deck
+        }
+        // No cards with that deck_id
+        else {
+            let decks = await db.query(`SELECT * FROM decks WHERE id=${deck_id};`)
+            if(decks.length > 0) {
+                return {
+                    id: deck_id,
+                    name: decks[0].name,
+                    owner: decks[0].owner,
+                    cards: []
+                }
+            }
+            // No decks with that deck_id
+            else {
+                return {}
+            }
+        }
+    })
+}
+
+async function getDecks(owner) {
+    let decks = await db.query(`SELECT * FROM decks WHERE owner="${owner}"`).then((response) => {
+        return response.map(d => {
+            return {
+                id: d.id,
+                name: d.name,
+                owner: d.owner,
+                cards: []
+            }
+        })
+    })
+    let query = `SELECT deck_id, decks.name AS deck_name, first_edition, owner, card_info.*, card_value.* FROM deck_cards LEFT JOIN decks ON deck_cards.deck_id = decks.id LEFT JOIN card_info ON deck_cards.code = card_info.code LEFT JOIN card_value ON card_info.rarity = card_value.rarity WHERE owner="${owner}";`
+    return db.query(query).then((response) => {
+        response.forEach((card) => {
+            for(let i = 0; i < decks.length; i++) {
+                if(decks[i].id == card.deck_id) {
+                    decks[i].cards.push(card)
+                }
+            }
+        })
+        return decks
+    })
+}
+
 module.exports = {
     assembleBooster,
     generatePackCode,
@@ -584,6 +682,11 @@ module.exports = {
     setCardOwner,
     disenchant,
     enchant,
+    saveDeck,
+    newDeck,
+    renameDeck,
+    getDeck,
+    getDecks,
     init: () => {
         var job = new CronJob('0 21 * * 5', () => {
             getPackOwners().then((packs) => {

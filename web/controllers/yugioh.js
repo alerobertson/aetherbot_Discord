@@ -294,6 +294,67 @@ router.get('/yugioh/redeem/:code', async(req, res) => {
     }
 });
 
+// Decks
+router.get('/yugioh/my-decks/', async(req, res) => {
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    if(!user) {
+        res.sendStatus(401)
+    }
+    else {
+        let decks = await yugioh.getDecks(user.id)
+        res.send(decks)
+    }
+});
+
+router.post('/yugioh/save-deck/', async(req, res) => {
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    if(!user || !req.body) {
+        res.sendStatus(401)
+    }
+    else {
+        if(req.body.cards.length > 0) {
+            let success = await yugioh.saveDeck(req.body.deck_id, user.id, req.body.name, req.body.cards)
+            res.sendStatus(success ? 201 : 401)
+        }
+        else {
+            res.sendStatus(201)
+        }
+    }
+});
+
+router.post('/yugioh/new-deck/', async(req, res) => {
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    if(!user || !req.body) {
+        res.sendStatus(401)
+    }
+    else {
+        let deck_id = await yugioh.newDeck(user.id, req.body.name)
+        if(deck_id) {
+            res.status(201).send(`${deck_id}`)
+        }
+        else {
+            res.sendStatus(401)
+        }
+    }
+});
+
+router.put('/yugioh/rename-deck/', async(req, res) => {
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    let deck = await yugioh.getDeck(req.body.deck_id)
+    let owner = deck.owner
+    if(!user || !req.body || owner != user.id) {
+        res.sendStatus(401)
+    }
+    else {
+        let success = await yugioh.renameDeck(req.body.deck_id, req.body.name)
+        res.sendStatus(success ? 201 : 401)
+    }
+});
+
 // Crafting
 router.get('/yugioh/disenchant/:id', async(req, res) => {
     let id = req.params.id
