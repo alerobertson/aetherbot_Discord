@@ -355,6 +355,20 @@ router.put('/yugioh/rename-deck/', async(req, res) => {
     }
 });
 
+router.put('/yugioh/delete-deck', async(req, res) => {
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    let deck = await yugioh.getDeck(req.body.deck_id)
+    let owner = deck.owner
+    if(!user || !req.body || owner != user.id) {
+        res.sendStatus(401)
+    }
+    else {
+        let success = await yugioh.deleteDeck(req.body.deck_id)
+        res.sendStatus(success ? 201 : 500)
+    }
+});
+
 // Crafting
 router.get('/yugioh/disenchant/:id', async(req, res) => {
     let id = req.params.id

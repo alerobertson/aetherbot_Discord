@@ -654,6 +654,12 @@ async function getDecks(owner) {
     })
 }
 
+async function deleteDeck(deck_id) {
+    await db.query(`DELETE FROM deck_cards WHERE deck_id=${deck_id};`)
+    await db.query(`DELETE FROM decks WHERE id="${deck_id}";`)
+    return true
+}
+
 module.exports = {
     assembleBooster,
     generatePackCode,
@@ -687,6 +693,7 @@ module.exports = {
     renameDeck,
     getDeck,
     getDecks,
+    deleteDeck,
     init: () => {
         var job = new CronJob('0 21 * * 5', () => {
             getPackOwners().then((packs) => {
