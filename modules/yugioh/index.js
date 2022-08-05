@@ -641,7 +641,7 @@ async function getDecks(owner) {
             }
         })
     })
-    let query = `SELECT deck_id, decks.name AS deck_name, first_edition, owner, card_info.*, card_value.* FROM deck_cards LEFT JOIN decks ON deck_cards.deck_id = decks.id LEFT JOIN card_info ON deck_cards.code = card_info.code LEFT JOIN card_value ON card_info.rarity = card_value.rarity WHERE owner="${owner}";`
+    let query = `SELECT deck_id, decks.name AS deck_name, first_edition, owner, card_info.*, card_value.* FROM deck_cards LEFT JOIN decks ON deck_cards.deck_id = decks.id LEFT JOIN card_info ON deck_cards.code = card_info.code RIGHT JOIN card_value ON card_info.rarity = card_value.rarity WHERE owner="${owner}";`
     return db.query(query).then((response) => {
         response.forEach((card) => {
             for(let i = 0; i < decks.length; i++) {
