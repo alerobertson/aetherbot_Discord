@@ -660,6 +660,85 @@ async function deleteDeck(deck_id) {
     return true
 }
 
+async function getStarterDeckPurchases(code) {
+    return db.query(`SELECT owner FROM starter_deck_purchases WHERE code="${code}";`)
+        .then((result) => {
+            if(result[0]) {
+                return result
+            }
+            else {
+                return false
+            }
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+}
+
+async function getStarterDeckInfo(code) {
+    let purchases = await getStarterDeckPurchases(code)
+    return db.query(`SELECT * FROM starter_decks WHERE code="${code}";`)
+        .then((result) => {
+            if(result[0]) {
+                let starter_deck = result[0]
+                starter_deck.owners = purchases ? purchases : []
+                return starter_deck
+            }
+            else {
+                return false
+            }
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+}
+
+async function purchaseDeck(code, user_id) {
+    let starter_deck_info = await getStarterDeckInfo(code)
+    let cards = await getBoosterSet(code).then((set) => {
+        return set.map(card => {
+            return {
+                code: card.code,
+                name: card.name
+            }
+        })
+    })
+    return addCardsToCollection(user_id, cards).then((success) => {
+        if(success) {
+            return Promise.all([
+                db.query(`UPDATE duelists SET gems=gems-${starter_deck_info.price} WHERE id="${user_id}";`),
+                db.query(`INSERT INTO starter_deck_purchases (code, owner) VALUES ("${code}", "${user_id}");`)
+            ])
+        }
+        else {
+            return false
+        }
+    })
+}
+
+async function getStarterDecks() {
+    let purchases = await db.query(`SELECT * FROM starter_deck_purchases;`)
+    return db.query(`SELECT * FROM starter_decks;`)
+        .then((result) => {
+            if(result[0]) {
+                let starter_decks = result.map((starter_deck) => {
+                    starter_deck.owners = purchases.filter(purchase => purchase.code == starter_deck.code).map(purchase => purchase.owner)
+                    return starter_deck
+                })
+                return starter_decks
+            }
+            else {
+                return false
+            }
+        },
+        (err) => {
+            console.error(err)
+            return false
+        })
+}
+
 module.exports = {
     assembleBooster,
     generatePackCode,
@@ -694,6 +773,9 @@ module.exports = {
     getDeck,
     getDecks,
     deleteDeck,
+    getStarterDeckInfo,
+    getStarterDecks,
+    purchaseDeck,
     init: () => {
         var job = new CronJob('0 21 * * 5', () => {
             getPackOwners().then((packs) => {

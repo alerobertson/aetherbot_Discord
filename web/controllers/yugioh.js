@@ -42,6 +42,11 @@ router.get('/yugioh/booster-art/:code', (req, res) => {
     res.sendFile(path.resolve(__dirname + '../../../assets/boosters/' + code + '.png'));
 });
 
+router.get('/yugioh/deck-art/:code', (req, res) => {
+    let code = req.params.code
+    res.sendFile(path.resolve(__dirname + '../../../assets/decks/' + code + '.png'));
+});
+
 router.get('/yugioh/box/:owner', (req, res) => {
     res.sendFile(path.resolve(__dirname + '../../../assets/site/yugioh/box.html'));
 });
@@ -395,6 +400,48 @@ router.get('/yugioh/enchant/:code', async(req, res) => {
     else {
         let success = await yugioh.enchant(code, user.id)
         res.sendStatus(success ? 201 : 500)
+    }
+});
+
+// Deck Purchasing
+router.get('/yugioh/purchase-deck/:code', async(req, res) => {
+    let code = req.params.code
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    let starter_deck = await yugioh.getStarterDeckInfo(code)
+    if(
+        !user || 
+        !starter_deck || 
+        !starter_deck.available || 
+        starter_deck.owners.includes(user.id) || 
+        user.gems < starter_deck.price
+    ) {
+        res.sendStatus(401)
+    }
+    else {
+        let success = await yugioh.purchaseDeck(code, user.id)
+        res.sendStatus(success ? 201 : 500)
+    }
+});
+
+router.get('/yugioh/starter-decks', async(req, res) => {
+    let auth_token = req.headers.auth_token
+    let user = await yugioh.getUserBySiteToken(auth_token)
+    // Request validation START
+    if(
+        !user
+    ) {
+        res.sendStatus(401)
+    }
+    // Request validation END
+    else {
+        let starter_decks = await yugioh.getStarterDecks()
+        starter_decks = starter_decks.map((deck) => {
+            deck.owned = deck.owners.includes(user.id)
+            delete deck.owners
+            return deck
+        })
+        res.send(starter_decks)
     }
 });
 
