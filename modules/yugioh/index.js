@@ -705,7 +705,7 @@ async function purchaseDeck(code, user_id) {
             }
         })
     })
-    return addCardsToCollection(user_id, cards).then((success) => {
+    return addCardsToCollection(user_id, cards, true).then((success) => {
         if(success) {
             return Promise.all([
                 db.query(`UPDATE duelists SET gems=gems-${starter_deck_info.price} WHERE id="${user_id}";`),
