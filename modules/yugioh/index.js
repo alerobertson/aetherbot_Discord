@@ -7,6 +7,8 @@ const {
     v1: uuidv1, // Time Based
     v4: uuidv4, // Random
 } = require('uuid');
+var discordClient = {};
+const discordConfig = require('../discord/config.json')
 const discord = require('../discord')
 
 const rarities = {
@@ -461,7 +463,7 @@ async function addOffer(offer, id, partner_offer, partner_id) {
 
     return db.query(query)
         .then((result) => {
-            return true
+            return trade_id
         },
         (err) => {
             console.error(err)
@@ -759,11 +761,37 @@ module.exports = {
     getUserBySiteToken,
     getDuelists,
     validateOwnership,
-    addOffer,
+    addOffer: async (offer, id, partner_offer, partner_id) => {
+        return addOffer(offer, id, partner_offer, partner_id).then(async (trade_id) => {
+            if(trade_id) {
+                let creator = await discordApi.getUser(id)
+                let bot_channel = discordClient.channels.get(discordConfig.main_bot_channel)
+                bot_channel.send(`<@${partner_id}>,\n${creator.username} sent you a new trade offer!\n${discordConfig.application.yugioh_domain}/trade/${trade_id}`)
+            }
+            return trade_id
+        })
+    },
     cardsInOffer,
     getOffers,
     getOffer,
-    setOfferState,
+    setOfferState: async (trade_id, new_state) => {
+        return setOfferState(trade_id, new_state).then(async (response) => {
+            let offer = await getOffer(trade_id)
+            let bot_channel = discordClient.channels.get(discordConfig.main_bot_channel)
+            switch(new_state) {
+                case "cancelled":
+                    bot_channel.send(`${offer.owner.user.username} cancelled trade offer #${offer.id} with ${offer.target.user.username} ❌`)
+                    break
+                case "accepted":
+                    bot_channel.send(`<@${offer.owner.user.id}>,\n${offer.target.user.username} accepted trade offer #${offer.id} ✅`)
+                    break
+                case "declined":
+                    bot_channel.send(`<@${offer.owner.user.id}>,\n${offer.target.user.username} declined trade offer #${offer.id} ❌`)
+                    break
+            }
+            return response
+        })
+    },
     setCardOwner,
     disenchant,
     enchant,
@@ -805,5 +833,8 @@ module.exports = {
                 })
             })
         },true,'America/Toronto')
+    },
+    initDiscordClient: (client) => {
+        discordClient = client;
     }
 }

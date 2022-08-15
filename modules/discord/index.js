@@ -525,11 +525,6 @@ module.exports = {
     init: () => {
         client.login(config.token)
 
-        client.on("ready", () => {
-            console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`)
-            client.user.setActivity(`${config.prefix}help`)
-        })
-
         client.on("guildCreate", guild => {
             console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`)
         })
@@ -550,5 +545,13 @@ module.exports = {
         })
 
         motd.init(client)
-    }
+
+        return new Promise((resolve, reject) => {
+            client.on("ready", () => {
+                console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`)
+                client.user.setActivity(`${config.prefix}help`)
+                resolve(client)
+            })
+        })
+    },
 }

@@ -26,5 +26,6 @@
 		"client_secret": "",
 		"yugioh_domain": "http://localhost:5000"
 	},
-	"main_guild": "guild_id"
+	"main_guild": "guild_id",
+	"main_bot_channel": "channel_id"
 }
