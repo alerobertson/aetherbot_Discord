@@ -34,10 +34,10 @@ async function getGuildMembers(guild_id) {
         return response.data.map((member) => { 
             let user = member.user
             if(!user.avatar) {
-                user.avatar = `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png?size=64`
+                user.avatar = `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png?size=128`
             }
             else {
-                user.avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}?size=64`
+                user.avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}?size=128`
             }
             return user
         })
