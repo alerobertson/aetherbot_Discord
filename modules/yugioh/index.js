@@ -88,16 +88,18 @@ async function getBoosterSet(set_name) {
 
 async function assembleBooster(set_name = config.current_set_code) {
     const set_info = config.sets[set_name]
-    const cards = sortCards(await getBoosterSet(set_name))
+    var cards = null
     let booster = []
 
     if(set_info.custom) {
+        cards = await getBoosterSet(set_name)
         set_info.markup.forEach((code) => {
             let card = cards.find(c => c.code == code)
             booster.push(card)
         })
     }
     else {
+        cards = sortCards(await getBoosterSet(set_name))
         set_info.markup.forEach((markup_item) => {
             let rarity = markup_item.rarity
             let number_of_cards = markup_item.amount
