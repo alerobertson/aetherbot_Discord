@@ -185,7 +185,7 @@
                     "amount": 1 
                 }
             ],
-            "craftable": false
+            "craftable": true
         },
         "TP3": {
             "rarities": {
