@@ -813,32 +813,34 @@ module.exports = {
     getStarterDecks,
     purchaseDeck,
     init: () => {
-        getPackOwners().then((packs) => {
-            let promises = []
-            let users = []
-            packs.forEach((pack) => {
-                promises.push(
-                    discordApi.getUser(pack.owner).then((user) => {
-                        if(user.id) {
-                            users.push(user)
-                        }
-                    })
-                )
-            })
-            Promise.all(promises).then(() => {
-                users.forEach((user) => {
-                    scoreLastWeek(user.username + "#" + user.discriminator).then((results) => {
-                        let number_of_packs = 2
-                        if(results.honor >= 5) {
-                            number_of_packs++
-                        }
-                        for(let i = 0; i < number_of_packs; i++) {
-                            generatePackCode(user.id, config.current_set_code, true)
-                        }
+        var job = new CronJob('0 21 * * 5', () => {
+            getPackOwners().then((packs) => {
+                let promises = []
+                let users = []
+                packs.forEach((pack) => {
+                    promises.push(
+                        discordApi.getUser(pack.owner).then((user) => {
+                            if(user.id) {
+                                users.push(user)
+                            }
+                        })
+                    )
+                })
+                Promise.all(promises).then(() => {
+                    users.forEach((user) => {
+                        scoreLastWeek(user.username + "#" + user.discriminator).then((results) => {
+                            let number_of_packs = 2
+                            if(results.honor >= 5) {
+                                number_of_packs++
+                            }
+                            for(let i = 0; i < number_of_packs; i++) {
+                                generatePackCode(user.id, config.current_set_code, true)
+                            }
+                        })
                     })
                 })
             })
-        })
+        }, true,'America/Toronto')
         
     },
     initDiscordClient: (client) => {
