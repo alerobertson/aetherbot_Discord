@@ -91,25 +91,33 @@ async function assembleBooster(set_name = config.current_set_code) {
     const cards = sortCards(await getBoosterSet(set_name))
     let booster = []
 
-    set_info.markup.forEach((markup_item) => {
-        let rarity = markup_item.rarity
-        let number_of_cards = markup_item.amount
-
-        if(rarity == "random") {
-            for(let x = 0; x < number_of_cards; x++) {
-                let random_value = Math.random() * 100
-                let rarity = determineRarity(set_info.rarities, random_value)
-                let card = pull(cards, rarity)
-                booster.push(card)
+    if(set_info.custom) {
+        set_info.markup.forEach((code) => {
+            let card = cards.find(c => c.code == code)
+            booster.push(card)
+        })
+    }
+    else {
+        set_info.markup.forEach((markup_item) => {
+            let rarity = markup_item.rarity
+            let number_of_cards = markup_item.amount
+    
+            if(rarity == "random") {
+                for(let x = 0; x < number_of_cards; x++) {
+                    let random_value = Math.random() * 100
+                    let rarity = determineRarity(set_info.rarities, random_value)
+                    let card = pull(cards, rarity)
+                    booster.push(card)
+                }
             }
-        }
-        else {
-            for(let x = 0; x < number_of_cards; x++) {
-                let card = pull(cards, rarity)
-                booster.push(card)
+            else {
+                for(let x = 0; x < number_of_cards; x++) {
+                    let card = pull(cards, rarity)
+                    booster.push(card)
+                }
             }
-        }
-    })
+        })
+    }
 
     return booster
 }
@@ -805,34 +813,33 @@ module.exports = {
     getStarterDecks,
     purchaseDeck,
     init: () => {
-        var job = new CronJob('0 21 * * 5', () => {
-            getPackOwners().then((packs) => {
-                let promises = []
-                let users = []
-                packs.forEach((pack) => {
-                    promises.push(
-                        discordApi.getUser(pack.owner).then((user) => {
-                            if(user.id) {
-                                users.push(user)
-                            }
-                        })
-                    )
-                })
-                Promise.all(promises).then(() => {
-                    users.forEach((user) => {
-                        scoreLastWeek(user.username + "#" + user.discriminator).then((results) => {
-                            let number_of_packs = 2
-                            if(results.honor >= 5) {
-                                number_of_packs++
-                            }
-                            for(let i = 0; i < number_of_packs; i++) {
-                                generatePackCode(user.id, config.current_set_code, true)
-                            }
-                        })
+        getPackOwners().then((packs) => {
+            let promises = []
+            let users = []
+            packs.forEach((pack) => {
+                promises.push(
+                    discordApi.getUser(pack.owner).then((user) => {
+                        if(user.id) {
+                            users.push(user)
+                        }
+                    })
+                )
+            })
+            Promise.all(promises).then(() => {
+                users.forEach((user) => {
+                    scoreLastWeek(user.username + "#" + user.discriminator).then((results) => {
+                        let number_of_packs = 2
+                        if(results.honor >= 5) {
+                            number_of_packs++
+                        }
+                        for(let i = 0; i < number_of_packs; i++) {
+                            generatePackCode(user.id, config.current_set_code, true)
+                        }
                     })
                 })
             })
-        },true,'America/Toronto')
+        })
+        
     },
     initDiscordClient: (client) => {
         discordClient = client;

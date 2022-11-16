@@ -1,5 +1,5 @@
 {
-    "current_set_code": "LOD",
+    "current_set_code": "PGD",
     "sets" : {
         "LOB": {
             "rarities": {
@@ -255,6 +255,17 @@
                     "rarity": "random",
                     "amount": 1 
                 }
+            ],
+            "craftable": false
+        },
+        "TT3": {
+            "custom": true,
+            "markup": [
+                "TT3-001",
+                "TT3-002",
+                "TT3-003",
+                "TT3-004",
+                "TT3-005"
             ],
             "craftable": false
         }
