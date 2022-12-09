@@ -1,5 +1,5 @@
 {
-    "current_set_code": "PGD",
+    "current_set_code": "MFC",
     "sets" : {
         "LOB": {
             "rarities": {
@@ -234,7 +234,7 @@
                     "amount": 1 
                 }
             ],
-            "craftable": false
+            "craftable": true
         },
         "MFC": {
             "rarities": {
