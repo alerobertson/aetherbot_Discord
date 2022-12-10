@@ -17,40 +17,104 @@ router.get('/yugioh/booster/:code', (req, res) => {
 
 router.get('/yugioh/card/:code', async (req, res) => {
     let code = req.params.code
-    if(req.query.fe == 1) {
-        let file = await sharp(path.resolve(__dirname + '../../../assets/cards/' + code + '.jpg'))
-            .composite([{ 
-                input: path.resolve(__dirname + '../../../assets/cards/FE.png')
-            }])
-            .toFormat('jpg')
-            .toBuffer()
-    
-        res.end(file, 'binary');
-    }
-    else {
+
+    if([
+    'GOD-01', 
+    'GOD-02', 
+    'GOD-03',
+    'TT3-001',
+    'TT3-002',
+    'TT3-003',
+    'TT3-004',
+    'TT3-005',
+    'TT2-001',
+    'T2-001',
+    'T3-001',
+    'T3-002',
+    ].includes(code)) {
         res.sendFile(path.resolve(__dirname + '../../../assets/cards/' + code + '.jpg'));
     }
-});
+    else {
+        let card_info = await yugioh.getCardInfo(code)
+        let monster_type_map = {
+            'Normal': 'normal',
+            'Effect': 'effect',
+            'Spirit': 'effect',
+            'Ritual': 'ritual',
+            'Fusion': 'fusion'
+        }
+        
+        let background_type
+        switch(card_info.type) {
+            case "monster":
+                let types = card_info.monster_type.split('/')
+                types.forEach((t) => {
+                    if(monster_type_map[t])
+                        background_type = monster_type_map[t]
+                })
+                break
+            default:
+                background_type = card_info.type
+                break
+        }
 
-router.get('/yugioh/bingus', async (req, res) => {
-    let file = await sharp(path.resolve(__dirname + '../../../assets/cards/' + "LOB-001" + '.jpg'))
-        .composite([{ 
-            input: path.resolve(__dirname + '../../../assets/cards/FE.png')
-        }, {
+        // Banner Eraser
+        let images = [{ 
+            input: path.resolve(__dirname + `../../../assets/cards/${background_type}-banner.png`)
+        }]
+
+        // 1st Edition
+        if(req.query.fe == 1) {
+            images.push({
+                input: {
+                    text: {
+                        text: "1st Edition",
+                        rgba: true,
+                        font: "ITC Stone Serif Std Medium",
+                        fontfile: path.resolve(__dirname + '../../../assets/fonts/StoneSerifStd-Semibold.otf')
+                    }
+                },
+                top: 441,
+                left: 48
+            })
+        }
+
+        if(req.query.le == 1) {
+            images.push({
+                input: {
+                    text: {
+                        text: "LIMITED EDITION",
+                        rgba: true,
+                        font: "ITC Stone Serif Std Medium",
+                        fontfile: path.resolve(__dirname + '../../../assets/fonts/StoneSerifStd-Semibold.otf')
+                    }
+                },
+                top: 442,
+                left: 48
+            })
+        }
+
+        // Card Code
+        images.push({
             input: {
                 text: {
-                    width: 300,
-                    height: 300,
-                    text: "Bingus",
+                    text: code,
+                    width: 421,
+                    rgba: true,
                     font: "ITC Stone Serif Std Medium",
                     fontfile: path.resolve(__dirname + '../../../assets/fonts/StoneSerifStd-Semibold.otf')
                 }
-            }
-        }])
-        .toFormat('jpg')
-        .toBuffer()
-
-    res.end(file, 'binary');
+            },
+            top: 442,
+            left: 355 - Math.floor(code.length * 4)
+        })
+        let file = await sharp(path.resolve(__dirname + '../../../assets/cards/' + code + '.jpg'))
+            .composite(images)
+            .toFormat('jpg')
+            .toBuffer()
+        
+        res.end(file, 'binary');
+    }
 });
 
 /*router.get('/yugioh/coupons/', async (req, res) => {
