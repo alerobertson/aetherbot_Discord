@@ -42,7 +42,9 @@ router.get('/yugioh/card/:code', async (req, res) => {
             'Effect': 'effect',
             'Spirit': 'effect',
             'Ritual': 'ritual',
-            'Fusion': 'fusion'
+            'Fusion': 'fusion',
+            'Toon': 'effect',
+            'Union': 'effect',
         }
         
         let background_type
