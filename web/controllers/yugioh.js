@@ -31,6 +31,7 @@ router.get('/yugioh/card/:code', async (req, res) => {
     'T2-001',
     'T3-001',
     'T3-002',
+    'BACK',
     ].includes(code)) {
         res.sendFile(path.resolve(__dirname + '../../../assets/cards/' + code + '.jpg'));
     }
