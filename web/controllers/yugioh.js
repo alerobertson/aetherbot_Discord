@@ -32,6 +32,27 @@ router.get('/yugioh/card/:code', async (req, res) => {
     }
 });
 
+router.get('/yugioh/bingus', async (req, res) => {
+    let file = await sharp(path.resolve(__dirname + '../../../assets/cards/' + "LOB-001" + '.jpg'))
+        .composite([{ 
+            input: path.resolve(__dirname + '../../../assets/cards/FE.png')
+        }, {
+            input: {
+                text: {
+                    width: 300,
+                    height: 300,
+                    text: "Bingus",
+                    font: "ITC Stone Serif Std Medium",
+                    fontfile: path.resolve(__dirname + '../../../assets/fonts/StoneSerifStd-Semibold.otf')
+                }
+            }
+        }])
+        .toFormat('jpg')
+        .toBuffer()
+
+    res.end(file, 'binary');
+});
+
 /*router.get('/yugioh/coupons/', async (req, res) => {
     let coupons = await yugioh.getCoupons()
     res.send(coupons)
