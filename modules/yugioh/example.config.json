@@ -268,6 +268,42 @@
                 "TT3-005"
             ],
             "craftable": false
+        },
+        "TP4": {
+            "rarities": {
+                "rare": 33.3333,
+                "super_rare": 5.5555,
+                "ultra_rare": 0.9259
+            },
+            "markup": [
+                { 
+                    "rarity": "common",
+                    "amount": 2 
+                },
+                { 
+                    "rarity": "random",
+                    "amount": 1 
+                }
+            ],
+            "craftable": false
+        },
+        "TP5": {
+            "rarities": {
+                "rare": 33.3333,
+                "super_rare": 5.5555,
+                "ultra_rare": 0.9259
+            },
+            "markup": [
+                { 
+                    "rarity": "common",
+                    "amount": 2 
+                },
+                { 
+                    "rarity": "random",
+                    "amount": 1 
+                }
+            ],
+            "craftable": false
         }
     }
 }

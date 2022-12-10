@@ -197,7 +197,7 @@ async function getCardInfo(code) {
 }
 
 async function getCards(owner) {
-    return db.query(`SELECT card_info.*, cards.owner, cards.id, cards.first_edition, card_value.* FROM cards INNER JOIN card_info ON cards.code=card_info.code INNER JOIN card_value ON card_info.rarity=card_value.rarity WHERE cards.owner="${owner}";`)
+    return db.query(`SELECT card_info.*, cards.owner, cards.id, cards.first_edition, cards.limited_edition, card_value.* FROM cards INNER JOIN card_info ON cards.code=card_info.code INNER JOIN card_value ON card_info.rarity=card_value.rarity WHERE cards.owner="${owner}";`)
         .then((result) => {
             return result
         },
@@ -525,13 +525,13 @@ async function sanitizeOffers(offers) {
 }
 
 async function getOffers(user_id) {
-    let offers = await db.query(`SELECT card_info.*, cards.code, cards.first_edition, cards.owner, offers.owner AS offer_owner, offers.target AS offer_target, offers.state, offer_cards.* FROM offers INNER JOIN offer_cards ON offer_cards.trade_id=offers.id INNER JOIN cards ON offer_cards.id=cards.id INNER JOIN card_info ON cards.code=card_info.code WHERE (offers.owner="${user_id}" OR offers.target="${user_id}");`)
+    let offers = await db.query(`SELECT card_info.*, cards.code, cards.first_edition, cards.limited_edition, cards.owner, offers.owner AS offer_owner, offers.target AS offer_target, offers.state, offer_cards.* FROM offers INNER JOIN offer_cards ON offer_cards.trade_id=offers.id INNER JOIN cards ON offer_cards.id=cards.id INNER JOIN card_info ON cards.code=card_info.code WHERE (offers.owner="${user_id}" OR offers.target="${user_id}");`)
     let compiled_offers = await sanitizeOffers(offers)
     return compiled_offers
 }
 
 async function getOffer(offer_id) {
-    let offers = await db.query(`SELECT card_info.*, cards.code, cards.first_edition, cards.owner, offers.owner AS offer_owner, offers.target AS offer_target, offers.state, offer_cards.* FROM offers INNER JOIN offer_cards ON offer_cards.trade_id=offers.id INNER JOIN cards ON offer_cards.id=cards.id INNER JOIN card_info ON cards.code=card_info.code WHERE (offers.id="${offer_id}");`)
+    let offers = await db.query(`SELECT card_info.*, cards.code, cards.first_edition, cards.limited_edition, cards.owner, offers.owner AS offer_owner, offers.target AS offer_target, offers.state, offer_cards.* FROM offers INNER JOIN offer_cards ON offer_cards.trade_id=offers.id INNER JOIN cards ON offer_cards.id=cards.id INNER JOIN card_info ON cards.code=card_info.code WHERE (offers.id="${offer_id}");`)
     let compiled_offers = await sanitizeOffers(offers)
     return compiled_offers[0]
 }
@@ -580,9 +580,9 @@ async function saveDeck(deck_id, owner, name, cards) {
     else {
         await db.query(`INSERT INTO decks (owner, name) VALUES ("${owner}", "${name}");`)
     }
-    let insert_query = `INSERT INTO deck_cards (deck_id, code, first_edition, side) VALUES `
+    let insert_query = `INSERT INTO deck_cards (deck_id, code, first_edition, limited_edition, side) VALUES `
     cards.forEach((card) => {
-        insert_query += `(${deck_id}, "${card.code}", ${card.first_edition}, ${card.side}),`
+        insert_query += `(${deck_id}, "${card.code}", ${card.first_edition}, ${card.limited_edition}, ${card.side}),`
     })
     // Replace last comma with a semi-colon
     insert_query = insert_query.replace(/.$/,";")
@@ -606,7 +606,7 @@ async function renameDeck(deck_id, new_name) {
 }
 
 async function getDeck(deck_id) {
-    let query = `SELECT deck_id, side, decks.name AS deck_name, first_edition, owner, card_info.*, card_value.* FROM deck_cards LEFT JOIN decks ON deck_cards.deck_id = decks.id LEFT JOIN card_info ON deck_cards.code = card_info.code LEFT JOIN card_value ON card_info.rarity = card_value.rarity WHERE deck_id=${deck_id};`
+    let query = `SELECT deck_id, side, decks.name AS deck_name, first_edition, limited_edition, owner, card_info.*, card_value.* FROM deck_cards LEFT JOIN decks ON deck_cards.deck_id = decks.id LEFT JOIN card_info ON deck_cards.code = card_info.code LEFT JOIN card_value ON card_info.rarity = card_value.rarity WHERE deck_id=${deck_id};`
     return db.query(query).then(async (response) => {
         if(response.length > 0) {
             let deck = {
@@ -618,7 +618,8 @@ async function getDeck(deck_id) {
             deck.cards = response.map(card => {
                 return {
                     code: card.code,
-                    first_edition: card.first_edition
+                    first_edition: card.first_edition,
+                    limited_edition: card.limited_edition
                 }
             })
             return deck
@@ -653,7 +654,7 @@ async function getDecks(owner) {
             }
         })
     })
-    let query = `SELECT deck_id, side, decks.name AS deck_name, first_edition, owner, card_info.*, card_value.* FROM deck_cards LEFT JOIN decks ON deck_cards.deck_id = decks.id LEFT JOIN card_info ON deck_cards.code = card_info.code RIGHT JOIN card_value ON card_info.rarity = card_value.rarity WHERE owner="${owner}";`
+    let query = `SELECT deck_id, side, decks.name AS deck_name, first_edition, limited_edition, owner, card_info.*, card_value.* FROM deck_cards LEFT JOIN decks ON deck_cards.deck_id = decks.id LEFT JOIN card_info ON deck_cards.code = card_info.code RIGHT JOIN card_value ON card_info.rarity = card_value.rarity WHERE owner="${owner}";`
     return db.query(query).then((response) => {
         response.forEach((card) => {
             for(let i = 0; i < decks.length; i++) {
