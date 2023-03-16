@@ -1,5 +1,5 @@
 {
-    "current_set_code": "MFC",
+    "current_set_code": "DCR",
     "sets" : {
         "LOB": {
             "rarities": {
@@ -256,7 +256,7 @@
                     "amount": 1 
                 }
             ],
-            "craftable": false
+            "craftable": true
         },
         "TT3": {
             "custom": true,
@@ -297,6 +297,28 @@
                 { 
                     "rarity": "common",
                     "amount": 2 
+                },
+                { 
+                    "rarity": "random",
+                    "amount": 1 
+                }
+            ],
+            "craftable": false
+        },
+        "DCR": {
+            "rarities": {
+                "super_rare": 20.0,
+                "ultra_rare": 4.1667,
+                "secret_rare": 3.225
+            },
+            "markup": [
+                { 
+                    "rarity": "common",
+                    "amount": 7 
+                },
+                { 
+                    "rarity": "rare",
+                    "amount": 1 
                 },
                 { 
                     "rarity": "random",
