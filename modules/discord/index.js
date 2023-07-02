@@ -93,7 +93,7 @@ function commandCheck(msg) {
 
         // Returns a time stamp for the current time (for that user)
         case "mytimezone":
-            getUserDate(msg.author.tag).then((userDate) => {
+            getUserDate(msg.author.username).then((userDate) => {
                 msg.reply("Your time right now: " + datetimeString(userDate))
             })
             break
@@ -187,12 +187,12 @@ function commandCheck(msg) {
         subCommand = subCommand.trim()
         if (!isNaN(subCommand) && subCommand.length > 0) {
             var timeZone = parseInt(subCommand)
-            userExists(msg.author.tag, 'timezone').then((result) => {
+            userExists(msg.author.username, 'timezone').then((result) => {
                 if (result) {
-                    db.query("UPDATE timezone SET offset = " + timeZone + " WHERE username = '" + msg.author.tag + "';")
+                    db.query("UPDATE timezone SET offset = " + timeZone + " WHERE username = '" + msg.author.username + "';")
                 }
                 else {
-                    db.query("INSERT INTO timezone (username, offset) VALUES ('" + msg.author.tag + "', " + timeZone + ");")
+                    db.query("INSERT INTO timezone (username, offset) VALUES ('" + msg.author.username + "', " + timeZone + ");")
                 }
             })
             let d = new Date()
@@ -226,7 +226,7 @@ function display(msg, result) {
     let output = "```CURRENT STANDINGS\n\n\n"
     output += "    Username          Score    Honor\n\n"
     result.forEach((person) => {
-        output += ("    " + person.username.slice(0, -5) + " ".repeat(18 - person.username.slice(0, -5).length) + person.score +
+        output += ("    " + person.username + " ".repeat(18 - person.username.length) + person.score +
             " ".repeat(9 - person.score.toString().length) + person.honor + "\n")
     })
     output += "```"
@@ -243,11 +243,11 @@ function mornCheck(msg) {
     }
 
     // User must not already have an entry today
-    entryToday(msg.author.tag).then((result) => {
+    entryToday(msg.author.username).then((result) => {
         if (!result) {
 
             // Consider the user's timezone
-            getUserDate(msg.author.tag).then((d) => {
+            getUserDate(msg.author.username).then((d) => {
 
                 // If after 12:00 relative to their timezone
                 if (d.getHours() >= 12) {
@@ -255,24 +255,24 @@ function mornCheck(msg) {
                     var tardyResponse = tardy[Math.floor(Math.random() * tardy.length)]
 
                     // Query INSERT INTO entries
-                    newEntry(msg.author.tag, msg.guild.id, datetimeString(d), '-1', '1')
+                    newEntry(msg.author.username, msg.guild.id, datetimeString(d), '-1', '1')
                     msg.channel.send(tardyResponse)
                 }
                 else {
 
                     // User gets redemption if they have negative score from the previous day
-                    scoreYesterday(msg.author.tag).then((lastScore) => {
+                    scoreYesterday(msg.author.username).then((lastScore) => {
                         if (lastScore < 0) {
 
                             // Query INSERT INTO entries
-                            newEntry(msg.author.tag, msg.guild.id, datetimeString(d), '2', '1')
+                            newEntry(msg.author.username, msg.guild.id, datetimeString(d), '2', '1')
                             var redemption = config.redemptionResponses
                             var redemptionResponse = redemption[Math.floor(Math.random() * redemption.length)]
                             msg.channel.send(redemptionResponse)
                         }
                         else {
                             // Query INSERT INTO entries
-                            newEntry(msg.author.tag, msg.guild.id, datetimeString(d), '1', '1')
+                            newEntry(msg.author.username, msg.guild.id, datetimeString(d), '1', '1')
                         }
                     })
                 }
@@ -513,7 +513,7 @@ function waniDisplay(msg, result) {
 	let output = "```\n"
 	output += "Username          To Do    Completed\n\n"
 	result.forEach((person) => {
-		output += ("" + person.username.slice(0,-5) + " ".repeat(18 - person.username.slice(0,-5).length) + person.to_do +
+		output += ("" + person.username + " ".repeat(18 - person.username.length) + person.to_do +
 			" ".repeat(9 - person.to_do.toString().length) + person.completed + "\n")
 	})
 	output += "```"
