@@ -8,14 +8,15 @@
 */
 (async () => {
     const discord = require('./modules/discord')
-    var discordClient = await discord.init()
+    discord.init()
+    // var discordClient = await discord.init()
     
-    const slack = require('./modules/slack')
-    slack.init()
+    // const slack = require('./modules/slack')
+    // slack.init()
     
-    const yugioh = require('./modules/yugioh')
-    yugioh.initDiscordClient(discordClient)
-    yugioh.init()
+    // const yugioh = require('./modules/yugioh')
+    // yugioh.initDiscordClient(discordClient)
+    // yugioh.init()
     
     const api_server = require('./web/api.js')
     api_server.start('/')
