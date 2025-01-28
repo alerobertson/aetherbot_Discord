@@ -49,13 +49,31 @@ function assembleData(users) {
 	users.forEach((user) => {
 		promises.push(new Promise((resolve, reject) => {
 			fetchSummary(user.api_token).then((summary) => {
-				fetchReviews(user.api_token, updated_after).then((reviews) => {
+				if(summary && summary.data) {
+					let sum = summary.data.reviews.reduce((prev, current) =>
+						prev + current.subject_ids.length
+					, 0)
 					resolve({
 						username: user.username,
-						to_do: summary.data.reviews[0].subject_ids.length,
-						completed: reviews.total_count
+						to_do: sum,
+						completed: "?"
 					})
-				})
+				}
+				else {
+					resolve({
+						username: null,
+						to_do: null,
+						completed: null,
+					})
+				}
+				// Broken until wanikani addresses performance concerns
+				// fetchReviews(user.api_token, updated_after).then((reviews) => {
+					// resolve({
+					// 	username: user.username,
+					// 	to_do: summary.data.reviews[0].subject_ids.length,
+					// 	completed: reviews.total_count
+					// })
+				// })
 			})
 		}))
 	})

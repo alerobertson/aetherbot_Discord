@@ -513,6 +513,7 @@ function waniDisplay(msg, result) {
 	let output = "```\n"
 	output += "Username          To Do    Completed\n\n"
 	result.forEach((person) => {
+        if(!person.username) return
 		output += ("" + person.username + " ".repeat(18 - person.username.length) + person.to_do +
 			" ".repeat(9 - person.to_do.toString().length) + person.completed + "\n")
 	})
